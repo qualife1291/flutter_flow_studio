@@ -1,5 +1,2 @@
 Analyzing flutter_flow_studio...                                
-
-warning • The diagnostic 'deprecated_member_use' doesn't need to be ignored here because it's already being ignored • lib/src/analyzer/ast_facade.dart:15:16 • duplicate_ignore
-
-1 issue found. (ran in 2.5s)
+No issues found! (ran in 3.2s)

@@ -1,0 +1,7 @@
+Flutter 3.41.9, Dart 3.11.5, Temurin JDK 21.0.13+9.
+[        ] [        ] exiting with code 0
+[        ] BUILD SUCCESSFUL in 5m 18s
+[+1075 ms] ✓ Built build/app/outputs/flutter-apk/app-debug.apk
+[        ] exiting with code 0
+APK bytes: 147096322
+APK SHA256: a798cd3959be233e6b2e6c7fda23006e0d208d822eb893296b024fee03707a3b

@@ -48,6 +48,11 @@ class DeepTraceInstrumenter {
         }
       }
       if (inserts.isEmpty) continue;
+      if (unit.directives.any((d) => d is PartOfDirective)) {
+        throw StateError(
+          'Deep trace cannot add an import to a part file: ${file.path}. Use explicit FlowProbe calls from its parent library.',
+        );
+      }
       final status = Process.runSync('git', [
         '-C',
         root,

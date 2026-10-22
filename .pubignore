@@ -1,6 +1,17 @@
+# The published package contains the runtime, CLI, bundled UI and example sources.
 docs/
-web_studio/node_modules/
-web_studio/src/
-web_studio/dist/
-packages/cli/.dart_tool/
+web_studio/
+packages/
+.github/
+scripts/
 .git/
+build/
+**/build/
+**/.dart_tool/
+**/.gradle/
+**/node_modules/
+**/test-results/
+**/playwright-report/
+**/ephemeral/
+**/local.properties
+**/.flutter-plugins*

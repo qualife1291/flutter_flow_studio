@@ -220,4 +220,27 @@ void main() {
       expect(file.readAsStringSync(), endsWith('// user edit'));
     },
   );
+
+  test('deep trace refuses part files without changing source', () {
+    const source = 'part of sample; void load(){if(ok){dio.get("/a");}}';
+    scan(source);
+    Process.runSync('git', ['init', root.path]);
+    Process.runSync('git', ['-C', root.path, 'add', '.']);
+    Process.runSync('git', [
+      '-C',
+      root.path,
+      '-c',
+      'user.name=Test',
+      '-c',
+      'user.email=test@example.invalid',
+      'commit',
+      '-m',
+      'fixture',
+    ]);
+    expect(
+      () => DeepTraceInstrumenter().instrument(root.path),
+      throwsStateError,
+    );
+    expect(File('${root.path}/lib/main.dart').readAsStringSync(), source);
+  });
 }

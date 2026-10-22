@@ -120,12 +120,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 4301,
+                  "duration": 4257,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-22T17:45:01.808Z",
+                  "startTime": "2026-10-22T17:50:27.722Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -154,12 +154,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 476,
+                  "duration": 446,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-22T17:45:06.332Z",
+                  "startTime": "2026-10-22T17:50:32.202Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -188,12 +188,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 354,
+                  "duration": 442,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-22T17:45:06.818Z",
+                  "startTime": "2026-10-22T17:50:32.662Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -205,15 +205,49 @@
           "file": "studio.spec.ts",
           "line": 73,
           "column": 1
+        },
+        {
+          "title": "exports valid editable graph files and 2x PNG/SVG images",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1327,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-22T17:50:33.114Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "64bdea7002f9c9cea9f4-8ce35fa7a50b66580235",
+          "file": "studio.spec.ts",
+          "line": 82,
+          "column": 1
         }
       ]
     }
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-10-22T17:45:01.356Z",
-    "duration": 5898.993,
-    "expected": 3,
+    "startTime": "2026-10-22T17:50:27.187Z",
+    "duration": 7329.812,
+    "expected": 4,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

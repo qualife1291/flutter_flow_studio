@@ -71,12 +71,47 @@ test("snapshot download and import retain graph", async ({ page }) => {
   await expect(page.locator(".flow-node").first()).toBeVisible();
 });
 test("invalid snapshot reports recovery action", async ({ page }) => {
-  await page
-    .locator("input[type=file]")
-    .setInputFiles({
-      name: "bad.flow.json",
-      mimeType: "application/json",
-      buffer: Buffer.from('{"graph":null}'),
-    });
+  await page.locator("input[type=file]").setInputFiles({
+    name: "bad.flow.json",
+    mimeType: "application/json",
+    buffer: Buffer.from('{"graph":null}'),
+  });
   await expect(page.getByRole("alert")).toContainText("Snapshot không hợp lệ");
+});
+
+test("exports valid editable graph files and 2x PNG/SVG images", async ({
+  page,
+}) => {
+  const { readFile } = await import("node:fs/promises");
+  for (const format of ["drawio", "excalidraw", "mmd", "puml", "svg", "png"]) {
+    await page.getByRole("button", { name: "Export", exact: true }).click();
+    await page.getByLabel("Định dạng", { exact: true }).selectOption(format);
+    const pending = page.waitForEvent("download");
+    await page.getByRole("button", { name: "Tải file" }).click();
+    const file = await pending;
+    const data = await readFile((await file.path())!);
+    if (format === "png") {
+      expect(data.subarray(1, 4).toString()).toBe("PNG");
+      expect(data.readUInt32BE(16)).toBeGreaterThan(1000);
+    } else if (format === "excalidraw") {
+      const json = JSON.parse(data.toString());
+      expect(json.type).toBe("excalidraw");
+      expect(
+        json.elements.some((e: { type: string }) => e.type === "arrow"),
+      ).toBe(true);
+    } else if (format === "svg" || format === "drawio") {
+      const parsed = await page.evaluate((text) => {
+        const doc = new DOMParser().parseFromString(text, "application/xml");
+        return {
+          errors: doc.querySelectorAll("parsererror").length,
+          root: doc.documentElement.tagName,
+        };
+      }, data.toString());
+      expect(parsed.errors).toBe(0);
+      expect(parsed.root).toBe(format === "svg" ? "svg" : "mxfile");
+    } else
+      expect(data.toString()).toContain(
+        format === "mmd" ? "flowchart LR" : "@startuml",
+      );
+  }
 });
