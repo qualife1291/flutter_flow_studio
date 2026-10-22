@@ -1,3 +1,4 @@
+import { validGraph, validEvent } from "./validation";
 import { describe, it, expect } from "vitest";
 import type {
   FlowGraphPayload,
@@ -211,4 +212,13 @@ describe("exports", () => {
       simplified.edges.some((e) => e.source === "start" && e.target === "end"),
     ).toBe(true);
   });
+});
+
+it("rejects structurally invalid imported graph and runtime values", () => {
+  expect(validGraph(graph)).toBe(true);
+  expect(validGraph({ ...graph, nodes: [...nodes, nodes[0]] })).toBe(false);
+  expect(validEvent(event(1, { routeName: "LoginScreen" }))).toBe(true);
+  expect(validEvent({ ...event(1), routeName: { password: "secret" } })).toBe(
+    false,
+  );
 });

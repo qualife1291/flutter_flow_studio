@@ -4,6 +4,8 @@ All notable changes are documented here following Keep a Changelog.
 
 ## [Unreleased]
 
+## [0.1.0] - Unreleased
+
 ### Added
 
 - Dart flow scanner with sink-based branch slicing, dependency inspection, business labels, health warnings, and unambiguous call/state links.

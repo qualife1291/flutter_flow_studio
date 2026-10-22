@@ -39,6 +39,7 @@ import {
   type Format,
 } from "./engine/exporters";
 import { colors } from "./theme/tokens";
+import { validGraph, validEvent } from "./engine/validation";
 const modes: RoleViewMode[] = ["DEV", "BA", "TESTER", "LOW_CODE"];
 const modeLabels = {
   DEV: "Lập trình",
@@ -46,92 +47,6 @@ const modeLabels = {
   TESTER: "Kiểm thử",
   LOW_CODE: "Low-Code",
 };
-const object = (x: unknown): x is Record<string, unknown> =>
-  !!x && typeof x === "object" && !Array.isArray(x);
-const string = (x: unknown): x is string => typeof x === "string";
-export function validGraph(value: unknown): value is FlowGraphPayload {
-  if (
-    !object(value) ||
-    !Array.isArray(value.nodes) ||
-    !Array.isArray(value.edges) ||
-    !Array.isArray(value.healthIssues) ||
-    !object(value.project) ||
-    value.nodes.length > 10000
-  )
-    return false;
-  const g = {
-      nodes: value.nodes,
-      edges: value.edges,
-      healthIssues: value.healthIssues,
-    },
-    project = value.project;
-  if (
-    ![
-      "projectName",
-      "description",
-      "version",
-      "flutterSdkVersion",
-      "dartSdkConstraint",
-    ].every((k) => string(project[k])) ||
-    !object(project.stats) ||
-    !Object.values(project.stats).every(
-      (v) => typeof v === "number" && Number.isFinite(v),
-    ) ||
-    !Array.isArray(project.allDependencies) ||
-    !project.allDependencies.every(
-      (d) => object(d) && string(d.name) && string(d.version),
-    )
-  )
-    return false;
-  const ids = new Set(g.nodes.map((n) => (object(n) ? n.id : undefined)));
-  return (
-    ids.size === g.nodes.length &&
-    g.nodes.every(
-      (n) =>
-        object(n) &&
-        string(n.id) &&
-        string(n.kind) &&
-        Object.hasOwn(colors, n.kind) &&
-        string(n.featureGroup) &&
-        string(n.technicalTitle) &&
-        string(n.businessTitle) &&
-        (!n.sourceLocation ||
-          (object(n.sourceLocation) &&
-            string(n.sourceLocation.filePath) &&
-            typeof n.sourceLocation.line === "number" &&
-            string(n.sourceLocation.codeSnippet))) &&
-        (!n.decisionInfo ||
-          (object(n.decisionInfo) &&
-            Array.isArray(n.decisionInfo.branches) &&
-            n.decisionInfo.branches.every(
-              (b) =>
-                object(b) &&
-                string(b.branchId) &&
-                string(b.technicalLabel) &&
-                string(b.businessLabel),
-            ))) &&
-        (!n.apiInfo ||
-          (object(n.apiInfo) &&
-            string(n.apiInfo.method) &&
-            string(n.apiInfo.endpoint))) &&
-        (!n.routeInfo ||
-          (object(n.routeInfo) && string(n.routeInfo.routePath))) &&
-        (!n.dialogInfo ||
-          (object(n.dialogInfo) && string(n.dialogInfo.widgetName))),
-    ) &&
-    g.edges.every(
-      (e) =>
-        object(e) && string(e.id) && ids.has(e.source) && ids.has(e.target),
-    ) &&
-    g.healthIssues.every(
-      (i) =>
-        object(i) &&
-        ["id", "nodeId", "title", "suggestionForBA", "suggestionForDev"].every(
-          (k) => string(i[k]),
-        ),
-    )
-  );
-}
 function App() {
   const s = useFlowStore();
   const [token, setToken] = useState(""),
@@ -188,7 +103,10 @@ function App() {
             const msg = JSON.parse(e.data);
             if (msg.type === "INITIAL_GRAPH" && validGraph(msg.graph)) {
               s.setGraph(msg.graph);
-              for (const event of msg.history ?? []) s.receive(event);
+              for (const event of Array.isArray(msg.history)
+                ? msg.history.slice(-2000)
+                : [])
+                if (validEvent(event)) s.receive(event);
             } else if (msg.type === "ERROR")
               useFlowStore.setState({ error: msg.message });
             else if (
@@ -196,7 +114,12 @@ function App() {
                 msg.type,
               )
             )
-              s.receive(msg);
+              validEvent(msg)
+                ? s.receive(msg)
+                : useFlowStore.setState({
+                    error:
+                      "Bản tin runtime không hợp lệ. Kiểm tra phiên bản SDK.",
+                  });
           } catch {
             useFlowStore.setState({
               error: "Bản tin không hợp lệ. Kiểm tra phiên bản runtime.",
@@ -369,12 +292,7 @@ function App() {
       for (const event of Array.isArray(data.events)
         ? data.events.slice(-2000)
         : [])
-        if (
-          event &&
-          typeof event.sessionId === "string" &&
-          Number.isInteger(event.sequenceOrder)
-        )
-          s.receive(event);
+        if (validEvent(event)) s.receive(event);
       setConnectionToken(null);
       useFlowStore.setState({ status: "Snapshot · offline" });
       setNotice("Đã nhập snapshot.");
