@@ -250,7 +250,13 @@ class AstPipeline {
         final node = make(
           call,
           sink.kind == 'SCREEN' ? 'ACTION' : sink.kind,
-          call.toSource(),
+          sink.kind == 'API'
+              ? '${invocation?.target?.toSource() ?? 'API'}.$name($literal)'
+              : sink.kind == 'DIALOG'
+              ? '${dialog!['widgetName']}()'
+              : invocation == null
+              ? call.toSource()
+              : '${invocation.target?.toSource() ?? ''}.$name()',
           api: api,
           dialog: dialog,
         );

@@ -25,4 +25,25 @@ class FlowStudioBlocObserver extends BlocObserver {
     delegate?.onError(bloc, error, stackTrace);
     super.onError(bloc, error, stackTrace);
   }
+
+  @override
+  void onCreate(BlocBase<dynamic> bloc) {
+    delegate?.onCreate(bloc);
+    super.onCreate(bloc);
+  }
+
+  @override
+  void onClose(BlocBase<dynamic> bloc) {
+    delegate?.onClose(bloc);
+    super.onClose(bloc);
+  }
+
+  @override
+  void onTransition(
+    Bloc<dynamic, dynamic> bloc,
+    Transition<dynamic, dynamic> transition,
+  ) {
+    delegate?.onTransition(bloc, transition);
+    super.onTransition(bloc, transition);
+  }
 }

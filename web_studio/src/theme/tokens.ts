@@ -1,1 +1,8 @@
-export const colors = {SCREEN:'#3B82F6',ACTION:'#8B5CF6',DECISION:'#F59E0B',API:'#06B6D4',DIALOG:'#EC4899',LOGOUT:'#F43F5E'};
+export const colors = {
+  SCREEN: "#3B82F6",
+  ACTION: "#8B5CF6",
+  DECISION: "#F59E0B",
+  API: "#06B6D4",
+  DIALOG: "#EC4899",
+  LOGOUT: "#F43F5E",
+};

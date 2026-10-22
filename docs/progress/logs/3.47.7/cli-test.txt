@@ -14,9 +14,12 @@
 00:00 +12: test/engine_test.dart: translation honors annotation and HTTP expressions
 00:00 +13: test/engine_test.dart: exporters escape user labels and preserve graph structure
 00:00 +14: test/engine_test.dart: deep trace refuses an uncommitted source file
-00:00 +15: test/server_test.dart: graph needs authentication and health does not
+00:00 +15: test/engine_test.dart: deep trace restores exact original bytes
 00:00 +16: test/server_test.dart: graph needs authentication and health does not
-00:00 +17: test/server_test.dart: websocket rejects missing token
-00:00 +18: test/server_test.dart: broadcast strips payloads, URL credentials, and query secrets
-00:00 +19: test/server_test.dart: malformed event reports error without crashing server
-00:00 +20: All tests passed!
+00:00 +17: test/server_test.dart: graph needs authentication and health does not
+00:00 +18: test/server_test.dart: graph needs authentication and health does not
+00:00 +19: test/server_test.dart: graph needs authentication and health does not
+00:00 +20: test/server_test.dart: websocket rejects missing token
+00:00 +21: test/server_test.dart: broadcast strips payloads, URL credentials, and query secrets
+00:00 +22: test/server_test.dart: malformed event reports error without crashing server
+00:00 +23: All tests passed!

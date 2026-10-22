@@ -172,4 +172,52 @@ void main() {
     instrumenter.restore();
     expect(File('${root.path}/lib/main.dart').readAsStringSync(), source);
   });
+
+  test('locally typed clients and annotated API declarations are detected', () {
+    final g = scan(
+      "class Api { @POST('/login') Future<void> login(); } void load(){ final network = Dio(); network.get('/a'); }",
+    );
+    expect(g.nodes.where((n) => n.kind == 'API'), hasLength(2));
+    expect(
+      g.nodes
+          .where((n) => n.kind == 'API')
+          .map((n) => n.data['apiInfo']['endpoint']),
+      containsAll(['/login', '/a']),
+    );
+  });
+  test('BLoC event callbacks link dispatch to guarded state emissions', () {
+    final g = scan(
+      "class AuthBloc { AuthBloc(){on<LoginEvent>((event,emit){if(ok){emit(LoginSuccess());}});} } void trigger(){bloc.add(LoginEvent());} void listen(){if(state is LoginSuccess){showDialog();}}",
+    );
+    final trigger = g.nodes.firstWhere((n) => n.technicalTitle == 'trigger()');
+    expect(g.edges.any((e) => e.source == trigger.id), isTrue);
+    expect(g.edges.any((e) => e.data['isStateBridge'] == true), isTrue);
+  });
+  test(
+    'deep trace preserves library directives and refuses to overwrite user edits',
+    () {
+      final source = 'library sample; void load(){if(ok){dio.get("/a");}}';
+      scan(source);
+      Process.runSync('git', ['init', root.path]);
+      Process.runSync('git', ['-C', root.path, 'add', '.']);
+      Process.runSync('git', [
+        '-C',
+        root.path,
+        '-c',
+        'user.name=Test',
+        '-c',
+        'user.email=test@example.invalid',
+        'commit',
+        '-m',
+        'fixture',
+      ]);
+      final trace = DeepTraceInstrumenter();
+      trace.instrument(root.path);
+      final file = File('${root.path}/lib/main.dart');
+      expect(file.readAsStringSync().startsWith('library sample;'), isTrue);
+      file.writeAsStringSync('${file.readAsStringSync()} // user edit');
+      expect(() => trace.restore(), throwsStateError);
+      expect(file.readAsStringSync(), endsWith('// user edit'));
+    },
+  );
 }

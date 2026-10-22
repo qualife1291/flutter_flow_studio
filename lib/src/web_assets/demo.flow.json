@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T17:37:35.541456Z",
+  "generatedAt": "2026-10-22T17:40:32.711364Z",
   "project": {
     "projectName": "flow_studio_example",
     "description": "A new Flutter project.",
@@ -475,8 +475,8 @@
       "id": "api:lib/main.dart:39:1194",
       "kind": "API",
       "featureGroup": "app",
-      "technicalTitle": "dio.post('/api/v1/login', data: {'fail' : fail})",
-      "businessTitle": "dio.post('/api/v1/login', data: {'fail' : fail})",
+      "technicalTitle": "dio.post(/api/v1/login)",
+      "businessTitle": "dio.post(/api/v1/login)",
       "sourceLocation": {
         "filePath": "lib/main.dart",
         "line": 39,
@@ -528,8 +528,8 @@
       "id": "action:lib/main.dart:42:1319",
       "kind": "ACTION",
       "featureGroup": "app",
-      "technicalTitle": "Navigator.of(context).push(MaterialPageRoute<void>(settings: const RouteSettings(name: 'HomeScreen'), builder: (_) => const HomeScreen()))",
-      "businessTitle": "Navigator.of(context).push(Material Page Route<void>(settings: const Route Settings(name: 'Home Screen'), builder: ( ) => const Home Screen()))",
+      "technicalTitle": "Navigator.of(context).push()",
+      "businessTitle": "Navigator.of(context).push()",
       "sourceLocation": {
         "filePath": "lib/main.dart",
         "line": 42,
@@ -571,8 +571,8 @@
       "id": "dialog:lib/main.dart:49:1546",
       "kind": "DIALOG",
       "featureGroup": "app",
-      "technicalTitle": "showDialog<void>(context: context, routeSettings: const RouteSettings(name: 'LoginErrorDialog'), builder: (_) => AlertDialog(title: const Text('Đăng nhập thất bại'), content: const Text('Kiểm tra tài khoản và thử lại.'), actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('Đóng'))]))",
-      "businessTitle": "show Dialog<void>(context: context, route Settings: const Route Settings(name: 'Login Error Dialog'), builder: ( ) => Alert Dialog(title: const Text('Đăng nhập thất bại'), content: const Text('Kiểm tra tài khoản và thử lại.'), actions: [Text Button(on Pressed: () => Navigator.pop(context), child: const Text('Đóng'))]))",
+      "technicalTitle": "LoginErrorDialog()",
+      "businessTitle": "Login Error Dialog()",
       "sourceLocation": {
         "filePath": "lib/main.dart",
         "line": 49,
@@ -589,8 +589,8 @@
       "id": "dialog:lib/main.dart:66:2083",
       "kind": "DIALOG",
       "featureGroup": "app",
-      "technicalTitle": "ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Không thể kết nối. Vui lòng thử lại.')))",
-      "businessTitle": "Scaffold Messenger.of(context).show Snack Bar(const Snack Bar(content: Text('Không thể kết nối. Vui lòng thử lại.')))",
+      "technicalTitle": "showSnackBar()",
+      "businessTitle": "show Snack Bar()",
       "sourceLocation": {
         "filePath": "lib/main.dart",
         "line": 66,
@@ -637,8 +637,8 @@
       "id": "action:lib/main.dart:120:3524",
       "kind": "ACTION",
       "featureGroup": "app",
-      "technicalTitle": "Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute<void>(settings: const RouteSettings(name: 'LoginScreen'), builder: (_) => const LoginScreen()), (_) => false)",
-      "businessTitle": "Navigator.of(context).push And Remove Until(Material Page Route<void>(settings: const Route Settings(name: 'Login Screen'), builder: ( ) => const Login Screen()), ( ) => false)",
+      "technicalTitle": "Navigator.of(context).pushAndRemoveUntil()",
+      "businessTitle": "Navigator.of(context).push And Remove Until()",
       "sourceLocation": {
         "filePath": "lib/main.dart",
         "line": 120,
@@ -650,8 +650,8 @@
       "id": "logout:lib/main.dart:134:3927",
       "kind": "LOGOUT",
       "featureGroup": "app",
-      "technicalTitle": "logout(context)",
-      "businessTitle": "logout(context)",
+      "technicalTitle": ".logout()",
+      "businessTitle": ".logout()",
       "sourceLocation": {
         "filePath": "lib/main.dart",
         "line": 134,

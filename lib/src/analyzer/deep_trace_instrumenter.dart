@@ -69,8 +69,13 @@ class DeepTraceInstrumenter {
           '\n${inserts[offset]!.join('\n')}\n',
         );
       }
-      text =
-          "import 'package:flutter_flow_studio/flutter_flow_studio.dart' show FlowProbe;\n$text";
+      final libraryEnd =
+          unit.directives.whereType<LibraryDirective>().firstOrNull?.end ?? 0;
+      text = text.replaceRange(
+        libraryEnd,
+        libraryEnd,
+        "\nimport 'package:flutter_flow_studio/flutter_flow_studio.dart' show FlowProbe;\n",
+      );
       plans[file.path] = text;
       _originals[file.path] = original;
     }
@@ -88,22 +93,37 @@ class DeepTraceInstrumenter {
         throw StateError(
           'Recover existing trace backup before instrumenting: ${backup.path}',
         );
-      backup.writeAsStringSync(_originals[entry.key]!, flush: true);
       _backups[entry.key] = backup.path;
-      File(entry.key).writeAsStringSync(entry.value, flush: true);
-      _instrumented[entry.key] = entry.value;
+    }
+    try {
+      for (final entry in plans.entries) {
+        final backup = File(_backups[entry.key]!);
+        backup.writeAsStringSync(_originals[entry.key]!, flush: true);
+        _backups[entry.key] = backup.path;
+        File(entry.key).writeAsStringSync(entry.value, flush: true);
+        _instrumented[entry.key] = entry.value;
+      }
+    } catch (_) {
+      restore();
+      rethrow;
     }
   }
 
   void restore() {
-    for (final entry in _instrumented.entries) {
-      if (File(entry.key).readAsStringSync() != entry.value)
-        throw StateError(
-          'File edited during tracing; recover original from ${_backups[entry.key]}',
-        );
+    final conflicts = <String>[];
+    for (final entry in _instrumented.entries.toList()) {
+      if (!File(entry.key).existsSync() ||
+          File(entry.key).readAsStringSync() != entry.value) {
+        conflicts.add(_backups[entry.key]!);
+        continue;
+      }
       File(entry.key).writeAsStringSync(_originals[entry.key]!, flush: true);
       File(_backups[entry.key]!).deleteSync();
+      _instrumented.remove(entry.key);
     }
-    _instrumented.clear();
+    if (conflicts.isNotEmpty)
+      throw StateError(
+        'Files edited during tracing. Originals retained at: ${conflicts.join(', ')}',
+      );
   }
 }

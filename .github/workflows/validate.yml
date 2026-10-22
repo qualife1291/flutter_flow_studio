@@ -2,6 +2,7 @@ name: Validate Flutter Flow Studio
 on:
   push:
     branches: [main, 'codex/**']
+    paths-ignore: ['docs/**', 'README.md', 'CHANGELOG.md', 'SECURITY.md']
   pull_request:
   workflow_dispatch:
 permissions:
@@ -104,3 +105,21 @@ jobs:
           xcrun simctl bootstatus "$sim_id" -b
           cd example
           flutter test integration_test/user_flow_test.dart -d "$sim_id"
+
+  release-web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.7'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm ci
+        working-directory: web_studio
+      - run: flutter pub get && flutter build web --release --no-web-resources-cdn --target lib/release_check.dart --output build/release_check
+        working-directory: example
+      - run: node scripts/check-release.mjs
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
