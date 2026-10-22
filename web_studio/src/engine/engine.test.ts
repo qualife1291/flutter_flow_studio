@@ -222,3 +222,25 @@ it("rejects structurally invalid imported graph and runtime values", () => {
     false,
   );
 });
+
+it("matches generic runtime state names to static emissions", () => {
+  expect(
+    matchEvent(
+      {
+        ...graph,
+        nodes: [
+          {
+            ...nodes[0],
+            id: "state",
+            kind: "ACTION",
+            technicalTitle: "AsyncData",
+          },
+        ],
+      },
+      event(1, {
+        eventKind: "STATE_EMITTED",
+        stateTypeName: "AsyncData<String>",
+      }),
+    ),
+  ).toBe("state");
+});

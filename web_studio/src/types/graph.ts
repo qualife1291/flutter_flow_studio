@@ -9,6 +9,7 @@ export type NodeKind =
   | "LOGOUT"; // Đăng xuất, xóa token, reset phiên về màn Login
 
 export interface ProjectMetadata {
+  projectRoot?: string;
   projectName: string;
   description: string;
   version: string;

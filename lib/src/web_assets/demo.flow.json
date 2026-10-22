@@ -1,10 +1,11 @@
 {
-  "generatedAt": "2026-10-22T17:40:32.711364Z",
+  "generatedAt": "2026-10-22T18:08:25.796779Z",
   "project": {
+    "projectRoot": "/workspace/flutter_flow_studio/example",
     "projectName": "flow_studio_example",
     "description": "A new Flutter project.",
     "version": "1.0.0+1",
-    "flutterSdkVersion": "3.47.7",
+    "flutterSdkVersion": "3.41.9",
     "dartSdkConstraint": ">=3.8.0 <4.0.0",
     "detectedArchitecture": {
       "stateManagement": [
@@ -201,7 +202,7 @@
       },
       {
         "name": "matcher",
-        "version": "0.12.20",
+        "version": "0.12.19",
         "category": "UI_UTILS",
         "isDirect": false
       },
@@ -213,7 +214,7 @@
       },
       {
         "name": "meta",
-        "version": "1.19.0",
+        "version": "1.17.0",
         "category": "UI_UTILS",
         "isDirect": false
       },
@@ -237,7 +238,7 @@
       },
       {
         "name": "platform",
-        "version": "3.2.0",
+        "version": "3.1.6",
         "category": "UI_UTILS",
         "isDirect": false
       },
@@ -327,7 +328,7 @@
       },
       {
         "name": "test_api",
-        "version": "0.7.12",
+        "version": "0.7.10",
         "category": "UI_UTILS",
         "isDirect": false
       },
@@ -339,7 +340,7 @@
       },
       {
         "name": "vector_math",
-        "version": "2.4.3",
+        "version": "2.2.0",
         "category": "UI_UTILS",
         "isDirect": false
       },

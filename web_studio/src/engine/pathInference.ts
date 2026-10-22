@@ -30,7 +30,9 @@ export function matchEvent(
     );
   if (event.stateTypeName)
     candidates = graph.nodes.filter(
-      (n) => n.kind === "ACTION" && n.technicalTitle === event.stateTypeName,
+      (n) =>
+        n.kind === "ACTION" &&
+        n.technicalTitle === event.stateTypeName!.replace(/<.*>$/, ""),
     );
   if (
     ["DIALOG_OPEN", "BOTTOM_SHEET_OPEN", "SNACKBAR_SHOW"].includes(

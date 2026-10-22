@@ -74,6 +74,7 @@ jobs:
           name: studio-reports
           path: docs/progress/logs/
   android-device:
+    timeout-minutes: 25
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -91,6 +92,7 @@ jobs:
           arch: x86_64
           script: cd example && flutter test integration_test/user_flow_test.dart -d emulator-5554
   ios-device:
+    timeout-minutes: 20
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4

@@ -86,6 +86,7 @@ class ProjectInspector {
       sdk = data['flutterVersion']?.toString() ?? 'unknown';
     }
     return {
+      'projectRoot': p.absolute(directory).replaceAll('\\', '/'),
       'projectName': pub['name']?.toString() ?? p.basename(directory),
       'description': pub['description']?.toString() ?? '',
       'version': pub['version']?.toString() ?? 'unversioned',

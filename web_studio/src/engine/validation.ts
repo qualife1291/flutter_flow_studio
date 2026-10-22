@@ -37,6 +37,8 @@ export function validGraph(value: unknown): value is FlowGraphPayload {
     )
   )
     return false;
+  if (project.projectRoot != null && typeof project.projectRoot !== "string")
+    return false;
   const ids = new Set(g.nodes.map((n) => (object(n) ? n.id : undefined)));
   return (
     ids.size === g.nodes.length &&

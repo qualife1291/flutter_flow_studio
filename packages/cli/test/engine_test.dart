@@ -243,4 +243,21 @@ void main() {
     );
     expect(File('${root.path}/lib/main.dart').readAsStringSync(), source);
   });
+
+  test('copyWith status predicates bridge to matching listeners', () {
+    final g = scan(
+      "void load(){emit(state.copyWith(status: Status.failure));} void listener(){if(state.status == Status.failure){showDialog();}}",
+    );
+    expect(g.edges.any((e) => e.data['isStateBridge'] == true), isTrue);
+  });
+  test(
+    'notifier state assignments expose runtime-matchable state constructor names',
+    () {
+      final g = scan(
+        "void load(){state=AsyncData(value);} void listener(){if(next is AsyncData){showDialog();}}",
+      );
+      expect(g.nodes.any((n) => n.technicalTitle == 'AsyncData'), isTrue);
+      expect(g.edges.any((e) => e.data['isStateBridge'] == true), isTrue);
+    },
+  );
 }

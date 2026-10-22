@@ -1,2 +1,2 @@
 Analyzing flutter_flow_studio...                                
-No issues found! (ran in 3.2s)
+No issues found! (ran in 2.5s)

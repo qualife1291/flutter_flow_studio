@@ -17,6 +17,7 @@ import {
   Upload,
   ArrowRight,
 } from "lucide-react";
+import { ideLink } from "./engine/ideLink";
 import { imageData } from "./engine/exporters/image";
 import type {
   FlowGraphPayload,
@@ -601,13 +602,23 @@ function App() {
                 <pre tabIndex={0}>{selected.sourceLocation.codeSnippet}</pre>
                 <a
                   className="button"
-                  href={`vscode://file/${encodeURIComponent(selected.sourceLocation.filePath)}:${selected.sourceLocation.line}`}
+                  href={ideLink(
+                    "vscode",
+                    selected.sourceLocation.filePath,
+                    selected.sourceLocation.line,
+                    s.graph?.project.projectRoot,
+                  )}
                 >
                   Open in VS Code
                 </a>
                 <a
                   className="button"
-                  href={`cursor://file/${encodeURIComponent(selected.sourceLocation.filePath)}:${selected.sourceLocation.line}`}
+                  href={ideLink(
+                    "cursor",
+                    selected.sourceLocation.filePath,
+                    selected.sourceLocation.line,
+                    s.graph?.project.projectRoot,
+                  )}
                 >
                   Open in Cursor
                 </a>

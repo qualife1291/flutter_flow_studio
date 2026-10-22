@@ -23,6 +23,17 @@ class SinkDetectorVisitor extends RecursiveAstVisitor<void> {
   final screens = <ClassDeclaration>[];
   final methods = <AstNode>[];
   final calls = <MethodInvocation>[];
+  final assignments = <AssignmentExpression>[];
+  @override
+  void visitAssignmentExpression(AssignmentExpression node) {
+    if (node.leftHandSide.toSource() == 'state' ||
+        node.leftHandSide.toSource().endsWith('.state')) {
+      assignments.add(node);
+      sinks.add(Sink(node, 'ACTION'));
+    }
+    super.visitAssignmentExpression(node);
+  }
+
   @override
   void visitClassDeclaration(ClassDeclaration node) {
     // ignore: deprecated_member_use

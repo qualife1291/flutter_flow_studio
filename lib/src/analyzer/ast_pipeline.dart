@@ -165,8 +165,32 @@ class AstPipeline {
                       ?.extendsClause
                       ?.superclass
                       .toSource() ==
-                  'State<${screen.name.lexeme}>')
+                  'State<${screen.name.lexeme}>' ||
+              entry.key
+                      .thisOrAncestorOfType<ClassDeclaration>()
+                      ?.extendsClause
+                      ?.superclass
+                      .toSource() ==
+                  'ConsumerState<${screen.name.lexeme}>')
             edge(node.id, entry.value);
+        }
+      }
+      List<String> stateKeys(Expression value) {
+        if (value is MethodInvocation && value.methodName.name == 'copyWith') {
+          return value.argumentList.arguments
+              .whereType<NamedExpression>()
+              .map((a) => '${a.name.label.name}=${a.expression.toSource()}')
+              .toList();
+        }
+        final constructor = RegExp(
+          r'^(?:const\s+)?(\w+)(?:<[^>]+>)?\(',
+        ).firstMatch(value.toSource())?.group(1);
+        return constructor == null ? [] : [constructor];
+      }
+
+      for (final assignment in visitor.assignments) {
+        for (final key in stateKeys(assignment.rightHandSide)) {
+          (emitted[key] ??= {}).add(id(assignment, 'ACTION'));
         }
       }
       for (final call in visitor.calls) {
@@ -183,10 +207,9 @@ class AstPipeline {
         }
         if (call.methodName.name == 'emit' &&
             call.argumentList.arguments.isNotEmpty) {
-          final type = RegExp(
-            r'^(\w+)\(',
-          ).firstMatch(call.argumentList.arguments.first.toSource())?.group(1);
-          if (type != null) (emitted[type] ??= {}).add(id(call, 'ACTION'));
+          for (final key in stateKeys(call.argumentList.arguments.first)) {
+            (emitted[key] ??= {}).add(id(call, 'ACTION'));
+          }
         }
       }
       for (final sink in visitor.sinks) {
@@ -218,7 +241,9 @@ class AstPipeline {
         final literal =
             args.whereType<SimpleStringLiteral>().firstOrNull?.value ?? '';
         final name =
-            invocation?.methodName.name ?? annotation!.name.name.toLowerCase();
+            invocation?.methodName.name ??
+            annotation?.name.name.toLowerCase() ??
+            'state';
         Json? api, dialog;
         if (sink.kind == 'API')
           api = {
@@ -247,16 +272,24 @@ class AstPipeline {
             'actions': <String>[],
           };
         // Navigation calls are actions, then connect to an actual screen if identifiable.
+        final emission = call is AssignmentExpression
+            ? stateKeys(call.rightHandSide)
+            : invocation?.methodName.name == 'emit' && args.isNotEmpty
+            ? stateKeys(args.first)
+            : <String>[];
         final node = make(
           call,
           sink.kind == 'SCREEN' ? 'ACTION' : sink.kind,
-          sink.kind == 'API'
+          emission.length == 1
+              ? emission.single
+              : sink.kind == 'API'
               ? '${invocation?.target?.toSource() ?? 'API'}.$name($literal)'
               : sink.kind == 'DIALOG'
               ? '${dialog!['widgetName']}()'
               : invocation == null
               ? call.toSource()
               : '${invocation.target?.toSource() ?? ''}.$name()',
+
           api: api,
           dialog: dialog,
         );
@@ -323,6 +356,13 @@ class AstPipeline {
             r'\bis\s+(\w+)',
           ).allMatches(step.expression)) {
             (listeners[state[1]!] ??= {}).add(decision.id);
+          }
+          for (final predicate in RegExp(
+            r'\w+\.(\w+)\s*==\s*([A-Z]\w*\.\w+)',
+          ).allMatches(step.expression)) {
+            (listeners['${predicate[1]}=${predicate[2]}'] ??= {}).add(
+              decision.id,
+            );
           }
         }
         if (previous != null) edge(previous, node.id, handle: handle);
