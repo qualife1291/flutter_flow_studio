@@ -1,0 +1,29 @@
+name: flutter_flow_studio
+description: Inspect Flutter flows using static analysis, a local web studio, and opt-in debug runtime events.
+version: 0.1.0
+homepage: https://github.com/qualife1291/flutter_flow_studio
+repository: https://github.com/qualife1291/flutter_flow_studio
+environment:
+  sdk: '>=3.8.0 <4.0.0'
+  flutter: '>=3.32.8'
+dependencies:
+  flutter:
+    sdk: flutter
+  analyzer: '>=6.4.0 <9.0.0'
+  args: ^2.5.0
+  path: ^1.9.0
+  yaml: ^3.1.2
+  pub_semver: ^2.1.4
+  shelf: ^1.4.1
+  shelf_static: ^1.1.2
+  shelf_web_socket: ^2.0.0
+  web_socket_channel: ^3.0.0
+  dio: ^5.7.0
+  bloc: '>=8.1.0 <10.0.0'
+  flutter_riverpod: ^2.6.1
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  test: ^1.25.0
+executables:
+  flutter_flow_studio: flutter_flow_studio

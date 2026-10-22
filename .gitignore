@@ -1,0 +1,10 @@
+.dart_tool/
+.packages
+build/
+node_modules/
+web_studio/dist/
+coverage/
+*.log
+playwright-report/
+test-results/
+android/local.properties

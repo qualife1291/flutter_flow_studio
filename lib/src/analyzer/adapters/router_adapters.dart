@@ -1,0 +1,38 @@
+const navigationMethods = {
+  'push',
+  'pushNamed',
+  'pushReplacement',
+  'pushReplacementNamed',
+  'pushAndRemoveUntil',
+  'pushNamedAndRemoveUntil',
+  'popAndPushNamed',
+  'go',
+  'goNamed',
+  'replace',
+  'replaceNamed',
+  'to',
+  'off',
+  'offAll',
+  'offNamed',
+  'offAllNamed',
+};
+const dialogMethods = {
+  'showDialog',
+  'showGeneralDialog',
+  'showCupertinoDialog',
+  'showModalBottomSheet',
+  'showBottomSheet',
+  'showSnackBar',
+  'dialog',
+  'bottomSheet',
+  'snackbar',
+  'showToast',
+};
+const screenBases = {
+  'StatelessWidget',
+  'StatefulWidget',
+  'ConsumerWidget',
+  'ConsumerStatefulWidget',
+  'HookWidget',
+  'GetView',
+};

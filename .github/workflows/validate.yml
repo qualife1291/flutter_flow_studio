@@ -1,0 +1,106 @@
+name: Validate Flutter Flow Studio
+on:
+  push:
+    branches: [main, 'codex/**']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  sdk-platform:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        sdk: ['3.32.8', '3.41.9', '3.47.7']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ matrix.sdk }}
+          channel: stable
+          cache: true
+      - name: SDK checks
+        shell: bash
+        run: bash scripts/check-sdk.sh flutter '${{ matrix.sdk }}'
+      - name: Android build
+        if: runner.os == 'Linux'
+        working-directory: example
+        run: flutter build apk --debug
+      - name: iOS build
+        if: runner.os == 'macOS'
+        working-directory: example
+        run: flutter build ios --no-codesign
+      - name: Windows build
+        if: runner.os == 'Windows'
+        working-directory: example
+        run: flutter build windows
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: checks-${{ matrix.os }}-${{ matrix.sdk }}
+          path: docs/progress/logs/${{ matrix.sdk }}/
+  studio:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: web_studio/package-lock.json
+      - run: npm ci
+        working-directory: web_studio
+      - run: npm test && npm run build
+        working-directory: web_studio
+      - run: npx playwright install --with-deps chromium
+        working-directory: web_studio
+      - run: npm run test:e2e
+        working-directory: web_studio
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+      - name: Lighthouse
+        run: node scripts/check-lighthouse.mjs
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: studio-reports
+          path: docs/progress/logs/
+  android-device:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.9'
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          script: cd example && flutter test integration_test/user_flow_test.dart -d emulator-5554
+  ios-device:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.9'
+      - name: Integration on iOS Simulator
+        shell: bash
+        run: |
+          sim_id=$(xcrun simctl list devices available -j | python3 -c 'import sys,json; print(next(d["udid"] for ds in json.load(sys.stdin)["devices"].values() for d in ds if d["name"].startswith("iPhone")))')
+          xcrun simctl boot "$sim_id"
+          xcrun simctl bootstatus "$sim_id" -b
+          cd example
+          flutter test integration_test/user_flow_test.dart -d "$sim_id"

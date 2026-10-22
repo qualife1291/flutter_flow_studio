@@ -1,0 +1,6 @@
+analyzer:
+  exclude:
+    - lib/src/web_assets/**
+    - example/build/**
+    - packages/cli/**
+    - build/**

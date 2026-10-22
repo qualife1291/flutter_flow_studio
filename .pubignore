@@ -1,0 +1,6 @@
+docs/progress/
+web_studio/node_modules/
+web_studio/src/
+web_studio/dist/
+packages/cli/.dart_tool/
+.git/

@@ -1,0 +1,759 @@
+{
+  "generatedAt": "2026-10-22T17:37:35.541456Z",
+  "project": {
+    "projectName": "flow_studio_example",
+    "description": "A new Flutter project.",
+    "version": "1.0.0+1",
+    "flutterSdkVersion": "3.47.7",
+    "dartSdkConstraint": ">=3.8.0 <4.0.0",
+    "detectedArchitecture": {
+      "stateManagement": [
+        "bloc (9.2.1)",
+        "flutter_riverpod (2.6.1)",
+        "riverpod (2.6.1)"
+      ],
+      "routing": [],
+      "networking": [
+        "dio (5.11.1)"
+      ],
+      "localStorage": []
+    },
+    "allDependencies": [
+      {
+        "name": "dio",
+        "version": "5.11.1",
+        "category": "NETWORK",
+        "isDirect": true
+      },
+      {
+        "name": "flutter_flow_studio",
+        "version": "0.1.0",
+        "category": "UI_UTILS",
+        "isDirect": true
+      },
+      {
+        "name": "flutter",
+        "version": "0.0.0",
+        "category": "UI_UTILS",
+        "isDirect": true
+      },
+      {
+        "name": "cupertino_icons",
+        "version": "1.0.8",
+        "category": "UI_UTILS",
+        "isDirect": true
+      },
+      {
+        "name": "integration_test",
+        "version": "0.0.0",
+        "category": "DEV",
+        "isDirect": true
+      },
+      {
+        "name": "flutter_test",
+        "version": "0.0.0",
+        "category": "DEV",
+        "isDirect": true
+      },
+      {
+        "name": "flutter_lints",
+        "version": "6.0.0",
+        "category": "DEV",
+        "isDirect": true
+      },
+      {
+        "name": "_fe_analyzer_shared",
+        "version": "88.0.0",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "analyzer",
+        "version": "8.1.1",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "args",
+        "version": "2.7.0",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "async",
+        "version": "2.13.0",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "bloc",
+        "version": "9.2.1",
+        "category": "STATE",
+        "isDirect": false
+      },
+      {
+        "name": "boolean_selector",
+        "version": "2.1.2",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "characters",
+        "version": "1.4.1",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "clock",
+        "version": "1.1.2",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "collection",
+        "version": "1.19.1",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "convert",
+        "version": "3.1.2",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "crypto",
+        "version": "3.0.7",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "dio_web_adapter",
+        "version": "2.2.2",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "fake_async",
+        "version": "1.3.3",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "file",
+        "version": "7.0.1",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "flutter_driver",
+        "version": "0.0.0",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "flutter_riverpod",
+        "version": "2.6.1",
+        "category": "STATE",
+        "isDirect": false
+      },
+      {
+        "name": "fuchsia_remote_debug_protocol",
+        "version": "0.0.0",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "glob",
+        "version": "2.2.0",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "http_parser",
+        "version": "4.1.2",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "leak_tracker",
+        "version": "11.0.2",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "leak_tracker_flutter_testing",
+        "version": "3.0.10",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "leak_tracker_testing",
+        "version": "3.0.2",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "lints",
+        "version": "6.1.0",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "matcher",
+        "version": "0.12.20",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "material_color_utilities",
+        "version": "0.13.0",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "meta",
+        "version": "1.19.0",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "mime",
+        "version": "2.1.0",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "package_config",
+        "version": "2.2.0",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "path",
+        "version": "1.9.1",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "platform",
+        "version": "3.2.0",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "process",
+        "version": "5.0.6",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "pub_semver",
+        "version": "2.2.1",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "riverpod",
+        "version": "2.6.1",
+        "category": "STATE",
+        "isDirect": false
+      },
+      {
+        "name": "shelf",
+        "version": "1.4.2",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "shelf_static",
+        "version": "1.1.3",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "shelf_web_socket",
+        "version": "2.0.1",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "sky_engine",
+        "version": "0.0.0",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "source_span",
+        "version": "1.10.1",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "stack_trace",
+        "version": "1.12.1",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "state_notifier",
+        "version": "1.0.0",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "stream_channel",
+        "version": "2.1.4",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "string_scanner",
+        "version": "1.4.1",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "sync_http",
+        "version": "0.3.1",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "term_glyph",
+        "version": "1.2.2",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "test_api",
+        "version": "0.7.12",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "typed_data",
+        "version": "1.4.0",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "vector_math",
+        "version": "2.4.3",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "vm_service",
+        "version": "15.0.0",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "watcher",
+        "version": "1.2.1",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "web",
+        "version": "1.1.1",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "web_socket",
+        "version": "1.0.1",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "web_socket_channel",
+        "version": "3.0.3",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "webdriver",
+        "version": "3.2.0",
+        "category": "UI_UTILS",
+        "isDirect": false
+      },
+      {
+        "name": "yaml",
+        "version": "3.1.4",
+        "category": "UI_UTILS",
+        "isDirect": false
+      }
+    ],
+    "stats": {
+      "totalScreens": 2,
+      "totalActions": 5,
+      "totalDecisions": 3,
+      "totalApis": 1,
+      "totalDialogs": 2,
+      "totalLogoutPoints": 1
+    }
+  },
+  "nodes": [
+    {
+      "id": "action:lib/main.dart:36:1093",
+      "kind": "ACTION",
+      "featureGroup": "app",
+      "technicalTitle": "_LoginScreenState.login()",
+      "businessTitle": "Đăng nhập và xử lý kết quả API",
+      "sourceLocation": {
+        "filePath": "lib/main.dart",
+        "line": 36,
+        "column": 3,
+        "codeSnippet": "  bool fail = false;\n  // Flow: Đăng nhập và xử lý kết quả API\n  Future<void> login() async {\n    setState(() => busy = true);\n    try {\n      final response = await dio.post('/api/v1/login', data: {'fail': fail});\n      if (!mounted) return;\n      if (response.statusCode == 200) {\n        Navigator.of(context).push(\n          MaterialPageRoute<void>("
+      }
+    },
+    {
+      "id": "action:lib/main.dart:118:3443",
+      "kind": "ACTION",
+      "featureGroup": "app",
+      "technicalTitle": "HomeScreen.logout()",
+      "businessTitle": "Home Screen.logout()",
+      "sourceLocation": {
+        "filePath": "lib/main.dart",
+        "line": 118,
+        "column": 3,
+        "codeSnippet": "class HomeScreen extends StatelessWidget {\n  const HomeScreen({super.key});\n  void logout(BuildContext context) {\n    FlowStudio.step('LOGOUT_TRIGGERED');\n    Navigator.of(context).pushAndRemoveUntil(\n      MaterialPageRoute<void>(\n        settings: const RouteSettings(name: 'LoginScreen'),\n        builder: (_) => const LoginScreen(),\n      ),\n      (_) => false,"
+      }
+    },
+    {
+      "id": "action:lib/main.dart:129:3745",
+      "kind": "ACTION",
+      "featureGroup": "app",
+      "technicalTitle": "HomeScreen.build()",
+      "businessTitle": "Home Screen.build()",
+      "sourceLocation": {
+        "filePath": "lib/main.dart",
+        "line": 129,
+        "column": 3,
+        "codeSnippet": "  }\n\n  @override\n  Widget build(BuildContext context) => Scaffold(\n    appBar: AppBar(title: const Text('Trang chủ')),\n    body: Center(\n      child: FilledButton(\n        onPressed: () => logout(context),\n        child: const Text('Đăng xuất'),\n      ),"
+      }
+    },
+    {
+      "id": "screen:lib/main.dart:23:702",
+      "kind": "SCREEN",
+      "featureGroup": "app",
+      "technicalTitle": "LoginScreen",
+      "businessTitle": "Login Screen",
+      "sourceLocation": {
+        "filePath": "lib/main.dart",
+        "line": 23,
+        "column": 1,
+        "codeSnippet": "}\n\nclass LoginScreen extends StatefulWidget {\n  const LoginScreen({super.key});\n  @override\n  State<LoginScreen> createState() => _LoginScreenState();\n}\n\nclass _LoginScreenState extends State<LoginScreen> {\n  final dio = Dio("
+      },
+      "routeInfo": {
+        "routePath": "LoginScreen",
+        "isInitialRoute": true,
+        "parameters": []
+      }
+    },
+    {
+      "id": "screen:lib/main.dart:116:3365",
+      "kind": "SCREEN",
+      "featureGroup": "app",
+      "technicalTitle": "HomeScreen",
+      "businessTitle": "Home Screen",
+      "sourceLocation": {
+        "filePath": "lib/main.dart",
+        "line": 116,
+        "column": 1,
+        "codeSnippet": "}\n\nclass HomeScreen extends StatelessWidget {\n  const HomeScreen({super.key});\n  void logout(BuildContext context) {\n    FlowStudio.step('LOGOUT_TRIGGERED');\n    Navigator.of(context).pushAndRemoveUntil(\n      MaterialPageRoute<void>(\n        settings: const RouteSettings(name: 'LoginScreen'),\n        builder: (_) => const LoginScreen(),"
+      },
+      "routeInfo": {
+        "routePath": "HomeScreen",
+        "isInitialRoute": false,
+        "parameters": []
+      }
+    },
+    {
+      "id": "api:lib/main.dart:39:1194",
+      "kind": "API",
+      "featureGroup": "app",
+      "technicalTitle": "dio.post('/api/v1/login', data: {'fail' : fail})",
+      "businessTitle": "dio.post('/api/v1/login', data: {'fail' : fail})",
+      "sourceLocation": {
+        "filePath": "lib/main.dart",
+        "line": 39,
+        "column": 30,
+        "codeSnippet": "    setState(() => busy = true);\n    try {\n      final response = await dio.post('/api/v1/login', data: {'fail': fail});\n      if (!mounted) return;\n      if (response.statusCode == 200) {\n        Navigator.of(context).push(\n          MaterialPageRoute<void>(\n            settings: const RouteSettings(name: 'HomeScreen'),\n            builder: (_) => const HomeScreen(),\n          ),"
+      },
+      "apiInfo": {
+        "method": "POST",
+        "endpoint": "/api/v1/login",
+        "clientType": "dio"
+      }
+    },
+    {
+      "id": "decision:lib/main.dart:38:1159",
+      "kind": "DECISION",
+      "featureGroup": "app",
+      "technicalTitle": "try / catch",
+      "businessTitle": "try / catch",
+      "sourceLocation": {
+        "filePath": "lib/main.dart",
+        "line": 38,
+        "column": 5,
+        "codeSnippet": "  Future<void> login() async {\n    setState(() => busy = true);\n    try {\n      final response = await dio.post('/api/v1/login', data: {'fail': fail});\n      if (!mounted) return;\n      if (response.statusCode == 200) {\n        Navigator.of(context).push(\n          MaterialPageRoute<void>(\n            settings: const RouteSettings(name: 'HomeScreen'),\n            builder: (_) => const HomeScreen(),"
+      },
+      "decisionInfo": {
+        "kind": "TRY_CATCH",
+        "rawExpression": "try / catch",
+        "humanReadableRule": "try / catch",
+        "branches": [
+          {
+            "branchId": "try_branch",
+            "technicalLabel": "try_branch",
+            "businessLabel": "try_branch"
+          },
+          {
+            "branchId": "catch_0",
+            "technicalLabel": "catch_0",
+            "businessLabel": "catch_0"
+          },
+          {
+            "branchId": "finally_branch",
+            "technicalLabel": "finally_branch",
+            "businessLabel": "finally_branch"
+          }
+        ]
+      }
+    },
+    {
+      "id": "action:lib/main.dart:42:1319",
+      "kind": "ACTION",
+      "featureGroup": "app",
+      "technicalTitle": "Navigator.of(context).push(MaterialPageRoute<void>(settings: const RouteSettings(name: 'HomeScreen'), builder: (_) => const HomeScreen()))",
+      "businessTitle": "Navigator.of(context).push(Material Page Route<void>(settings: const Route Settings(name: 'Home Screen'), builder: ( ) => const Home Screen()))",
+      "sourceLocation": {
+        "filePath": "lib/main.dart",
+        "line": 42,
+        "column": 9,
+        "codeSnippet": "      if (!mounted) return;\n      if (response.statusCode == 200) {\n        Navigator.of(context).push(\n          MaterialPageRoute<void>(\n            settings: const RouteSettings(name: 'HomeScreen'),\n            builder: (_) => const HomeScreen(),\n          ),\n        );\n      } else {\n        await showDialog<void>("
+      }
+    },
+    {
+      "id": "decision:lib/main.dart:41:1277",
+      "kind": "DECISION",
+      "featureGroup": "app",
+      "technicalTitle": "response.statusCode == 200",
+      "businessTitle": "API Thành công (HTTP 200)",
+      "sourceLocation": {
+        "filePath": "lib/main.dart",
+        "line": 41,
+        "column": 7,
+        "codeSnippet": "      final response = await dio.post('/api/v1/login', data: {'fail': fail});\n      if (!mounted) return;\n      if (response.statusCode == 200) {\n        Navigator.of(context).push(\n          MaterialPageRoute<void>(\n            settings: const RouteSettings(name: 'HomeScreen'),\n            builder: (_) => const HomeScreen(),\n          ),\n        );\n      } else {"
+      },
+      "decisionInfo": {
+        "kind": "IF_ELSE",
+        "rawExpression": "response.statusCode == 200",
+        "humanReadableRule": "API Thành công (HTTP 200)",
+        "branches": [
+          {
+            "branchId": "true_branch",
+            "technicalLabel": "true_branch",
+            "businessLabel": "Hợp lệ"
+          },
+          {
+            "branchId": "false_branch",
+            "technicalLabel": "false_branch",
+            "businessLabel": "Không hợp lệ"
+          }
+        ]
+      }
+    },
+    {
+      "id": "dialog:lib/main.dart:49:1546",
+      "kind": "DIALOG",
+      "featureGroup": "app",
+      "technicalTitle": "showDialog<void>(context: context, routeSettings: const RouteSettings(name: 'LoginErrorDialog'), builder: (_) => AlertDialog(title: const Text('Đăng nhập thất bại'), content: const Text('Kiểm tra tài khoản và thử lại.'), actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('Đóng'))]))",
+      "businessTitle": "show Dialog<void>(context: context, route Settings: const Route Settings(name: 'Login Error Dialog'), builder: ( ) => Alert Dialog(title: const Text('Đăng nhập thất bại'), content: const Text('Kiểm tra tài khoản và thử lại.'), actions: [Text Button(on Pressed: () => Navigator.pop(context), child: const Text('Đóng'))]))",
+      "sourceLocation": {
+        "filePath": "lib/main.dart",
+        "line": 49,
+        "column": 15,
+        "codeSnippet": "        );\n      } else {\n        await showDialog<void>(\n          context: context,\n          routeSettings: const RouteSettings(name: 'LoginErrorDialog'),\n          builder: (_) => AlertDialog(\n            title: const Text('Đăng nhập thất bại'),\n            content: const Text('Kiểm tra tài khoản và thử lại.'),\n            actions: [\n              TextButton("
+      },
+      "dialogInfo": {
+        "overlayType": "DIALOG",
+        "widgetName": "LoginErrorDialog",
+        "actions": []
+      }
+    },
+    {
+      "id": "dialog:lib/main.dart:66:2083",
+      "kind": "DIALOG",
+      "featureGroup": "app",
+      "technicalTitle": "ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Không thể kết nối. Vui lòng thử lại.')))",
+      "businessTitle": "Scaffold Messenger.of(context).show Snack Bar(const Snack Bar(content: Text('Không thể kết nối. Vui lòng thử lại.')))",
+      "sourceLocation": {
+        "filePath": "lib/main.dart",
+        "line": 66,
+        "column": 9,
+        "codeSnippet": "    } catch (_) {\n      if (mounted) {\n        ScaffoldMessenger.of(context).showSnackBar(\n          const SnackBar(content: Text('Không thể kết nối. Vui lòng thử lại.')),\n        );\n      }\n    } finally {\n      if (mounted) setState(() => busy = false);\n    }\n  }"
+      },
+      "dialogInfo": {
+        "overlayType": "SNACKBAR",
+        "widgetName": "showSnackBar",
+        "actions": []
+      }
+    },
+    {
+      "id": "decision:lib/main.dart:65:2060",
+      "kind": "DECISION",
+      "featureGroup": "app",
+      "technicalTitle": "mounted",
+      "businessTitle": "mounted",
+      "sourceLocation": {
+        "filePath": "lib/main.dart",
+        "line": 65,
+        "column": 7,
+        "codeSnippet": "      }\n    } catch (_) {\n      if (mounted) {\n        ScaffoldMessenger.of(context).showSnackBar(\n          const SnackBar(content: Text('Không thể kết nối. Vui lòng thử lại.')),\n        );\n      }\n    } finally {\n      if (mounted) setState(() => busy = false);\n    }"
+      },
+      "decisionInfo": {
+        "kind": "IF_ELSE",
+        "rawExpression": "mounted",
+        "humanReadableRule": "mounted",
+        "branches": [
+          {
+            "branchId": "true_branch",
+            "technicalLabel": "true_branch",
+            "businessLabel": "Hợp lệ"
+          },
+          {
+            "branchId": "false_branch",
+            "technicalLabel": "false_branch",
+            "businessLabel": "Không hợp lệ"
+          }
+        ]
+      }
+    },
+    {
+      "id": "action:lib/main.dart:120:3524",
+      "kind": "ACTION",
+      "featureGroup": "app",
+      "technicalTitle": "Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute<void>(settings: const RouteSettings(name: 'LoginScreen'), builder: (_) => const LoginScreen()), (_) => false)",
+      "businessTitle": "Navigator.of(context).push And Remove Until(Material Page Route<void>(settings: const Route Settings(name: 'Login Screen'), builder: ( ) => const Login Screen()), ( ) => false)",
+      "sourceLocation": {
+        "filePath": "lib/main.dart",
+        "line": 120,
+        "column": 5,
+        "codeSnippet": "  void logout(BuildContext context) {\n    FlowStudio.step('LOGOUT_TRIGGERED');\n    Navigator.of(context).pushAndRemoveUntil(\n      MaterialPageRoute<void>(\n        settings: const RouteSettings(name: 'LoginScreen'),\n        builder: (_) => const LoginScreen(),\n      ),\n      (_) => false,\n    );\n  }"
+      }
+    },
+    {
+      "id": "logout:lib/main.dart:134:3927",
+      "kind": "LOGOUT",
+      "featureGroup": "app",
+      "technicalTitle": "logout(context)",
+      "businessTitle": "logout(context)",
+      "sourceLocation": {
+        "filePath": "lib/main.dart",
+        "line": 134,
+        "column": 26,
+        "codeSnippet": "    body: Center(\n      child: FilledButton(\n        onPressed: () => logout(context),\n        child: const Text('Đăng xuất'),\n      ),\n    ),\n  );\n}\n\n/// Deterministic in-process HTTP adapter. The example never sends credentials to the Internet."
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge:screen:lib/main.dart:23:702:null->action:lib/main.dart:36:1093",
+      "source": "screen:lib/main.dart:23:702",
+      "target": "action:lib/main.dart:36:1093"
+    },
+    {
+      "id": "edge:screen:lib/main.dart:116:3365:null->action:lib/main.dart:118:3443",
+      "source": "screen:lib/main.dart:116:3365",
+      "target": "action:lib/main.dart:118:3443"
+    },
+    {
+      "id": "edge:screen:lib/main.dart:116:3365:null->action:lib/main.dart:129:3745",
+      "source": "screen:lib/main.dart:116:3365",
+      "target": "action:lib/main.dart:129:3745"
+    },
+    {
+      "id": "edge:action:lib/main.dart:36:1093:null->decision:lib/main.dart:38:1159",
+      "source": "action:lib/main.dart:36:1093",
+      "target": "decision:lib/main.dart:38:1159"
+    },
+    {
+      "id": "edge:decision:lib/main.dart:38:1159:try_branch->api:lib/main.dart:39:1194",
+      "source": "decision:lib/main.dart:38:1159",
+      "target": "api:lib/main.dart:39:1194",
+      "sourceHandle": "try_branch"
+    },
+    {
+      "id": "edge:decision:lib/main.dart:38:1159:try_branch->decision:lib/main.dart:41:1277",
+      "source": "decision:lib/main.dart:38:1159",
+      "target": "decision:lib/main.dart:41:1277",
+      "sourceHandle": "try_branch"
+    },
+    {
+      "id": "edge:decision:lib/main.dart:41:1277:true_branch->action:lib/main.dart:42:1319",
+      "source": "decision:lib/main.dart:41:1277",
+      "target": "action:lib/main.dart:42:1319",
+      "sourceHandle": "true_branch"
+    },
+    {
+      "id": "edge:decision:lib/main.dart:41:1277:false_branch->dialog:lib/main.dart:49:1546",
+      "source": "decision:lib/main.dart:41:1277",
+      "target": "dialog:lib/main.dart:49:1546",
+      "sourceHandle": "false_branch"
+    },
+    {
+      "id": "edge:decision:lib/main.dart:38:1159:catch_0->decision:lib/main.dart:65:2060",
+      "source": "decision:lib/main.dart:38:1159",
+      "target": "decision:lib/main.dart:65:2060",
+      "sourceHandle": "catch_0"
+    },
+    {
+      "id": "edge:decision:lib/main.dart:65:2060:true_branch->dialog:lib/main.dart:66:2083",
+      "source": "decision:lib/main.dart:65:2060",
+      "target": "dialog:lib/main.dart:66:2083",
+      "sourceHandle": "true_branch"
+    },
+    {
+      "id": "edge:action:lib/main.dart:118:3443:null->action:lib/main.dart:120:3524",
+      "source": "action:lib/main.dart:118:3443",
+      "target": "action:lib/main.dart:120:3524"
+    },
+    {
+      "id": "edge:action:lib/main.dart:129:3745:null->logout:lib/main.dart:134:3927",
+      "source": "action:lib/main.dart:129:3745",
+      "target": "logout:lib/main.dart:134:3927"
+    },
+    {
+      "id": "edge:action:lib/main.dart:129:3745:null->action:lib/main.dart:118:3443",
+      "source": "action:lib/main.dart:129:3745",
+      "target": "action:lib/main.dart:118:3443",
+      "technicalLabel": "calls logout",
+      "businessLabel": "calls logout"
+    },
+    {
+      "id": "edge:action:lib/main.dart:42:1319:null->screen:lib/main.dart:116:3365",
+      "source": "action:lib/main.dart:42:1319",
+      "target": "screen:lib/main.dart:116:3365"
+    },
+    {
+      "id": "edge:action:lib/main.dart:120:3524:null->screen:lib/main.dart:23:702",
+      "source": "action:lib/main.dart:120:3524",
+      "target": "screen:lib/main.dart:23:702"
+    }
+  ],
+  "healthIssues": [
+    {
+      "id": "MISSING_ELSE_BRANCH:decision:lib/main.dart:65:2060",
+      "severity": "WARNING",
+      "category": "MISSING_ELSE_BRANCH",
+      "nodeId": "decision:lib/main.dart:65:2060",
+      "title": "Thiếu nhánh xử lý khi điều kiện sai",
+      "suggestionForBA": "Bổ sung phản hồi hoặc đường xử lý cho nhánh sai.",
+      "suggestionForDev": "Bổ sung phản hồi hoặc đường xử lý cho nhánh sai."
+    }
+  ]
+}
