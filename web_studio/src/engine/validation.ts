@@ -20,6 +20,20 @@ export function validGraph(value: unknown): value is FlowGraphPayload {
     },
     project = value.project;
   if (
+    value.sourceContexts != null &&
+    (!object(value.sourceContexts) ||
+      !Object.values(value.sourceContexts).every(
+        (c) =>
+          object(c) &&
+          string(c.code) &&
+          string(c.name) &&
+          string(c.filePath) &&
+          Number.isInteger(c.startLine) &&
+          Number.isInteger(c.endLine),
+      ))
+  )
+    return false;
+  if (
     ![
       "projectName",
       "description",
@@ -55,7 +69,14 @@ export function validGraph(value: unknown): value is FlowGraphPayload {
           (object(n.sourceLocation) &&
             string(n.sourceLocation.filePath) &&
             typeof n.sourceLocation.line === "number" &&
-            string(n.sourceLocation.codeSnippet))) &&
+            string(n.sourceLocation.codeSnippet) &&
+            (n.sourceLocation.contextId == null ||
+              (string(n.sourceLocation.contextId) &&
+                object(value.sourceContexts) &&
+                Object.hasOwn(
+                  value.sourceContexts,
+                  n.sourceLocation.contextId,
+                ))))) &&
         (!n.decisionInfo ||
           (object(n.decisionInfo) &&
             Array.isArray(n.decisionInfo.branches) &&
@@ -73,6 +94,7 @@ export function validGraph(value: unknown): value is FlowGraphPayload {
         (!n.routeInfo ||
           (object(n.routeInfo) &&
             string(n.routeInfo.routePath) &&
+            (n.routeInfo.router == null || string(n.routeInfo.router)) &&
             (n.routeInfo.aliases == null ||
               (Array.isArray(n.routeInfo.aliases) &&
                 n.routeInfo.aliases.every(string))))) &&
@@ -81,7 +103,24 @@ export function validGraph(value: unknown): value is FlowGraphPayload {
     ) &&
     g.edges.every(
       (e) =>
-        object(e) && string(e.id) && ids.has(e.source) && ids.has(e.target),
+        object(e) &&
+        string(e.id) &&
+        ids.has(e.source) &&
+        ids.has(e.target) &&
+        (e.kind == null ||
+          [
+            "ENTRY",
+            "CALL",
+            "RETURN",
+            "SEQUENCE",
+            "NAVIGATION",
+            "BRANCH",
+            "STATE",
+            "COLLAPSED",
+          ].includes(String(e.kind))) &&
+        (e.via == null || (Array.isArray(e.via) && e.via.every(string))) &&
+        (e.viaEdges == null ||
+          (Array.isArray(e.viaEdges) && e.viaEdges.every(string))),
     ) &&
     g.healthIssues.every(
       (i) =>
@@ -91,6 +130,50 @@ export function validGraph(value: unknown): value is FlowGraphPayload {
         ),
     )
   );
+}
+
+/** Existing snapshots retain IDs/probes while using the new node taxonomy. */
+export function readGraph(value: unknown): FlowGraphPayload | null {
+  if (!object(value) || !Array.isArray(value.nodes)) return null;
+  const nodes = value.nodes.map((n) => {
+    if (!object(n)) return n;
+    if (n.kind === "LOGOUT") return { ...n, kind: "ACTION" };
+    if (n.kind === "DIALOG" && object(n.dialogInfo)) {
+      const kind = (
+        {
+          BOTTOM_SHEET: "BOTTOMSHEET",
+          SNACKBAR: "SNACKBAR",
+          TOAST: "TOAST",
+        } as Record<string, string>
+      )[String(n.dialogInfo.overlayType)];
+      if (kind) return { ...n, kind };
+    }
+    return n;
+  });
+  const result = { ...value, nodes };
+  if (!validGraph(result)) return null;
+  const kinds = {
+    totalScreens: "SCREEN",
+    totalActions: "ACTION",
+    totalDecisions: "DECISION",
+    totalApis: "API",
+    totalDialogs: "DIALOG",
+    totalBottomSheets: "BOTTOMSHEET",
+    totalSnackbars: "SNACKBAR",
+    totalToasts: "TOAST",
+  };
+  return {
+    ...result,
+    project: {
+      ...result.project,
+      stats: Object.fromEntries(
+        Object.entries(kinds).map(([key, kind]) => [
+          key,
+          nodes.filter((n) => object(n) && n.kind === kind).length,
+        ]),
+      ) as FlowGraphPayload["project"]["stats"],
+    },
+  };
 }
 
 export function validEvent(value: unknown): value is RuntimeStepEvent {

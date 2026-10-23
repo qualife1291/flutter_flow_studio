@@ -87,9 +87,13 @@ class RouteDiscovery extends RecursiveAstVisitor<void> {
   final Set<String> widgetTypes;
   final targets = <String, String>{};
   final initialRoutes = <String>{'/'};
+  final routerTypes = <String, String>{};
   RouteDiscovery(this.widgetTypes);
-  void _route(String key, String? target) {
-    if (target != null) targets[key] = target;
+  void _route(String key, String? target, [String router = 'Navigator']) {
+    if (target != null) {
+      targets[key] = target;
+      routerTypes[target] = router;
+    }
   }
 
   @override
@@ -102,7 +106,7 @@ class RouteDiscovery extends RecursiveAstVisitor<void> {
     super.visitMapLiteralEntry(node);
   }
 
-  void _arguments(ArgumentList args) {
+  void _arguments(ArgumentList args, String router) {
     final named = {
       for (final a in args.arguments.whereType<NamedExpression>())
         a.name.label.name: a.expression,
@@ -112,7 +116,42 @@ class RouteDiscovery extends RecursiveAstVisitor<void> {
     final widget = referencedWidget(target, widgetTypes);
     for (final key in ['path', 'name']) {
       final value = named[key];
-      if (value is SimpleStringLiteral) _route(value.value, widget);
+      if (value is SimpleStringLiteral) {
+        var path = value.value;
+        if (key == 'path' && router == 'GoRouter' && !path.startsWith('/')) {
+          AstNode? ancestor = args.parent?.parent;
+          while (ancestor != null) {
+            final parentArgs =
+                ancestor is InstanceCreationExpression &&
+                    ancestor.constructorName.type.name2.lexeme == 'GoRoute'
+                ? ancestor.argumentList
+                : ancestor is MethodInvocation &&
+                      ancestor.methodName.name == 'GoRoute'
+                ? ancestor.argumentList
+                : null;
+            if (parentArgs != null) {
+              final parentPath = parentArgs.arguments
+                  .whereType<NamedExpression>()
+                  .where((a) => a.name.label.name == 'path')
+                  .firstOrNull
+                  ?.expression;
+              if (parentPath is! SimpleStringLiteral) break;
+              path =
+                  '${parentPath.value.replaceFirst(RegExp(r'/+$'), '')}/$path';
+              if (path.startsWith('/')) break;
+            }
+            ancestor = ancestor.parent;
+          }
+        }
+        _route(path, widget, router);
+      }
+    }
+    final settings = named['settings'];
+    if (settings != null) {
+      final match = RegExp(
+        r'''name:\s*['"]([^'"]+)['"]''',
+      ).firstMatch(settings.toSource());
+      if (match != null) _route(match[1]!, widget, router);
     }
   }
 
@@ -122,15 +161,31 @@ class RouteDiscovery extends RecursiveAstVisitor<void> {
       'GoRoute',
       'AutoRoute',
       'BeamPage',
+      'MaterialPageRoute',
+      'CupertinoPageRoute',
     }.contains(node.constructorName.type.name2.lexeme))
-      _arguments(node.argumentList);
+      _arguments(
+        node.argumentList,
+        node.constructorName.type.name2.lexeme == 'GoRoute'
+            ? 'GoRouter'
+            : node.constructorName.type.name2.lexeme,
+      );
     super.visitInstanceCreationExpression(node);
   }
 
   @override
   void visitMethodInvocation(MethodInvocation node) {
-    if ({'GoRoute', 'AutoRoute', 'BeamPage'}.contains(node.methodName.name))
-      _arguments(node.argumentList);
+    if ({
+      'GoRoute',
+      'AutoRoute',
+      'BeamPage',
+      'MaterialPageRoute',
+      'CupertinoPageRoute',
+    }.contains(node.methodName.name))
+      _arguments(
+        node.argumentList,
+        node.methodName.name == 'GoRoute' ? 'GoRouter' : node.methodName.name,
+      );
     super.visitMethodInvocation(node);
   }
 

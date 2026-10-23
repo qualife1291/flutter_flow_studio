@@ -91,9 +91,15 @@ class SinkDetectorVisitor extends RecursiveAstVisitor<void> {
     if (name == 'emit' && node.argumentList.arguments.isNotEmpty) {
       kind = 'ACTION';
     } else if (logoutMethod.hasMatch(name)) {
-      kind = 'LOGOUT';
+      kind = 'ACTION';
     } else if (dialogMethods.contains(name)) {
-      kind = 'DIALOG';
+      kind = name.toLowerCase().contains('sheet')
+          ? 'BOTTOMSHEET'
+          : name.toLowerCase().contains('snack')
+          ? 'SNACKBAR'
+          : name.toLowerCase().contains('toast')
+          ? 'TOAST'
+          : 'DIALOG';
     } else if (navigationMethods.contains(name) &&
         RegExp(r'(Navigator|context|router|Router|Get)').hasMatch(target)) {
       kind = 'SCREEN';

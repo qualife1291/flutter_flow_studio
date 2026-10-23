@@ -1,4 +1,5 @@
 import type { FlowGraphPayload } from "../types/graph";
+import { contractNodes } from "./graphView";
 export function simplify(graph: FlowGraphPayload): FlowGraphPayload {
   const hidden = new Set(
     graph.edges
@@ -9,7 +10,8 @@ export function simplify(graph: FlowGraphPayload): FlowGraphPayload {
   for (const node of graph.nodes) {
     if (
       node.kind === "ACTION" &&
-      (/\.(build|initState|dispose)\(\)$/.test(node.technicalTitle) ||
+      (node.isTechnical ||
+        /\.(build|initState|dispose)\(\)$/.test(node.technicalTitle) ||
         /\w*(Repository|DataSource|Service|Api|API|Client)\./.test(
           node.technicalTitle,
         ))
@@ -22,22 +24,5 @@ export function simplify(graph: FlowGraphPayload): FlowGraphPayload {
     )
       hidden.add(node.id);
   }
-  const edges = [...graph.edges];
-  for (const id of hidden)
-    for (const incoming of edges.filter((e) => e.target === id))
-      for (const outgoing of edges.filter((e) => e.source === id)) {
-        if (incoming.source !== outgoing.target)
-          edges.push({
-            ...incoming,
-            id: `collapsed:${incoming.id}:${outgoing.id}`,
-            target: outgoing.target,
-            isStateBridge: false,
-          });
-      }
-  return {
-    ...graph,
-    healthIssues: graph.healthIssues.filter((i) => !hidden.has(i.nodeId)),
-    nodes: graph.nodes.filter((n) => !hidden.has(n.id)),
-    edges: edges.filter((e) => !hidden.has(e.source) && !hidden.has(e.target)),
-  };
+  return contractNodes(graph, hidden);
 }

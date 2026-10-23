@@ -4,5 +4,7 @@ export const colors = {
   DECISION: "#F59E0B",
   API: "#06B6D4",
   DIALOG: "#EC4899",
-  LOGOUT: "#F43F5E",
+  BOTTOMSHEET: "#F472B6",
+  SNACKBAR: "#FB923C",
+  TOAST: "#A78BFA",
 };

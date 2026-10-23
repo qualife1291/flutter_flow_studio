@@ -17,6 +17,8 @@ class AstPipeline {
   FlowGraphPayload scan(String root) {
     final project = ProjectInspector().inspect(root);
     final nodes = <String, FlowNodeData>{};
+    final sourceContexts = <String, Json>{};
+    final terminalActions = <String>{};
     final edges = <String, FlowEdgeData>{};
     final issues = <String, FlowHealthIssue>{};
     final definitions = <String, List<String>>{};
@@ -36,6 +38,7 @@ class AstPipeline {
       String target, {
       String? handle,
       bool bridge = false,
+      String? kind,
     }) {
       if (source == target) return;
       Json? branch;
@@ -51,6 +54,7 @@ class AstPipeline {
         stateBridge: bridge,
         label: branch?['technicalLabel'] as String?,
         businessLabel: branch?['businessLabel'] as String?,
+        kind: kind,
       );
       edges[e.id] = e;
     }
@@ -98,7 +102,30 @@ class AstPipeline {
       Json location(AstNode n) {
         final loc = unit.lineInfo.getLocation(n.offset);
         final lines = source.split('\n');
+        final context =
+            n.thisOrAncestorOfType<MethodDeclaration>() ??
+            n.thisOrAncestorOfType<FunctionDeclaration>() ??
+            n.thisOrAncestorOfType<ConstructorDeclaration>() ??
+            n;
+        final contextId = '$relative:${context.offset}:${context.end}';
+        sourceContexts.putIfAbsent(
+          contextId,
+          () => {
+            'filePath': relative,
+            'startLine': unit.lineInfo.getLocation(context.offset).lineNumber,
+            'endLine': unit.lineInfo.getLocation(context.end).lineNumber,
+            'name': context is MethodDeclaration
+                ? context.name.lexeme
+                : context is FunctionDeclaration
+                ? context.name.lexeme
+                : context is ClassDeclaration
+                ? context.name.lexeme
+                : 'Đoạn mã',
+            'code': source.substring(context.offset, context.end),
+          },
+        );
         return {
+          'contextId': contextId,
           'filePath': relative,
           'line': loc.lineNumber,
           'column': loc.columnNumber,
@@ -131,11 +158,10 @@ class AstPipeline {
           if (kind == 'API')
             business =
                 'Gọi API ${api?['method'] ?? ''} ${api?['endpoint'] ?? ''}';
-          if (kind == 'DIALOG')
-            business = dialog?['overlayType'] == 'BOTTOM_SHEET'
+          if (dialog != null)
+            business = kind == 'BOTTOMSHEET'
                 ? 'Mở bảng tùy chọn'
                 : 'Hiển thị thông báo';
-          if (kind == 'LOGOUT') business = 'Đăng xuất';
           if (kind == 'SCREEN')
             business =
                 'Màn hình ${translator.translate(title.replaceFirst(RegExp(r'(Screen|Page|View)$'), ''))}';
@@ -159,6 +185,23 @@ class AstPipeline {
           apiInfo: api,
           dialogInfo: dialog,
           routeInfo: route,
+          isTechnical:
+              kind == 'ACTION' &&
+              (n is AssignmentExpression ||
+                  n is MethodInvocation &&
+                      (navigationMethods.contains(n.methodName.name) ||
+                          n.methodName.name == 'emit') ||
+                  n is MethodDeclaration &&
+                      {
+                        'build',
+                        'initState',
+                        'dispose',
+                        'didChangeDependencies',
+                        'didUpdateWidget',
+                      }.contains(n.name.lexeme) ||
+                  RegExp(
+                    r'\w*(Repository|DataSource|Service|Api|API|Client)\.',
+                  ).hasMatch(title)),
         );
         nodes[node.id] = node;
         if (n is! MethodDeclaration &&
@@ -215,7 +258,9 @@ class AstPipeline {
           route: {
             'routePath':
                 aliases.where((a) => a.startsWith('/')).firstOrNull ??
-                screen.name.lexeme,
+                aliases.firstOrNull ??
+                '',
+            'router': routes.routerTypes[screen.name.lexeme] ?? 'Chưa xác định',
             'aliases': aliases,
             'isInitialRoute':
                 aliases.any(routes.initialRoutes.contains) ||
@@ -247,7 +292,7 @@ class AstPipeline {
                       ?.superclass
                       .toSource() ==
                   'ConsumerState<${screen.name.lexeme}>')
-            edge(node.id, entry.value);
+            edge(node.id, entry.value, kind: 'ENTRY');
         }
       }
       List<String> stateKeys(Expression value) {
@@ -342,7 +387,7 @@ class AstPipeline {
             'endpoint': literal,
             'clientType': invocation?.target?.toSource() ?? 'Retrofit/Chopper',
           };
-        if (sink.kind == 'DIALOG')
+        if ({'DIALOG', 'BOTTOMSHEET', 'SNACKBAR', 'TOAST'}.contains(sink.kind))
           dialog = {
             'overlayType': name.toLowerCase().contains('sheet')
                 ? 'BOTTOM_SHEET'
@@ -371,8 +416,8 @@ class AstPipeline {
               ? emission.single
               : sink.kind == 'API'
               ? '${invocation?.target?.toSource() ?? 'API'}.$name($literal)'
-              : sink.kind == 'DIALOG'
-              ? '${dialog!['widgetName']}()'
+              : dialog != null
+              ? '${dialog['widgetName']}()'
               : invocation == null
               ? call.toSource()
               : '${invocation.target?.toSource() ?? ''}.$name()',
@@ -382,6 +427,13 @@ class AstPipeline {
         );
         if (sink.kind == 'API' && methodId != null)
           apiOwners[node.id] = methodId;
+        if (sink.kind == 'ACTION' &&
+            invocation != null &&
+            RegExp(
+              r'^(logout|signOut|clearSession|revokeToken|forceLogout|onUnauthorized)$',
+              caseSensitive: false,
+            ).hasMatch(name))
+          terminalActions.add(node.id);
         if (sink.kind == 'SCREEN') {
           final destination = referencedWidget(call, widgetCollector.names);
           pendingNav[node.id] = destination ?? literal;
@@ -470,10 +522,10 @@ class AstPipeline {
         }
       }
       for (final call in visitor.calls) {
-        final apiId = id(call, 'API');
+        final stageId = stages[call];
         continuations.add((
-          source: apiId,
-          callee: nodes[apiId]?.kind == 'API' ? null : resolver.key(call),
+          source: stageId ?? id(call, 'API'),
+          callee: stageId != null ? null : resolver.key(call),
           next: (relevant) => nextFlowStage(call, stages, relevant),
         ));
       }
@@ -484,7 +536,7 @@ class AstPipeline {
     for (final entry in pendingNav.entries) {
       final destination = routes.targets[entry.value] ?? entry.value;
       if (screens[destination]?.length == 1)
-        edge(entry.key, screens[destination]!.single);
+        edge(entry.key, screens[destination]!.single, kind: 'NAVIGATION');
     }
     for (final entry in emitted.entries) {
       for (final emitter in entry.value) {
@@ -497,11 +549,19 @@ class AstPipeline {
       final result =
           nodes.values
               .where(
-                (n) => {'SCREEN', 'API', 'DIALOG', 'LOGOUT'}.contains(n.kind),
+                (n) => {
+                  'SCREEN',
+                  'API',
+                  'DIALOG',
+                  'BOTTOMSHEET',
+                  'SNACKBAR',
+                  'TOAST',
+                }.contains(n.kind),
               )
               .map((n) => n.id)
               .toSet()
-            ..addAll(pendingNav.keys);
+            ..addAll(pendingNav.keys)
+            ..addAll(terminalActions);
       bool added;
       do {
         added = false;
@@ -515,8 +575,22 @@ class AstPipeline {
     final baseline = relevantNodes();
     for (final link in continuations.where((l) => l.callee == null)) {
       final next = link.next(baseline);
-      if (next != null && nodes.containsKey(link.source))
+      if (next != null && nodes.containsKey(link.source)) {
+        // Same-block stages are sequential. Avoid a shortcut from their shared guard/entry.
+        final incoming = edges.values
+            .where((e) => e.target == link.source)
+            .toList();
+        edges.removeWhere(
+          (_, e) =>
+              e.target == next &&
+              incoming.any(
+                (p) =>
+                    p.source == e.source &&
+                    p.data['sourceHandle'] == e.data['sourceHandle'],
+              ),
+        );
         edge(link.source, next);
+      }
     }
     final directSources = edges.values.map((e) => e.source).toSet();
     for (final link in continuations.where((l) => l.callee != null)) {
@@ -531,17 +605,25 @@ class AstPipeline {
                 !directSources.contains(n.id),
           )
           .toList();
-      if (exits.length == 1) edge(exits.single.id, next);
+      if (exits.length == 1) edge(exits.single.id, next, kind: 'RETURN');
     }
     // Retain only actions participating in a sink path, removing unrelated UI methods.
     final relevant =
         nodes.values
             .where(
-              (n) => {'SCREEN', 'API', 'DIALOG', 'LOGOUT'}.contains(n.kind),
+              (n) => {
+                'SCREEN',
+                'API',
+                'DIALOG',
+                'BOTTOMSHEET',
+                'SNACKBAR',
+                'TOAST',
+              }.contains(n.kind),
             )
             .map((n) => n.id)
             .toSet()
-          ..addAll(pendingNav.keys);
+          ..addAll(pendingNav.keys)
+          ..addAll(terminalActions);
     bool changed;
     do {
       changed = false;
@@ -571,7 +653,9 @@ class AstPipeline {
         'totalDecisions': 'DECISION',
         'totalApis': 'API',
         'totalDialogs': 'DIALOG',
-        'totalLogoutPoints': 'LOGOUT',
+        'totalBottomSheets': 'BOTTOMSHEET',
+        'totalSnackbars': 'SNACKBAR',
+        'totalToasts': 'TOAST',
       }.entries)
         entry.key: nodes.values.where((n) => n.kind == entry.value).length,
     };
@@ -580,6 +664,11 @@ class AstPipeline {
       nodes: nodes.values.toList(),
       edges: edges.values.toList(),
       healthIssues: issues.values.toList(),
+      sourceContexts: {
+        for (final node in nodes.values)
+          if (node.data['sourceLocation']?['contextId'] case final String key)
+            key: sourceContexts[key]!,
+      },
     );
   }
 }

@@ -1,12 +1,12 @@
 {
   "config": {
     "argv": [
-      "/opt/hostedtoolcache/node/24.21.0/x64/bin/node",
-      "/home/runner/work/flutter_flow_studio/flutter_flow_studio/web_studio/node_modules/.bin/playwright",
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "/workspace/flutter_flow_studio/web_studio/node_modules/.bin/playwright",
       "test"
     ],
-    "configFile": "/home/runner/work/flutter_flow_studio/flutter_flow_studio/web_studio/playwright.config.ts",
-    "rootDir": "/home/runner/work/flutter_flow_studio/flutter_flow_studio/web_studio/e2e",
+    "configFile": "/workspace/flutter_flow_studio/web_studio/playwright.config.ts",
+    "rootDir": "/workspace/flutter_flow_studio/web_studio/e2e",
     "failOnFlakyTests": false,
     "forbidOnly": false,
     "fullyParallel": false,
@@ -17,64 +17,20 @@
     "grepInvert": null,
     "maxFailures": 0,
     "metadata": {
-      "ci": {
-        "commitHref": "https://github.com/qualife1291/flutter_flow_studio/commit/300427c0c12a1d3f2858e4fa7966cafea093799b",
-        "commitHash": "300427c0c12a1d3f2858e4fa7966cafea093799b",
-        "buildHref": "https://github.com/qualife1291/flutter_flow_studio/actions/runs/39881044872"
-      },
-      "gitCommit": {
-        "shortHash": "300427c",
-        "hash": "300427c0c12a1d3f2858e4fa7966cafea093799b",
-        "subject": "Complete typed flow links, runtime capture and accessible Studio controls",
-        "body": "Complete typed flow links, runtime capture and accessible Studio controls\n",
-        "author": {
-          "name": "Hoang Long",
-          "email": "17520709@gm.uit.edu.vn",
-          "time": 1792716952000
-        },
-        "committer": {
-          "name": "Hoang Long",
-          "email": "17520709@gm.uit.edu.vn",
-          "time": 1792716952000
-        },
-        "branch": "codex/implement-flow-studio"
-      },
       "actualWorkers": 1
     },
     "preserveOutput": "always",
     "projects": [
       {
-        "outputDir": "/home/runner/work/flutter_flow_studio/flutter_flow_studio/web_studio/test-results",
+        "outputDir": "/workspace/flutter_flow_studio/web_studio/test-results",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "ci": {
-            "commitHref": "https://github.com/qualife1291/flutter_flow_studio/commit/300427c0c12a1d3f2858e4fa7966cafea093799b",
-            "commitHash": "300427c0c12a1d3f2858e4fa7966cafea093799b",
-            "buildHref": "https://github.com/qualife1291/flutter_flow_studio/actions/runs/39881044872"
-          },
-          "gitCommit": {
-            "shortHash": "300427c",
-            "hash": "300427c0c12a1d3f2858e4fa7966cafea093799b",
-            "subject": "Complete typed flow links, runtime capture and accessible Studio controls",
-            "body": "Complete typed flow links, runtime capture and accessible Studio controls\n",
-            "author": {
-              "name": "Hoang Long",
-              "email": "17520709@gm.uit.edu.vn",
-              "time": 1792716952000
-            },
-            "committer": {
-              "name": "Hoang Long",
-              "email": "17520709@gm.uit.edu.vn",
-              "time": 1792716952000
-            },
-            "branch": "codex/implement-flow-studio"
-          },
           "actualWorkers": 1
         },
         "id": "",
         "name": "",
-        "testDir": "/home/runner/work/flutter_flow_studio/flutter_flow_studio/web_studio/e2e",
+        "testDir": "/workspace/flutter_flow_studio/web_studio/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -86,44 +42,22 @@
       {
         "grep": {},
         "grepInvert": null,
-        "outputDir": "/home/runner/work/flutter_flow_studio/flutter_flow_studio/web_studio/test-results",
+        "outputDir": "/workspace/flutter_flow_studio/web_studio/test-results",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "ci": {
-            "commitHref": "https://github.com/qualife1291/flutter_flow_studio/commit/300427c0c12a1d3f2858e4fa7966cafea093799b",
-            "commitHash": "300427c0c12a1d3f2858e4fa7966cafea093799b",
-            "buildHref": "https://github.com/qualife1291/flutter_flow_studio/actions/runs/39881044872"
-          },
-          "gitCommit": {
-            "shortHash": "300427c",
-            "hash": "300427c0c12a1d3f2858e4fa7966cafea093799b",
-            "subject": "Complete typed flow links, runtime capture and accessible Studio controls",
-            "body": "Complete typed flow links, runtime capture and accessible Studio controls\n",
-            "author": {
-              "name": "Hoang Long",
-              "email": "17520709@gm.uit.edu.vn",
-              "time": 1792716952000
-            },
-            "committer": {
-              "name": "Hoang Long",
-              "email": "17520709@gm.uit.edu.vn",
-              "time": 1792716952000
-            },
-            "branch": "codex/implement-flow-studio"
-          },
           "actualWorkers": 1
         },
         "name": "",
-        "testDir": "/home/runner/work/flutter_flow_studio/flutter_flow_studio/web_studio/e2e",
-        "snapshotDir": "/home/runner/work/flutter_flow_studio/flutter_flow_studio/web_studio/e2e",
+        "testDir": "/workspace/flutter_flow_studio/web_studio/e2e",
+        "snapshotDir": "/workspace/flutter_flow_studio/web_studio/e2e",
         "testIgnore": [],
         "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
         "timeout": 30000,
         "use": {
           "baseURL": "http://127.0.0.1:4173",
           "launchOptions": {
-            "executablePath": "/usr/bin/google-chrome",
+            "executablePath": "/usr/bin/chromium",
             "args": [
               "--no-sandbox"
             ]
@@ -160,7 +94,7 @@
     "webServer": {
       "command": "npm run preview -- --port 4173",
       "url": "http://127.0.0.1:4173",
-      "reuseExistingServer": false
+      "reuseExistingServer": true
     }
   },
   "suites": [
@@ -170,6 +104,108 @@
       "column": 0,
       "line": 0,
       "specs": [
+        {
+          "title": "readable overview, screen-only view and neighborhood preserve access to all nodes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1039,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T03:39:10.411Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "64bdea7002f9c9cea9f4-a895c75796a89ba108d2",
+          "file": "studio.spec.ts",
+          "line": 39,
+          "column": 1
+        },
+        {
+          "title": "nodes resize with keyboard and pointer, drag freely, and connectors have arrowheads",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1411,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T03:39:11.709Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "64bdea7002f9c9cea9f4-034eff2d4081b0b6387d",
+          "file": "studio.spec.ts",
+          "line": 75,
+          "column": 1
+        },
+        {
+          "title": "inspector shows the complete function and a full-size source viewer without an IDE",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1494,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T03:39:13.137Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "64bdea7002f9c9cea9f4-c9e9a5f668656440fcd4",
+          "file": "studio.spec.ts",
+          "line": 148,
+          "column": 1
+        },
         {
           "title": "graph, search, modes, inspector keyboard and export modal",
           "ok": true,
@@ -186,12 +222,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 12637,
+                  "duration": 5008,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-23T00:56:49.505Z",
+                  "startTime": "2026-10-23T03:39:14.642Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -201,7 +237,7 @@
           ],
           "id": "64bdea7002f9c9cea9f4-6fbfc312f8c4472ae01c",
           "file": "studio.spec.ts",
-          "line": 31,
+          "line": 175,
           "column": 1
         },
         {
@@ -220,12 +256,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 805,
+                  "duration": 822,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-23T00:57:15.872Z",
+                  "startTime": "2026-10-23T03:39:19.665Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -235,7 +271,7 @@
           ],
           "id": "64bdea7002f9c9cea9f4-4e427c4b052149d5af15",
           "file": "studio.spec.ts",
-          "line": 69,
+          "line": 216,
           "column": 1
         },
         {
@@ -254,12 +290,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 489,
+                  "duration": 780,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-23T00:57:16.692Z",
+                  "startTime": "2026-10-23T03:39:20.511Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -269,7 +305,7 @@
           ],
           "id": "64bdea7002f9c9cea9f4-c0af623bec9f982acef8",
           "file": "studio.spec.ts",
-          "line": 81,
+          "line": 230,
           "column": 1
         },
         {
@@ -288,12 +324,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1831,
+                  "duration": 1837,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-23T00:57:17.199Z",
+                  "startTime": "2026-10-23T03:39:21.306Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -303,7 +339,7 @@
           ],
           "id": "64bdea7002f9c9cea9f4-8ce35fa7a50b66580235",
           "file": "studio.spec.ts",
-          "line": 90,
+          "line": 239,
           "column": 1
         }
       ]
@@ -311,9 +347,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-10-23T00:56:48.499Z",
-    "duration": 30786.651,
-    "expected": 4,
+    "startTime": "2026-10-23T03:39:09.928Z",
+    "duration": 13300.414,
+    "expected": 7,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0
