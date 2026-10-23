@@ -1,1 +1,1 @@
-PASS: real WebSocket event moved follow camera; spotlight highlighted context; reduced-motion prevented subsequent camera movement and edge animations.
+PASS source 052586a: runtime follow, spotlight and reduced-motion checked with live WebSocket; reduced-motion kept camera stationary and disabled edge animations.

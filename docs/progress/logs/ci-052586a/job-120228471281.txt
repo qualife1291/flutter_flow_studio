@@ -1,0 +1,408 @@
+﻿2026-10-23T03:44:41.4928124Z Current runner version: '2.338.0'
+2026-10-23T03:44:41.4962545Z ##[group]Runner Image Provisioner
+2026-10-23T03:44:41.4963713Z Hosted Compute Agent
+2026-10-23T03:44:41.4964609Z Version: 20261012.601
+2026-10-23T03:44:41.4965579Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+2026-10-23T03:44:41.4966703Z Build Date: 2026-10-12T17:48:21Z
+2026-10-23T03:44:41.4967830Z Worker ID: {fb1cd55e-4ba5-4bd1-bdd0-010ea77a60bf}
+2026-10-23T03:44:41.4969038Z Region: northcentralus
+2026-10-23T03:44:41.4970021Z Cloud: Azure
+2026-10-23T03:44:41.4970917Z ##[endgroup]
+2026-10-23T03:44:41.4973751Z ##[group]Operating System
+2026-10-23T03:44:41.4974847Z Microsoft Windows Server 2022
+2026-10-23T03:44:41.4975792Z 10.0.20348
+2026-10-23T03:44:41.4976540Z Datacenter
+2026-10-23T03:44:41.4977442Z ##[endgroup]
+2026-10-23T03:44:41.4978315Z ##[group]Runner Image
+2026-10-23T03:44:41.4979261Z Image: windows-2022
+2026-10-23T03:44:41.4980233Z Version: 20261012.333.1
+2026-10-23T03:44:41.4982288Z Included Software: https://github.com/actions/runner-images/blob/win22/20261012.333/images/windows/Windows2022-Readme.md
+2026-10-23T03:44:41.4983835Z Image Release: https://github.com/actions/runner-images/releases/tag/win22%2F20261012.333
+2026-10-23T03:44:41.4984703Z ##[endgroup]
+2026-10-23T03:44:41.4985756Z ##[group]GITHUB_TOKEN Permissions
+2026-10-23T03:44:41.4987640Z Contents: read
+2026-10-23T03:44:41.4988202Z Metadata: read
+2026-10-23T03:44:41.4988671Z ##[endgroup]
+2026-10-23T03:44:41.4990716Z Secret source: Actions
+2026-10-23T03:44:41.4991550Z Cache mode: write
+2026-10-23T03:44:41.4992250Z Prepare workflow directory
+2026-10-23T03:44:41.5369261Z Prepare all required actions
+2026-10-23T03:44:41.5438922Z Getting action download info
+2026-10-23T03:44:41.7619151Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-23T03:44:41.8826375Z Download action repository 'subosito/flutter-action@v2' (SHA:1a449444c387b1966244ae4d4f8c696479add0b2)
+2026-10-23T03:44:42.0997316Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-23T03:44:42.4192965Z Getting action download info
+2026-10-23T03:44:42.4995910Z Download action repository 'actions/cache@v5' (SHA:caa296126883cff596d87d8935842f9db880ef25)
+2026-10-23T03:44:42.6631516Z Complete job name: sdk-platform (windows-2022, 3.47.7)
+2026-10-23T03:44:42.8279837Z ##[group]Run actions/checkout@v4
+2026-10-23T03:44:42.8281041Z with:
+2026-10-23T03:44:42.8281585Z   repository: qualife1291/flutter_flow_studio
+2026-10-23T03:44:42.8286509Z   token: ***
+2026-10-23T03:44:42.8286946Z   ssh-strict: true
+2026-10-23T03:44:42.8287335Z   ssh-user: git
+2026-10-23T03:44:42.8287746Z   persist-credentials: true
+2026-10-23T03:44:42.8288194Z   clean: true
+2026-10-23T03:44:42.8288598Z   sparse-checkout-cone-mode: true
+2026-10-23T03:44:42.8289077Z   fetch-depth: 1
+2026-10-23T03:44:42.8289461Z   fetch-tags: false
+2026-10-23T03:44:42.8289859Z   show-progress: true
+2026-10-23T03:44:42.8290283Z   lfs: false
+2026-10-23T03:44:42.8290676Z   submodules: false
+2026-10-23T03:44:42.8291083Z   set-safe-directory: true
+2026-10-23T03:44:42.8291544Z   allow-unsafe-pr-checkout: false
+2026-10-23T03:44:42.8292222Z ##[endgroup]
+2026-10-23T03:44:42.9792570Z Syncing repository: qualife1291/flutter_flow_studio
+2026-10-23T03:44:42.9794480Z ##[group]Getting Git version info
+2026-10-23T03:44:42.9795201Z Working directory is 'D:\a\flutter_flow_studio\flutter_flow_studio'
+2026-10-23T03:44:43.0782234Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-23T03:44:43.4102272Z git version 2.56.0.windows.2
+2026-10-23T03:44:43.4138722Z ##[endgroup]
+2026-10-23T03:44:43.4157055Z Temporarily overriding HOME='D:\a\_temp\e7fc78d1-5408-46b2-9367-53a753c0c5d2' before making global git config changes
+2026-10-23T03:44:43.4158899Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T03:44:43.4168402Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\flutter_flow_studio\flutter_flow_studio
+2026-10-23T03:44:43.4705670Z Deleting the contents of 'D:\a\flutter_flow_studio\flutter_flow_studio'
+2026-10-23T03:44:43.4710575Z ##[group]Initializing the repository
+2026-10-23T03:44:43.4719522Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\flutter_flow_studio\flutter_flow_studio
+2026-10-23T03:44:43.5608571Z Initialized empty Git repository in D:/a/flutter_flow_studio/flutter_flow_studio/.git/
+2026-10-23T03:44:43.5645747Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/qualife1291/flutter_flow_studio
+2026-10-23T03:44:43.6203339Z ##[endgroup]
+2026-10-23T03:44:43.6204900Z ##[group]Disabling automatic garbage collection
+2026-10-23T03:44:43.6211986Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-10-23T03:44:43.6498987Z ##[endgroup]
+2026-10-23T03:44:43.6500547Z ##[group]Setting up auth
+2026-10-23T03:44:43.6511594Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T03:44:43.6796590Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-23T03:44:44.9728198Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T03:44:45.0011688Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-23T03:44:45.4952219Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T03:44:45.5235145Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-23T03:44:45.9545341Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-10-23T03:44:45.9851417Z ##[endgroup]
+2026-10-23T03:44:45.9852250Z ##[group]Fetching the repository
+2026-10-23T03:44:45.9866536Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +51a4e1689453455b67a79ad2e2f09188ead9e491:refs/remotes/pull/1/merge
+2026-10-23T03:44:47.0534678Z From https://github.com/qualife1291/flutter_flow_studio
+2026-10-23T03:44:47.0535900Z  * [new ref]         51a4e1689453455b67a79ad2e2f09188ead9e491 -> pull/1/merge
+2026-10-23T03:44:47.0563543Z ##[endgroup]
+2026-10-23T03:44:47.0564180Z ##[group]Determining the checkout info
+2026-10-23T03:44:47.0566167Z ##[endgroup]
+2026-10-23T03:44:47.0575392Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-10-23T03:44:47.1034051Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-10-23T03:44:47.1323172Z ##[group]Checking out the ref
+2026-10-23T03:44:47.1332014Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force refs/remotes/pull/1/merge
+2026-10-23T03:44:47.2735734Z Note: switching to 'refs/remotes/pull/1/merge'.
+2026-10-23T03:44:47.2736066Z 
+2026-10-23T03:44:47.2736424Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-23T03:44:47.2737073Z changes and commit them, and you can discard any commits you make in this
+2026-10-23T03:44:47.2737590Z state without impacting any branches by switching back to a branch.
+2026-10-23T03:44:47.2737884Z 
+2026-10-23T03:44:47.2738390Z If you want to create a new branch to retain commits you create, you may
+2026-10-23T03:44:47.2739139Z do so (now or later) by using -c with the switch command. Example:
+2026-10-23T03:44:47.2739603Z 
+2026-10-23T03:44:47.2739825Z   git switch -c <new-branch-name>
+2026-10-23T03:44:47.2740189Z 
+2026-10-23T03:44:47.2740404Z Or undo this operation with:
+2026-10-23T03:44:47.2742025Z 
+2026-10-23T03:44:47.2742159Z   git switch -
+2026-10-23T03:44:47.2742362Z 
+2026-10-23T03:44:47.2742706Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-23T03:44:47.2743264Z 
+2026-10-23T03:44:47.2743886Z HEAD is now at 51a4e16 Merge 052586a75a6db502674c96f564a582056108559d into ff32c27004a0e01257ce96318f649e9d88905634
+2026-10-23T03:44:47.2805268Z ##[endgroup]
+2026-10-23T03:44:47.3182633Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-10-23T03:44:47.3440571Z 51a4e1689453455b67a79ad2e2f09188ead9e491
+2026-10-23T03:44:47.3933596Z ##[group]Run subosito/flutter-action@v2
+2026-10-23T03:44:47.3933953Z with:
+2026-10-23T03:44:47.3934150Z   flutter-version: 3.47.7
+2026-10-23T03:44:47.3934367Z   channel: stable
+2026-10-23T03:44:47.3934545Z   cache: true
+2026-10-23T03:44:47.3934744Z   architecture: X64
+2026-10-23T03:44:47.3934948Z   pub-cache-path: default
+2026-10-23T03:44:47.3935153Z   dry-run: false
+2026-10-23T03:44:47.3935442Z   git-source: https://github.com/flutter/flutter.git
+2026-10-23T03:44:47.3935738Z ##[endgroup]
+2026-10-23T03:44:47.3993270Z ##[start-action display=Make yq tool available on Windows runners;id=__subosito_flutter-action.__run]
+2026-10-23T03:44:47.4017010Z ##[end-action id=__subosito_flutter-action.__run;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-23T03:44:47.4019256Z ##[start-action display=Make setup script executable;id=__subosito_flutter-action.__run_2]
+2026-10-23T03:44:47.4142317Z ##[group]Run chmod +x "$GITHUB_ACTION_PATH/setup.sh"
+2026-10-23T03:44:47.4142791Z [36;1mchmod +x "$GITHUB_ACTION_PATH/setup.sh"[0m
+2026-10-23T03:44:47.4160169Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-10-23T03:44:47.4160572Z ##[endgroup]
+2026-10-23T03:44:47.6088044Z ##[end-action id=__subosito_flutter-action.__run_2;outcome=success;conclusion=success;duration_ms=206]
+2026-10-23T03:44:47.6090929Z ##[start-action display=Set action inputs;id=__subosito_flutter-action.flutter-action]
+2026-10-23T03:44:47.6220907Z ##[group]Run $GITHUB_ACTION_PATH/setup.sh -p \
+2026-10-23T03:44:47.6221338Z [36;1m$GITHUB_ACTION_PATH/setup.sh -p \[0m
+2026-10-23T03:44:47.6221615Z [36;1m  -n '3.47.7' \[0m
+2026-10-23T03:44:47.6221822Z [36;1m  -f '' \[0m
+2026-10-23T03:44:47.6222003Z [36;1m  -a 'X64' \[0m
+2026-10-23T03:44:47.6222186Z [36;1m  -k '' \[0m
+2026-10-23T03:44:47.6222370Z [36;1m  -c '' \[0m
+2026-10-23T03:44:47.6222555Z [36;1m  -l '' \[0m
+2026-10-23T03:44:47.6222734Z [36;1m  -d 'default' \[0m
+2026-10-23T03:44:47.6223061Z [36;1m  -g 'https://github.com/flutter/flutter.git' \[0m
+2026-10-23T03:44:47.6223387Z [36;1m  stable[0m
+2026-10-23T03:44:47.6236951Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-10-23T03:44:47.6237349Z ##[endgroup]
+2026-10-23T03:44:50.2427664Z ##[end-action id=__subosito_flutter-action.flutter-action;outcome=success;conclusion=success;duration_ms=2633]
+2026-10-23T03:44:50.2433116Z ##[start-action display=Cache Flutter;id=__subosito_flutter-action.cache-flutter]
+2026-10-23T03:44:50.2574865Z ##[group]Run actions/cache@v5
+2026-10-23T03:44:50.2575098Z with:
+2026-10-23T03:44:50.2575345Z   path: C:\hostedtoolcache\windows\flutter\stable-3.47.7-x64
+2026-10-23T03:44:50.2575827Z   key: flutter-windows-stable-3.47.7-x64-abaf9c523780a608bd46686fd5e53740a07077f8
+2026-10-23T03:44:50.2576246Z   enableCrossOsArchive: false
+2026-10-23T03:44:50.2576476Z   fail-on-cache-miss: false
+2026-10-23T03:44:50.2576698Z   lookup-only: false
+2026-10-23T03:44:50.2576893Z   save-always: false
+2026-10-23T03:44:50.2577098Z ##[endgroup]
+2026-10-23T03:44:50.6905765Z Cache hit for: flutter-windows-stable-3.47.7-x64-abaf9c523780a608bd46686fd5e53740a07077f8
+2026-10-23T03:44:51.8210706Z Received 146800640 of 1928832335 (7.6%), 138.3 MBs/sec
+2026-10-23T03:44:52.8279395Z Received 360710144 of 1928832335 (18.7%), 170.4 MBs/sec
+2026-10-23T03:44:53.8326811Z Received 536870912 of 1928832335 (27.8%), 169.3 MBs/sec
+2026-10-23T03:44:54.8336085Z Received 742391808 of 1928832335 (38.5%), 175.9 MBs/sec
+2026-10-23T03:44:55.8784242Z Received 939524096 of 1928832335 (48.7%), 176.8 MBs/sec
+2026-10-23T03:44:56.8898611Z Received 1111490560 of 1928832335 (57.6%), 174.3 MBs/sec
+2026-10-23T03:44:57.9148088Z Received 1317011456 of 1928832335 (68.3%), 176.9 MBs/sec
+2026-10-23T03:44:58.9319359Z Received 1476395008 of 1928832335 (76.5%), 173.4 MBs/sec
+2026-10-23T03:44:59.9486794Z Received 1690304512 of 1928832335 (87.6%), 176.4 MBs/sec
+2026-10-23T03:45:01.0273117Z Received 1879048192 of 1928832335 (97.4%), 175.4 MBs/sec
+2026-10-23T03:45:01.3234726Z Received 1928832335 of 1928832335 (100.0%), 175.0 MBs/sec
+2026-10-23T03:45:01.3237468Z Cache Size: ~1839 MB (1928832335 B)
+2026-10-23T03:45:01.3352406Z [command]"C:\Program Files\Git\usr\bin\tar.exe" -xf D:/a/_temp/54a1961d-64ab-40ba-be87-81219ba3c226/cache.tzst -P -C D:/a/flutter_flow_studio/flutter_flow_studio --force-local --use-compress-program "zstd -d"
+2026-10-23T03:45:49.6729374Z Cache restored successfully
+2026-10-23T03:45:49.7687230Z Cache restored from key: flutter-windows-stable-3.47.7-x64-abaf9c523780a608bd46686fd5e53740a07077f8
+2026-10-23T03:45:49.7803648Z ##[end-action id=__subosito_flutter-action.cache-flutter;outcome=success;conclusion=success;duration_ms=59537]
+2026-10-23T03:45:49.7806532Z ##[start-action display=Cache pub dependencies;id=__subosito_flutter-action.cache-pub]
+2026-10-23T03:45:49.9846557Z ##[group]Run actions/cache@v5
+2026-10-23T03:45:49.9846792Z with:
+2026-10-23T03:45:49.9847018Z   path: C:\Users\runneradmin\AppData\Local\Pub\Cache
+2026-10-23T03:45:49.9847806Z   key: flutter-pub-windows-stable-3.47.7-x64-abaf9c523780a608bd46686fd5e53740a07077f8-74454c6f36d38e9bb172c0676ad47df7debc6253477534e482bbaa118dc7fa76
+2026-10-23T03:45:49.9848569Z   enableCrossOsArchive: false
+2026-10-23T03:45:49.9848808Z   fail-on-cache-miss: false
+2026-10-23T03:45:49.9849026Z   lookup-only: false
+2026-10-23T03:45:49.9849217Z   save-always: false
+2026-10-23T03:45:49.9849423Z ##[endgroup]
+2026-10-23T03:45:50.3873357Z Cache hit for: flutter-pub-windows-stable-3.47.7-x64-abaf9c523780a608bd46686fd5e53740a07077f8-74454c6f36d38e9bb172c0676ad47df7debc6253477534e482bbaa118dc7fa76
+2026-10-23T03:45:51.1023551Z Received 47708372 of 47708372 (100.0%), 76.0 MBs/sec
+2026-10-23T03:45:51.1025421Z Cache Size: ~45 MB (47708372 B)
+2026-10-23T03:45:51.1100402Z [command]"C:\Program Files\Git\usr\bin\tar.exe" -xf D:/a/_temp/27bc30f8-51b7-43b0-8c81-ba6305442510/cache.tzst -P -C D:/a/flutter_flow_studio/flutter_flow_studio --force-local --use-compress-program "zstd -d"
+2026-10-23T03:46:14.0734285Z Cache restored successfully
+2026-10-23T03:46:14.0871797Z Cache restored from key: flutter-pub-windows-stable-3.47.7-x64-abaf9c523780a608bd46686fd5e53740a07077f8-74454c6f36d38e9bb172c0676ad47df7debc6253477534e482bbaa118dc7fa76
+2026-10-23T03:46:14.0968481Z ##[end-action id=__subosito_flutter-action.cache-pub;outcome=success;conclusion=success;duration_ms=24316]
+2026-10-23T03:46:14.0971369Z ##[start-action display=Run setup script;id=__subosito_flutter-action.__run_3]
+2026-10-23T03:46:14.1094922Z ##[group]Run $GITHUB_ACTION_PATH/setup.sh \
+2026-10-23T03:46:14.1095334Z [36;1m$GITHUB_ACTION_PATH/setup.sh \[0m
+2026-10-23T03:46:14.1095652Z [36;1m  -n '3.47.7' \[0m
+2026-10-23T03:46:14.1095898Z [36;1m  -a 'x64' \[0m
+2026-10-23T03:46:14.1096301Z [36;1m  -c 'C:\hostedtoolcache\windows\flutter\stable-3.47.7-x64' \[0m
+2026-10-23T03:46:14.1096831Z [36;1m  -d 'C:\Users\runneradmin\AppData\Local\Pub\Cache' \[0m
+2026-10-23T03:46:14.1097210Z [36;1m  stable[0m
+2026-10-23T03:46:14.1110687Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-10-23T03:46:14.1111177Z ##[endgroup]
+2026-10-23T03:46:16.0101571Z ##[end-action id=__subosito_flutter-action.__run_3;outcome=success;conclusion=success;duration_ms=1912]
+2026-10-23T03:46:16.0239187Z ##[group]Run bash scripts/check-sdk.sh flutter '3.47.7'
+2026-10-23T03:46:16.0239706Z [36;1mbash scripts/check-sdk.sh flutter '3.47.7'[0m
+2026-10-23T03:46:16.0255232Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-10-23T03:46:16.0255676Z env:
+2026-10-23T03:46:16.0256023Z   FLUTTER_ROOT: C:\hostedtoolcache\windows\flutter\stable-3.47.7-x64/flutter
+2026-10-23T03:46:16.0256535Z   PUB_CACHE: C:\Users\runneradmin\AppData\Local\Pub\Cache
+2026-10-23T03:46:16.0256889Z ##[endgroup]
+2026-10-23T03:46:18.1475004Z Flutter 3.47.7 • channel stable • https://github.com/flutter/flutter.git
+2026-10-23T03:46:18.1475721Z Framework • revision abaf9c5237 (2 weeks ago) • 2026-10-08 09:51:21 -0700
+2026-10-23T03:46:18.1476463Z Engine • hash d8a2d6c768c334d53e16277f837970ffa1e2de81 (revision deb287481e) (15 days ago) • 2026-10-07 17:09:12.000Z
+2026-10-23T03:46:18.1477303Z Tools • Dart 3.13.5 • DevTools 2.60.0
+2026-10-23T03:46:19.9481574Z Resolving dependencies...
+2026-10-23T03:46:20.3085535Z Downloading packages...
+2026-10-23T03:46:20.3398351Z   _fe_analyzer_shared 91.0.0 (110.0.0 available)
+2026-10-23T03:46:20.3399120Z   analyzer 8.4.1 (14.6.0 available)
+2026-10-23T03:46:20.3399687Z   async 2.13.0 (2.13.1 available)
+2026-10-23T03:46:20.3400137Z   clock 1.1.2 (1.1.3 available)
+2026-10-23T03:46:20.3400634Z   coverage 1.15.1 (1.16.0 available)
+2026-10-23T03:46:20.3401626Z   flutter_riverpod 2.6.1 (3.4.3 available)
+2026-10-23T03:46:20.3402096Z   frontend_server_client 4.0.0 (4.2.0 available)
+2026-10-23T03:46:20.3402582Z > matcher 0.12.20 (was 0.12.19)
+2026-10-23T03:46:20.3403009Z   material_color_utilities 0.13.0 (0.13.1 available)
+2026-10-23T03:46:20.3403480Z > meta 1.19.0 (was 1.17.0)
+2026-10-23T03:46:20.3403848Z   package_config 2.2.0 (3.0.0 available)
+2026-10-23T03:46:20.3404261Z   riverpod 2.6.1 (3.4.3 available)
+2026-10-23T03:46:20.3404639Z   shelf 1.4.2 (1.4.3 available)
+2026-10-23T03:46:20.3404923Z   shelf_static 1.1.3 (1.2.0 available)
+2026-10-23T03:46:20.3405252Z   shelf_web_socket 2.0.1 (3.0.0 available)
+2026-10-23T03:46:20.3405576Z   source_span 1.10.1 (1.10.2 available)
+2026-10-23T03:46:20.3405893Z   stack_trace 1.12.1 (1.12.2 available)
+2026-10-23T03:46:20.3406221Z > test 1.31.1 (was 1.30.0) (1.33.0 available)
+2026-10-23T03:46:20.3406591Z > test_api 0.7.12 (was 0.7.10) (0.7.15 available)
+2026-10-23T03:46:20.3406959Z > test_core 0.6.18 (was 0.6.16) (0.6.21 available)
+2026-10-23T03:46:20.3407304Z > vector_math 2.4.3 (was 2.2.0)
+2026-10-23T03:46:20.3407590Z   vm_service 15.0.0 (15.4.0 available)
+2026-10-23T03:46:20.3407887Z   web 1.1.1 (1.1.2 available)
+2026-10-23T03:46:20.3408196Z Changed 6 dependencies!
+2026-10-23T03:46:20.3408596Z 20 packages have newer versions incompatible with dependency constraints.
+2026-10-23T03:46:20.3409106Z Try `flutter pub outdated` for more information.
+2026-10-23T03:46:20.3554457Z Resolving dependencies in `.\example`...
+2026-10-23T03:46:20.3710391Z Downloading packages...
+2026-10-23T03:46:20.3710865Z Got dependencies in `.\example`.
+2026-10-23T03:46:34.2554686Z Analyzing flutter_flow_studio...                                
+2026-10-23T03:46:34.2555776Z No issues found! (ran in 12.1s)
+2026-10-23T03:46:35.8343327Z 
+2026-10-23T03:46:44.1975956Z ##[group]✅ Passing tests
+2026-10-23T03:46:44.1976486Z ✅ disabled runtime does nothing until explicitly initialized
+2026-10-23T03:46:44.2505272Z ✅ debug SDK queues and delivers probes through a real WebSocket without payload secrets
+2026-10-23T03:46:44.9695614Z ✅ navigator observer sees page, dialog, bottom sheet, pop and replacement
+2026-10-23T03:46:45.0075449Z ##[endgroup]
+2026-10-23T03:46:45.0075738Z 
+2026-10-23T03:46:45.7119645Z 🎉 3 tests passed.
+2026-10-23T03:46:45.7120040Z Resolving dependencies...
+2026-10-23T03:46:45.7743117Z Downloading packages...
+2026-10-23T03:46:45.7899451Z   _fe_analyzer_shared 88.0.0 (110.0.0 available)
+2026-10-23T03:46:45.7900242Z   analyzer 8.1.1 (14.6.0 available)
+2026-10-23T03:46:45.7903642Z   coverage 1.15.1 (1.16.0 available)
+2026-10-23T03:46:45.7904297Z   frontend_server_client 4.0.0 (4.2.0 available)
+2026-10-23T03:46:45.7904884Z   matcher 0.12.19 (0.12.20 available)
+2026-10-23T03:46:45.7906424Z   package_config 2.2.0 (3.0.0 available)
+2026-10-23T03:46:45.7906955Z   shelf 1.4.2 (1.4.3 available)
+2026-10-23T03:46:45.7907425Z   shelf_static 1.1.3 (1.2.0 available)
+2026-10-23T03:46:45.7907982Z   shelf_web_socket 2.0.1 (3.0.0 available)
+2026-10-23T03:46:45.7908505Z   test 1.31.0 (1.33.0 available)
+2026-10-23T03:46:45.7909023Z   test_api 0.7.11 (0.7.15 available)
+2026-10-23T03:46:45.7909520Z   test_core 0.6.17 (0.6.21 available)
+2026-10-23T03:46:45.7910014Z   web 1.1.1 (1.1.2 available)
+2026-10-23T03:46:45.7910493Z Got dependencies!
+2026-10-23T03:46:45.7910888Z 13 packages have newer versions incompatible with dependency constraints.
+2026-10-23T03:46:45.7911364Z Try `dart pub outdated` for more information.
+2026-10-23T03:46:50.6225548Z 
+2026-10-23T03:46:54.9843511Z ✅ test\http_test.dart: HTTP capture forwards request bytes and response untouched
+2026-10-23T03:46:54.9844380Z ✅ test\http_test.dart: capture lifecycle preserves global overrides when called inside an HTTP zone
+2026-10-23T03:46:55.0780849Z ✅ test\engine_test.dart: filters UI-only branches while preserving sink branches
+2026-10-23T03:46:55.0936718Z ✅ test\engine_test.dart: sink IDs and wire models round-trip deterministically
+2026-10-23T03:46:55.1077211Z ✅ test\engine_test.dart: try/catch and fold keep their distinct branches
+2026-10-23T03:46:55.1409947Z ✅ test\engine_test.dart: switch cases and default retain separate handles
+2026-10-23T03:46:55.1410739Z ✅ test\engine_test.dart: does not classify collection get or push as API/navigation
+2026-10-23T03:46:55.1565942Z ✅ test\engine_test.dart: detects logout and does not warn about handled API
+2026-10-23T03:46:55.1567100Z ✅ test\engine_test.dart: warns missing else but respects a following fallback sink
+2026-10-23T03:46:55.1722684Z ✅ test\engine_test.dart: unambiguous calls connect across methods; ambiguous calls do not
+2026-10-23T03:46:55.1724036Z ✅ test\engine_test.dart: typed state emissions connect to matching listeners
+2026-10-23T03:46:55.1878470Z ✅ test\engine_test.dart: dependency inspection categorizes direct dependencies
+2026-10-23T03:46:55.2035018Z ✅ test\engine_test.dart: parser errors stop scan with an actionable error
+2026-10-23T03:46:55.2036237Z ✅ test\engine_test.dart: translation honors annotation and HTTP expressions
+2026-10-23T03:46:55.3285299Z ✅ test\server_test.dart: graph needs authentication and health does not
+2026-10-23T03:46:55.3445210Z ✅ test\server_test.dart: websocket rejects missing token
+2026-10-23T03:46:55.3910282Z ✅ test\server_test.dart: broadcast strips payloads, URL credentials, and query secrets
+2026-10-23T03:46:55.3911079Z ✅ test\server_test.dart: malformed event reports error without crashing server
+2026-10-23T03:46:55.5785861Z ✅ test\engine_test.dart: exporters escape user labels and preserve graph structure
+2026-10-23T03:46:55.7036441Z ✅ test\engine_test.dart: deep trace refuses an uncommitted source file
+2026-10-23T03:46:56.0011876Z ✅ test\engine_test.dart: deep trace restores exact original bytes
+2026-10-23T03:46:56.0324786Z ✅ test\engine_test.dart: locally typed clients and annotated API declarations are detected
+2026-10-23T03:46:56.0326055Z ✅ test\engine_test.dart: BLoC event callbacks link dispatch to guarded state emissions
+2026-10-23T03:46:56.3136796Z ✅ test\engine_test.dart: deep trace preserves library directives and refuses to overwrite user edits
+2026-10-23T03:46:56.5168967Z ✅ test\engine_test.dart: deep trace refuses part files without changing source
+2026-10-23T03:46:56.5327750Z ✅ test\engine_test.dart: copyWith status predicates bridge to matching listeners
+2026-10-23T03:46:56.5329301Z ✅ test\engine_test.dart: notifier state assignments expose runtime-matchable state constructor names
+2026-10-23T03:46:56.5484347Z ✅ test\engine_test.dart: GoRouter paths and names resolve across source files
+2026-10-23T03:46:56.5641293Z ✅ test\engine_test.dart: Material named routes and custom widget destinations are linked
+2026-10-23T03:46:56.5642359Z ✅ test\engine_test.dart: UI-only loading emissions do not retain branches or warnings
+2026-10-23T03:46:56.5796251Z ✅ test\engine_test.dart: an API response leads to the subsequent business decision
+2026-10-23T03:46:56.5797627Z ✅ test\engine_test.dart: overlays have distinct kinds and preserve sequential links
+2026-10-23T03:46:56.5798964Z ✅ test\engine_test.dart: source contexts contain the exact full function once for multiple nodes
+2026-10-23T03:46:56.5951980Z ✅ test\engine_test.dart: nested GoRouter paths and named Material routes expose router metadata
+2026-10-23T03:46:56.6108499Z ✅ test\engine_test.dart: typed repository calls with colliding names return to caller decisions
+2026-10-23T03:46:56.6126083Z 
+2026-10-23T03:46:56.6126796Z 🎉 35 tests passed.
+2026-10-23T03:46:58.3934519Z Resolving dependencies...
+2026-10-23T03:46:58.4559875Z Downloading packages...
+2026-10-23T03:46:58.5810849Z   _fe_analyzer_shared 88.0.0 (110.0.0 available)
+2026-10-23T03:46:58.5811583Z   analyzer 8.1.1 (14.6.0 available)
+2026-10-23T03:46:58.5812092Z   async 2.13.0 (2.13.1 available)
+2026-10-23T03:46:58.5812619Z   clock 1.1.2 (1.1.3 available)
+2026-10-23T03:46:58.5813143Z   cupertino_icons 1.0.8 (2.0.0 available)
+2026-10-23T03:46:58.5813677Z   flutter_riverpod 2.6.1 (3.4.3 available)
+2026-10-23T03:46:58.5814273Z   material_color_utilities 0.13.0 (0.13.1 available)
+2026-10-23T03:46:58.5814911Z   package_config 2.2.0 (3.0.0 available)
+2026-10-23T03:46:58.5815399Z   platform 3.1.6 (3.2.0 available)
+2026-10-23T03:46:58.5815944Z   riverpod 2.6.1 (3.4.3 available)
+2026-10-23T03:46:58.5816257Z   shelf 1.4.2 (1.4.3 available)
+2026-10-23T03:46:58.5816596Z   shelf_static 1.1.3 (1.2.0 available)
+2026-10-23T03:46:58.5816922Z   shelf_web_socket 2.0.1 (3.0.0 available)
+2026-10-23T03:46:58.5817239Z   source_span 1.10.1 (1.10.2 available)
+2026-10-23T03:46:58.5817542Z   stack_trace 1.12.1 (1.12.2 available)
+2026-10-23T03:46:58.5817899Z   test_api 0.7.12 (0.7.15 available)
+2026-10-23T03:46:58.5818219Z   vm_service 15.0.0 (15.4.0 available)
+2026-10-23T03:46:58.5818555Z   web 1.1.1 (1.1.2 available)
+2026-10-23T03:46:58.5818807Z Got dependencies!
+2026-10-23T03:46:58.5819149Z 18 packages have newer versions incompatible with dependency constraints.
+2026-10-23T03:46:58.5819610Z Try `flutter pub outdated` for more information.
+2026-10-23T03:47:08.1960903Z Analyzing example...                                            
+2026-10-23T03:47:08.1962153Z No issues found! (ran in 7.5s)
+2026-10-23T03:47:10.0784100Z 
+2026-10-23T03:47:19.5251181Z ##[group]✅ Passing tests
+2026-10-23T03:47:19.5252459Z ✅ login success -> home -> logout
+2026-10-23T03:47:19.7360419Z ✅ failed login opens recoverable error dialog
+2026-10-23T03:47:19.7567673Z ##[endgroup]
+2026-10-23T03:47:19.7567897Z 
+2026-10-23T03:47:19.7568256Z 🎉 2 tests passed.
+2026-10-23T03:47:57.1572181Z Compiling lib\main.dart for the Web...                          
+2026-10-23T03:47:57.1573899Z Wasm dry run succeeded. Consider building and testing your application with the `--wasm` flag. See docs for more info: https://docs.flutter.dev/platform-integration/web/wasm
+2026-10-23T03:47:57.1575329Z Use --no-wasm-dry-run to disable these warnings.
+2026-10-23T03:47:58.8449334Z Font asset "CupertinoIcons.ttf" was tree-shaken, reducing it from 257628 to 1472 bytes (99.4% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+2026-10-23T03:47:58.8450940Z Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 7736 bytes (99.5% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+2026-10-23T03:47:59.1422746Z Compiling lib\main.dart for the Web...                             38.2s
+2026-10-23T03:47:59.1425127Z √ Built build\web
+2026-10-23T03:47:59.1904164Z ##[group]Run flutter build windows
+2026-10-23T03:47:59.1904568Z [36;1mflutter build windows[0m
+2026-10-23T03:47:59.1944028Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-23T03:47:59.1944413Z env:
+2026-10-23T03:47:59.1944932Z   FLUTTER_ROOT: C:\hostedtoolcache\windows\flutter\stable-3.47.7-x64/flutter
+2026-10-23T03:47:59.1945435Z   PUB_CACHE: C:\Users\runneradmin\AppData\Local\Pub\Cache
+2026-10-23T03:47:59.1945809Z ##[endgroup]
+2026-10-23T03:48:57.9752085Z Building Windows application...                                    57.1s
+2026-10-23T03:48:57.9780614Z √ Built build\windows\x64\runner\Release\flow_studio_example.exe
+2026-10-23T03:48:58.0878931Z ##[group]Run actions/upload-artifact@v4
+2026-10-23T03:48:58.0879327Z with:
+2026-10-23T03:48:58.0879592Z   name: checks-windows-2022-3.47.7
+2026-10-23T03:48:58.0879944Z   path: docs/progress/logs/3.47.7/
+2026-10-23T03:48:58.0880273Z   if-no-files-found: warn
+2026-10-23T03:48:58.0880568Z   compression-level: 6
+2026-10-23T03:48:58.0880856Z   overwrite: false
+2026-10-23T03:48:58.0881119Z   include-hidden-files: false
+2026-10-23T03:48:58.0881395Z env:
+2026-10-23T03:48:58.0881736Z   FLUTTER_ROOT: C:\hostedtoolcache\windows\flutter\stable-3.47.7-x64/flutter
+2026-10-23T03:48:58.0882269Z   PUB_CACHE: C:\Users\runneradmin\AppData\Local\Pub\Cache
+2026-10-23T03:48:58.0882647Z ##[endgroup]
+2026-10-23T03:48:58.2648103Z (node:6228) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-23T03:48:58.2648923Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-23T03:48:58.2747682Z With the provided path, there will be 12 files uploaded
+2026-10-23T03:48:58.2752652Z Artifact name is valid!
+2026-10-23T03:48:58.2755178Z Root directory input is valid!
+2026-10-23T03:48:58.5252025Z Beginning upload of artifact content to blob storage
+2026-10-23T03:48:58.5683753Z (node:6228) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-23T03:48:58.6673160Z Uploaded bytes 5003
+2026-10-23T03:48:58.6977021Z Finished uploading artifact content to blob storage!
+2026-10-23T03:48:58.6978913Z SHA256 digest of uploaded artifact zip is 1bd198c87e4e90c7cb8f86b4bc287ea82d5b86c674ed5a94d11bcfb1bdc22057
+2026-10-23T03:48:58.6981326Z Finalizing artifact upload
+2026-10-23T03:48:59.1315048Z Artifact checks-windows-2022-3.47.7.zip successfully finalized. Artifact ID 12477111444
+2026-10-23T03:48:59.1315922Z Artifact checks-windows-2022-3.47.7 has been successfully uploaded! Final size is 5003 bytes. Artifact ID is 12477111444
+2026-10-23T03:48:59.1324319Z Artifact download URL: https://github.com/qualife1291/flutter_flow_studio/actions/runs/39896626717/artifacts/12477111444
+2026-10-23T03:48:59.1692999Z Post job cleanup.
+2026-10-23T03:48:59.1697946Z ##[start-action display=Cache pub dependencies;id=__40fba486-1fe9-46a8-8c4a-9c42ab8f0f03.cache-pub]
+2026-10-23T03:48:59.4486612Z Post job cleanup.
+2026-10-23T03:48:59.6038591Z Cache hit occurred on the primary key flutter-pub-windows-stable-3.47.7-x64-abaf9c523780a608bd46686fd5e53740a07077f8-74454c6f36d38e9bb172c0676ad47df7debc6253477534e482bbaa118dc7fa76, not saving cache.
+2026-10-23T03:48:59.6115883Z ##[end-action id=__40fba486-1fe9-46a8-8c4a-9c42ab8f0f03.cache-pub;outcome=success;conclusion=success;duration_ms=441]
+2026-10-23T03:48:59.6118822Z ##[start-action display=Cache Flutter;id=__40fba486-1fe9-46a8-8c4a-9c42ab8f0f03.cache-flutter]
+2026-10-23T03:48:59.6243632Z Post job cleanup.
+2026-10-23T03:48:59.7726763Z Cache hit occurred on the primary key flutter-windows-stable-3.47.7-x64-abaf9c523780a608bd46686fd5e53740a07077f8, not saving cache.
+2026-10-23T03:48:59.7808902Z ##[end-action id=__40fba486-1fe9-46a8-8c4a-9c42ab8f0f03.cache-flutter;outcome=success;conclusion=success;duration_ms=168]
+2026-10-23T03:48:59.7974687Z Post job cleanup.
+2026-10-23T03:48:59.9802087Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-23T03:49:00.0066386Z git version 2.56.0.windows.2
+2026-10-23T03:49:00.0137032Z Temporarily overriding HOME='D:\a\_temp\4d37aad0-bf38-4b06-8fd4-c2125b434f92' before making global git config changes
+2026-10-23T03:49:00.0138675Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T03:49:00.0149517Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\flutter_flow_studio\flutter_flow_studio
+2026-10-23T03:49:00.0540375Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T03:49:00.0842023Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-23T03:49:00.5525226Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T03:49:00.5778880Z http.https://github.com/.extraheader
+2026-10-23T03:49:00.5812133Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-10-23T03:49:00.6091010Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-23T03:49:01.0545176Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T03:49:01.0830177Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-23T03:49:01.5376015Z Cleaning up orphan processes
+2026-10-23T03:49:01.5556901Z Terminate orphan process: pid (4760) (vctip)
+2026-10-23T03:49:01.5644969Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

@@ -28,8 +28,8 @@ Try `flutter pub outdated` for more information.
 Publishing flutter_flow_studio 0.1.0 to https://pub.dev:
 ├── CHANGELOG.md (1 KB)
 ├── LICENSE (1 KB)
-├── README.md (6 KB)
-├── SECURITY.md (1 KB)
+├── README.md (8 KB)
+├── SECURITY.md (2 KB)
 ├── analysis_options.yaml (<1 KB)
 ├── bin
 │   └── flutter_flow_studio.dart (3 KB)
@@ -174,10 +174,10 @@ Publishing flutter_flow_studio 0.1.0 to https://pub.dev:
 │       ├── analyzer
 │       │   ├── adapters
 │       │   │   ├── network_adapters.dart (<1 KB)
-│       │   │   ├── router_adapters.dart (4 KB)
+│       │   │   ├── router_adapters.dart (5 KB)
 │       │   │   └── state_adapters.dart (<1 KB)
 │       │   ├── ast_facade.dart (<1 KB)
-│       │   ├── ast_pipeline.dart (20 KB)
+│       │   ├── ast_pipeline.dart (23 KB)
 │       │   ├── backward_slicer.dart (4 KB)
 │       │   ├── call_resolver.dart (2 KB)
 │       │   ├── control_flow_linker.dart (1 KB)
@@ -186,7 +186,7 @@ Publishing flutter_flow_studio 0.1.0 to https://pub.dev:
 │       │   ├── flow_health_auditor.dart (<1 KB)
 │       │   ├── human_readable_translator.dart (1 KB)
 │       │   ├── project_inspector.dart (3 KB)
-│       │   └── sink_detector_visitor.dart (3 KB)
+│       │   └── sink_detector_visitor.dart (4 KB)
 │       ├── runtime
 │       │   ├── bloc_observer.dart (1 KB)
 │       │   ├── dio_interceptor.dart (1 KB)
@@ -200,7 +200,7 @@ Publishing flutter_flow_studio 0.1.0 to https://pub.dev:
 │       │   ├── platform_web.dart (<1 KB)
 │       │   └── riverpod_observer.dart (<1 KB)
 │       ├── schema
-│       │   ├── graph_models.dart (3 KB)
+│       │   ├── graph_models.dart (4 KB)
 │       │   ├── project_info.dart (<1 KB)
 │       │   └── ws_protocol.dart (1 KB)
 │       ├── server
@@ -210,18 +210,18 @@ Publishing flutter_flow_studio 0.1.0 to https://pub.dev:
 │       └── web_assets
 │           ├── THIRD_PARTY_NOTICES.txt (46 KB)
 │           ├── assets
-│           │   ├── elk-api-HGEeuK2k.js (4 KB)
+│           │   ├── elk-api-C4mtx_Id.js (4 KB)
 │           │   ├── elk-worker.min-BqREE3LP.js (1 MB)
-│           │   ├── index-D24oAnru.css (28 KB)
-│           │   └── index-D2nlsjcU.js (440 KB)
-│           ├── demo.flow.json (24 KB)
+│           │   ├── index-BdNZsG3y.css (30 KB)
+│           │   └── index-BrU-YqSh.js (456 KB)
+│           ├── demo.flow.json (29 KB)
 │           ├── favicon.svg (<1 KB)
 │           └── index.html (<1 KB)
 ├── pubspec.yaml (<1 KB)
 └── test
     └── runtime_test.dart (4 KB)
 
-Total compressed archive size: 758 KB.
+Total compressed archive size: 768 KB.
 Validating package...
 The server may enforce additional checks.
 

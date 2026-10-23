@@ -1,0 +1,8 @@
+
+::group::✅ Passing tests
+✅ disabled runtime does nothing until explicitly initialized
+✅ debug SDK queues and delivers probes through a real WebSocket without payload secrets
+✅ navigator observer sees page, dialog, bottom sheet, pop and replacement
+::endgroup::
+
+🎉 3 tests passed.

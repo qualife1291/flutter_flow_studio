@@ -1,0 +1,7 @@
+
+::group::✅ Passing tests
+✅ login success -> home -> logout
+✅ failed login opens recoverable error dialog
+::endgroup::
+
+🎉 2 tests passed.
