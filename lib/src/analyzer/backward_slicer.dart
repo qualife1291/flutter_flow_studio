@@ -11,6 +11,44 @@ class DecisionChainStep {
     this.branch,
     this.branches,
   );
+  String technicalLabel(String branch) {
+    if (branch == 'true_branch') return 'true';
+    if (branch == 'false_branch') return 'false';
+    if (branch == 'try_branch') return 'try';
+    if (branch == 'finally_branch') return 'finally';
+    if (node is TryStatement && branch.startsWith('catch_')) {
+      final index = int.parse(branch.substring(6));
+      final clause = (node as TryStatement).catchClauses[index];
+      return 'catch (${clause.exceptionType?.toSource() ?? 'Exception'})';
+    }
+    if (node is SwitchStatement) {
+      final index = int.parse(branch.substring(5));
+      final member = (node as SwitchStatement).members[index];
+      if (member is SwitchDefault) return 'default';
+      if (member is SwitchCase) return 'case ${member.expression.toSource()}';
+      if (member is SwitchPatternCase)
+        return 'case ${member.guardedPattern.toSource()}';
+    }
+    if (branch == 'branch_0') return 'Failure / Left';
+    if (branch == 'branch_1') return 'Success / Right';
+    return branch;
+  }
+
+  String businessLabel(String branch) {
+    if (branch == 'true_branch') return 'Hợp lệ';
+    if (branch == 'false_branch') return 'Không hợp lệ';
+    if (branch == 'try_branch') return 'Thực hiện';
+    if (branch.startsWith('catch_') || branch == 'error') return 'Có lỗi';
+    if (branch == 'finally_branch') return 'Hoàn tất';
+    if (branch == 'branch_0' || branch == 'failure') return 'Thất bại';
+    if (branch == 'branch_1' || branch == 'success') return 'Thành công';
+    if (branch == 'loading') return 'Đang tải';
+    if (branch == 'data') return 'Có dữ liệu';
+    final label = technicalLabel(branch);
+    return label == 'default'
+        ? 'Trường hợp khác'
+        : label.replaceFirst('case ', 'Trường hợp ');
+  }
 }
 
 class BackwardControlFlowSlicer {

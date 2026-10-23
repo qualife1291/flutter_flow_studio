@@ -10,6 +10,8 @@ class Sink {
 }
 
 class SinkDetectorVisitor extends RecursiveAstVisitor<void> {
+  final Set<String> routedWidgets;
+  SinkDetectorVisitor({this.routedWidgets = const {}});
   final sinks = <Sink>[];
   final Set<String> networkTargets = {};
   @override
@@ -41,6 +43,7 @@ class SinkDetectorVisitor extends RecursiveAstVisitor<void> {
     if (screenBases.contains(base) &&
         (RegExp(r'(Screen|Page|View)$').hasMatch(node.name.lexeme) ||
             node.metadata.any((a) => a.name.name == 'RoutePage') ||
+            routedWidgets.contains(node.name.lexeme) ||
             RegExp(
               '(?:home:|builder:)[^;{}]*\\b${node.name.lexeme}\\s*\\(',
             ).hasMatch(node.root.toSource()))) {

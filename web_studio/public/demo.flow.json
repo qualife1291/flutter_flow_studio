@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-22T18:08:25.796779Z",
+  "generatedAt": "2026-10-23T00:54:07.661241Z",
   "project": {
     "projectRoot": "/workspace/flutter_flow_studio/example",
     "projectName": "flow_studio_example",
-    "description": "A new Flutter project.",
+    "description": "Deterministic login, API branching, error dialog and logout example for Flow Studio.",
     "version": "1.0.0+1",
     "flutterSdkVersion": "3.41.9",
     "dartSdkConstraint": ">=3.8.0 <4.0.0",
@@ -415,7 +415,7 @@
       "kind": "ACTION",
       "featureGroup": "app",
       "technicalTitle": "HomeScreen.logout()",
-      "businessTitle": "Home Screen.logout()",
+      "businessTitle": "Đăng xuất",
       "sourceLocation": {
         "filePath": "lib/main.dart",
         "line": 118,
@@ -428,7 +428,7 @@
       "kind": "ACTION",
       "featureGroup": "app",
       "technicalTitle": "HomeScreen.build()",
-      "businessTitle": "Home Screen.build()",
+      "businessTitle": "build",
       "sourceLocation": {
         "filePath": "lib/main.dart",
         "line": 129,
@@ -441,7 +441,7 @@
       "kind": "SCREEN",
       "featureGroup": "app",
       "technicalTitle": "LoginScreen",
-      "businessTitle": "Login Screen",
+      "businessTitle": "Màn hình Đăng nhập",
       "sourceLocation": {
         "filePath": "lib/main.dart",
         "line": 23,
@@ -449,7 +449,10 @@
         "codeSnippet": "}\n\nclass LoginScreen extends StatefulWidget {\n  const LoginScreen({super.key});\n  @override\n  State<LoginScreen> createState() => _LoginScreenState();\n}\n\nclass _LoginScreenState extends State<LoginScreen> {\n  final dio = Dio("
       },
       "routeInfo": {
-        "routePath": "LoginScreen",
+        "routePath": "/",
+        "aliases": [
+          "/"
+        ],
         "isInitialRoute": true,
         "parameters": []
       }
@@ -459,7 +462,7 @@
       "kind": "SCREEN",
       "featureGroup": "app",
       "technicalTitle": "HomeScreen",
-      "businessTitle": "Home Screen",
+      "businessTitle": "Màn hình Trang chủ",
       "sourceLocation": {
         "filePath": "lib/main.dart",
         "line": 116,
@@ -468,6 +471,7 @@
       },
       "routeInfo": {
         "routePath": "HomeScreen",
+        "aliases": [],
         "isInitialRoute": false,
         "parameters": []
       }
@@ -477,7 +481,7 @@
       "kind": "API",
       "featureGroup": "app",
       "technicalTitle": "dio.post(/api/v1/login)",
-      "businessTitle": "dio.post(/api/v1/login)",
+      "businessTitle": "Gọi API POST /api/v1/login",
       "sourceLocation": {
         "filePath": "lib/main.dart",
         "line": 39,
@@ -495,7 +499,7 @@
       "kind": "DECISION",
       "featureGroup": "app",
       "technicalTitle": "try / catch",
-      "businessTitle": "try / catch",
+      "businessTitle": "Thực hiện thao tác và xử lý lỗi",
       "sourceLocation": {
         "filePath": "lib/main.dart",
         "line": 38,
@@ -505,22 +509,22 @@
       "decisionInfo": {
         "kind": "TRY_CATCH",
         "rawExpression": "try / catch",
-        "humanReadableRule": "try / catch",
+        "humanReadableRule": "Thực hiện thao tác và xử lý lỗi",
         "branches": [
           {
             "branchId": "try_branch",
-            "technicalLabel": "try_branch",
-            "businessLabel": "try_branch"
+            "technicalLabel": "try",
+            "businessLabel": "Thực hiện"
           },
           {
             "branchId": "catch_0",
-            "technicalLabel": "catch_0",
-            "businessLabel": "catch_0"
+            "technicalLabel": "catch (Exception)",
+            "businessLabel": "Có lỗi"
           },
           {
             "branchId": "finally_branch",
-            "technicalLabel": "finally_branch",
-            "businessLabel": "finally_branch"
+            "technicalLabel": "finally",
+            "businessLabel": "Hoàn tất"
           }
         ]
       }
@@ -530,7 +534,7 @@
       "kind": "ACTION",
       "featureGroup": "app",
       "technicalTitle": "Navigator.of(context).push()",
-      "businessTitle": "Navigator.of(context).push()",
+      "businessTitle": "Chuyển màn hình",
       "sourceLocation": {
         "filePath": "lib/main.dart",
         "line": 42,
@@ -557,12 +561,12 @@
         "branches": [
           {
             "branchId": "true_branch",
-            "technicalLabel": "true_branch",
+            "technicalLabel": "true",
             "businessLabel": "Hợp lệ"
           },
           {
             "branchId": "false_branch",
-            "technicalLabel": "false_branch",
+            "technicalLabel": "false",
             "businessLabel": "Không hợp lệ"
           }
         ]
@@ -573,7 +577,7 @@
       "kind": "DIALOG",
       "featureGroup": "app",
       "technicalTitle": "LoginErrorDialog()",
-      "businessTitle": "Login Error Dialog()",
+      "businessTitle": "Hiển thị thông báo",
       "sourceLocation": {
         "filePath": "lib/main.dart",
         "line": 49,
@@ -591,7 +595,7 @@
       "kind": "DIALOG",
       "featureGroup": "app",
       "technicalTitle": "showSnackBar()",
-      "businessTitle": "show Snack Bar()",
+      "businessTitle": "Hiển thị thông báo",
       "sourceLocation": {
         "filePath": "lib/main.dart",
         "line": 66,
@@ -623,12 +627,12 @@
         "branches": [
           {
             "branchId": "true_branch",
-            "technicalLabel": "true_branch",
+            "technicalLabel": "true",
             "businessLabel": "Hợp lệ"
           },
           {
             "branchId": "false_branch",
-            "technicalLabel": "false_branch",
+            "technicalLabel": "false",
             "businessLabel": "Không hợp lệ"
           }
         ]
@@ -639,7 +643,7 @@
       "kind": "ACTION",
       "featureGroup": "app",
       "technicalTitle": "Navigator.of(context).pushAndRemoveUntil()",
-      "businessTitle": "Navigator.of(context).push And Remove Until()",
+      "businessTitle": "Chuyển màn hình",
       "sourceLocation": {
         "filePath": "lib/main.dart",
         "line": 120,
@@ -652,7 +656,7 @@
       "kind": "LOGOUT",
       "featureGroup": "app",
       "technicalTitle": ".logout()",
-      "businessTitle": ".logout()",
+      "businessTitle": "Đăng xuất",
       "sourceLocation": {
         "filePath": "lib/main.dart",
         "line": 134,
@@ -686,37 +690,49 @@
       "id": "edge:decision:lib/main.dart:38:1159:try_branch->api:lib/main.dart:39:1194",
       "source": "decision:lib/main.dart:38:1159",
       "target": "api:lib/main.dart:39:1194",
-      "sourceHandle": "try_branch"
+      "sourceHandle": "try_branch",
+      "technicalLabel": "try",
+      "businessLabel": "Thực hiện"
     },
     {
       "id": "edge:decision:lib/main.dart:38:1159:try_branch->decision:lib/main.dart:41:1277",
       "source": "decision:lib/main.dart:38:1159",
       "target": "decision:lib/main.dart:41:1277",
-      "sourceHandle": "try_branch"
+      "sourceHandle": "try_branch",
+      "technicalLabel": "try",
+      "businessLabel": "Thực hiện"
     },
     {
       "id": "edge:decision:lib/main.dart:41:1277:true_branch->action:lib/main.dart:42:1319",
       "source": "decision:lib/main.dart:41:1277",
       "target": "action:lib/main.dart:42:1319",
-      "sourceHandle": "true_branch"
+      "sourceHandle": "true_branch",
+      "technicalLabel": "true",
+      "businessLabel": "Hợp lệ"
     },
     {
       "id": "edge:decision:lib/main.dart:41:1277:false_branch->dialog:lib/main.dart:49:1546",
       "source": "decision:lib/main.dart:41:1277",
       "target": "dialog:lib/main.dart:49:1546",
-      "sourceHandle": "false_branch"
+      "sourceHandle": "false_branch",
+      "technicalLabel": "false",
+      "businessLabel": "Không hợp lệ"
     },
     {
       "id": "edge:decision:lib/main.dart:38:1159:catch_0->decision:lib/main.dart:65:2060",
       "source": "decision:lib/main.dart:38:1159",
       "target": "decision:lib/main.dart:65:2060",
-      "sourceHandle": "catch_0"
+      "sourceHandle": "catch_0",
+      "technicalLabel": "catch (Exception)",
+      "businessLabel": "Có lỗi"
     },
     {
       "id": "edge:decision:lib/main.dart:65:2060:true_branch->dialog:lib/main.dart:66:2083",
       "source": "decision:lib/main.dart:65:2060",
       "target": "dialog:lib/main.dart:66:2083",
-      "sourceHandle": "true_branch"
+      "sourceHandle": "true_branch",
+      "technicalLabel": "true",
+      "businessLabel": "Hợp lệ"
     },
     {
       "id": "edge:action:lib/main.dart:118:3443:null->action:lib/main.dart:120:3524",
@@ -732,8 +748,8 @@
       "id": "edge:action:lib/main.dart:129:3745:null->action:lib/main.dart:118:3443",
       "source": "action:lib/main.dart:129:3745",
       "target": "action:lib/main.dart:118:3443",
-      "technicalLabel": "calls logout",
-      "businessLabel": "calls logout"
+      "technicalLabel": "calls HomeScreen.logout",
+      "businessLabel": "calls HomeScreen.logout"
     },
     {
       "id": "edge:action:lib/main.dart:42:1319:null->screen:lib/main.dart:116:3365",
@@ -744,6 +760,11 @@
       "id": "edge:action:lib/main.dart:120:3524:null->screen:lib/main.dart:23:702",
       "source": "action:lib/main.dart:120:3524",
       "target": "screen:lib/main.dart:23:702"
+    },
+    {
+      "id": "edge:api:lib/main.dart:39:1194:null->decision:lib/main.dart:41:1277",
+      "source": "api:lib/main.dart:39:1194",
+      "target": "decision:lib/main.dart:41:1277"
     }
   ],
   "healthIssues": [

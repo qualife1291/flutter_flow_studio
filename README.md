@@ -73,7 +73,7 @@ FlowProbe.hit('decision-id-from-inspector:true_branch');
 
 ## Reading the graph
 
-Static nodes use six semantic colors. Green is reserved for executed or inferred paths. `Inferred` means a unique static path could connect two observed events; it **does not** increase confirmed branch coverage. `Tested` requires a matching `BRANCH_HIT`. `Untested` has no probe evidence. Ambiguous paths are not inferred. Timeline history is bounded to 2,000 events; reconnecting runtimes retain a bounded offline queue of 256 events.
+Static nodes use six semantic colors. Green is reserved for executed or inferred paths. `Inferred` means a unique static path could connect two observed events; it **does not** increase confirmed branch coverage. `Tested` requires a matching `BRANCH_HIT`. `Untested` has no probe evidence. Ambiguous paths are not inferred. “Theo bước” follows the currently matched runtime node; manually panning pauses it. “Tiêu điểm” highlights the selected neighborhood and observed path. Reduced-motion preferences disable camera animation and edge animation. Confirmed edges and timeline entries show their actual sequence numbers. Timeline history is bounded to 2,000 events; reconnecting runtimes retain a bounded offline queue of 256 events.
 
 `// Flow: ...` or `/// @flow: ...` before a declaration/condition supplies a business label. Otherwise the translator expands identifiers and common HTTP/null/boolean expressions. This is a syntax-based analyzer; read the [limitations](docs/limitations.md) before interpreting its graph as a complete call graph.
 

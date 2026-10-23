@@ -17,7 +17,11 @@ export function matchEvent(
     candidates = graph.nodes.filter(
       (n) =>
         n.kind === "SCREEN" &&
-        (n.routeInfo?.routePath === event.routeName ||
+        ((n.routeInfo &&
+          routeMatches(n.routeInfo.routePath, event.routeName!)) ||
+          n.routeInfo?.aliases?.some((alias) =>
+            routeMatches(alias, event.routeName!),
+          ) ||
           n.technicalTitle === event.routeName ||
           (event.routeName === "/" && n.routeInfo?.isInitialRoute)),
     );
@@ -93,4 +97,16 @@ export function coverage(graph: FlowGraphPayload, confirmed: Set<string>) {
       ? Math.round((tested / branches.length) * 100)
       : null,
   };
+}
+
+function routeMatches(pattern: string, name: string) {
+  const expression = pattern
+    .split("/")
+    .map((part) =>
+      part.startsWith(":")
+        ? "[^/]+"
+        : part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+    )
+    .join("/");
+  return new RegExp(`^${expression}$`).test(name);
 }

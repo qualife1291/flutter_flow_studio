@@ -104,9 +104,10 @@ export const useFlowStore = create<State>((set, get) => ({
       previous: matched
         ? { ...s.previous, [event.sessionId]: matched }
         : s.previous,
-      error: matched
-        ? ""
-        : "Không ánh xạ được bước này. Dùng FlowProbe với ID node để đánh dấu chính xác.",
+      error:
+        matched || event.type === "SESSION_CONNECTED"
+          ? ""
+          : "Không ánh xạ được bước này. Dùng FlowProbe với ID node để đánh dấu chính xác.",
     });
   },
 }));

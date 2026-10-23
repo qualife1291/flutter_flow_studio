@@ -32,6 +32,14 @@ test("graph, search, modes, inspector keyboard and export modal", async ({
   page,
 }) => {
   await check(page, "canvas");
+  await page.getByRole("button", { name: "Theo bước", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "Theo bước", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("button", { name: "Tiêu điểm", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "Tiêu điểm", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("textbox", { name: "Tìm node" }).fill("login");
   await page.getByRole("button", { name: "Xóa tìm kiếm" }).click();
   await page.locator(".flow-node").first().click();

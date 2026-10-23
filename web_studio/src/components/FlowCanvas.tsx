@@ -39,13 +39,17 @@ const icons = {
   DIALOG: MessageSquare,
   LOGOUT: LogOut,
 };
-type StudioNode = Node<{ node: FlowNodeData; mode: RoleViewMode }>;
+type StudioNode = Node<{
+  node: FlowNodeData;
+  mode: RoleViewMode;
+  highlighted?: boolean;
+}>;
 function FlowNode({ data, selected }: NodeProps<StudioNode>) {
   const n = data.node,
     Icon = icons[n.kind];
   return (
     <article
-      className={`flow-node ${selected ? "selected" : ""}`}
+      className={`flow-node ${selected ? "selected" : ""} ${data.highlighted ? "spotlight-node" : ""}`}
       style={{ borderColor: colors[n.kind] }}
     >
       <Handle type="target" position={Position.Left} />
@@ -83,7 +87,9 @@ function FlowNode({ data, selected }: NodeProps<StudioNode>) {
 }
 function FlowEdge(props: EdgeProps) {
   const [path, x, y] = getBezierPath(props);
-  const status = props.data?.status as string | undefined;
+  const status = [props.data?.branchLabel, props.data?.status]
+    .filter((v) => typeof v === "string" && v)
+    .join(" · ");
   return (
     <>
       <BaseEdge
@@ -119,6 +125,11 @@ export function FlowCanvas({
   selected,
   onSelect,
   fitKey,
+  follow,
+  followNode,
+  spotlight,
+  branchSteps,
+  onManualPan,
 }: {
   graph: FlowGraphPayload;
   mode: RoleViewMode;
@@ -129,6 +140,11 @@ export function FlowCanvas({
   selected: string | null;
   onSelect: (id: string | null) => void;
   fitKey: number;
+  follow: boolean;
+  followNode?: string;
+  spotlight: boolean;
+  branchSteps: Map<string, number>;
+  onManualPan: () => void;
 }) {
   const [positions, setPositions] = useState(
     new Map<string, { x: number; y: number }>(),
@@ -157,12 +173,46 @@ export function FlowCanvas({
       return () => clearTimeout(t);
     }
   }, [positions, fitKey, flow]);
+  const focusedNodes = useMemo(() => {
+    const ids = new Set<string>();
+    if (selected && graph.nodes.some((n) => n.id === selected))
+      ids.add(selected);
+    if (followNode) ids.add(followNode);
+    for (const edge of graph.edges)
+      if (
+        active.has(edge.id) ||
+        edge.source === selected ||
+        edge.target === selected
+      ) {
+        ids.add(edge.source);
+        ids.add(edge.target);
+      }
+    return ids;
+  }, [graph, selected, active, followNode]);
+  useEffect(() => {
+    if (
+      !follow ||
+      !followNode ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    )
+      return;
+    const position = positions.get(followNode);
+    if (position)
+      void flow.setCenter(position.x + 130, position.y + 55, {
+        zoom: 1,
+        duration: 200,
+      });
+  }, [follow, followNode, positions, flow]);
   const nodes = useMemo<StudioNode[]>(
     () =>
       graph.nodes.map((n, i) => ({
         id: n.id,
         type: "studio",
-        data: { node: n, mode },
+        data: {
+          node: n,
+          mode,
+          highlighted: spotlight && focusedNodes.has(n.id),
+        },
         position: positions.get(n.id) ?? {
           x: (i % 4) * 320,
           y: Math.floor(i / 4) * 160,
@@ -179,7 +229,7 @@ export function FlowCanvas({
         },
         ariaLabel: `${n.kind}: ${mode === "DEV" ? n.technicalTitle : n.businessTitle}`,
       })),
-    [graph, positions, mode, search, selected],
+    [graph, positions, mode, search, selected, spotlight, focusedNodes],
   );
   const edges = useMemo<Edge[]>(
     () =>
@@ -188,7 +238,7 @@ export function FlowCanvas({
           !!e.sourceHandle &&
           confirmed.has(branchKey(e.source, e.sourceHandle));
         const status = tested
-          ? "Tested ✓"
+          ? `${branchSteps.has(branchKey(e.source, e.sourceHandle!)) ? `#${branchSteps.get(branchKey(e.source, e.sourceHandle!))} · ` : ""}Tested ✓`
           : inferred.has(e.id)
             ? "Inferred"
             : mode === "TESTER" && e.sourceHandle
@@ -197,7 +247,10 @@ export function FlowCanvas({
         return {
           ...e,
           type: "studio",
-          data: { status },
+          data: {
+            status,
+            branchLabel: mode === "DEV" ? e.technicalLabel : e.businessLabel,
+          },
           label: undefined,
           style: {
             stroke:
@@ -214,10 +267,14 @@ export function FlowCanvas({
             !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
         };
       }),
-    [graph, mode, confirmed, inferred, active],
+    [graph, mode, confirmed, inferred, active, branchSteps],
   );
   return (
-    <section className="canvas" aria-label="Bản đồ luồng">
+    <section
+      className="canvas"
+      aria-label="Bản đồ luồng"
+      aria-busy={positions.size === 0 && !error}
+    >
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -227,6 +284,10 @@ export function FlowCanvas({
         onPaneClick={() => onSelect(null)}
         fitView
         nodesDraggable={false}
+        nodesConnectable={false}
+        onMoveStart={(event) => {
+          if (event) onManualPan();
+        }}
         minZoom={0.1}
         maxZoom={2}
         colorMode="dark"

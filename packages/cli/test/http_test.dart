@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 import 'package:test/test.dart';
@@ -28,4 +29,24 @@ void main() {
       await server.close(force: true);
     }
   });
+
+  test(
+    'capture lifecycle preserves global overrides when called inside an HTTP zone',
+    () {
+      final previous = Zone.root.run(() => HttpOverrides.current);
+      final local = _LocalOverrides();
+      HttpOverrides.runWithHttpOverrides(() {
+        installHttpCapture((kind, data) {});
+        expect(HttpOverrides.current, same(local));
+        expect(
+          Zone.root.run(() => HttpOverrides.current),
+          isNot(same(previous)),
+        );
+        uninstallHttpCapture();
+        expect(Zone.root.run(() => HttpOverrides.current), same(previous));
+      }, local);
+    },
+  );
 }
+
+class _LocalOverrides extends HttpOverrides {}

@@ -647,3 +647,18 @@ dialog > .primary {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+.spotlight-node {
+  outline: 2px solid #93c5fd;
+  outline-offset: 5px;
+  box-shadow: 0 0 30px #3b82f64d;
+}
+.canvas-toolbar {
+  flex-wrap: wrap;
+}
+.coverage {
+  position: relative;
+  top: auto;
+  left: auto;
+  margin: 12px 20px;
+  flex-shrink: 0;
+}

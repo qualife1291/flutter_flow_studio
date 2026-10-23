@@ -1,0 +1,1 @@
+PASS: real WebSocket event moved follow camera; spotlight highlighted context; reduced-motion prevented subsequent camera movement and edge animations.

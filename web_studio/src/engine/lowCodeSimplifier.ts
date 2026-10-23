@@ -6,6 +6,22 @@ export function simplify(graph: FlowGraphPayload): FlowGraphPayload {
       .flatMap((e) => [e.source])
       .filter((id) => graph.nodes.find((n) => n.id === id)?.kind === "ACTION"),
   );
+  for (const node of graph.nodes) {
+    if (
+      node.kind === "ACTION" &&
+      (/\.(build|initState|dispose)\(\)$/.test(node.technicalTitle) ||
+        /\w*(Repository|DataSource|Service|Api|API|Client)\./.test(
+          node.technicalTitle,
+        ))
+    )
+      hidden.add(node.id);
+    if (
+      node.kind === "DECISION" &&
+      (/^!?mounted$/.test(node.decisionInfo?.rawExpression ?? "") ||
+        graph.edges.some((e) => e.target === node.id && e.isStateBridge))
+    )
+      hidden.add(node.id);
+  }
   const edges = [...graph.edges];
   for (const id of hidden)
     for (const incoming of edges.filter((e) => e.target === id))
@@ -20,6 +36,7 @@ export function simplify(graph: FlowGraphPayload): FlowGraphPayload {
       }
   return {
     ...graph,
+    healthIssues: graph.healthIssues.filter((i) => !hidden.has(i.nodeId)),
     nodes: graph.nodes.filter((n) => !hidden.has(n.id)),
     edges: edges.filter((e) => !hidden.has(e.source) && !hidden.has(e.target)),
   };

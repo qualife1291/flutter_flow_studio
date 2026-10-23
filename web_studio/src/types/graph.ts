@@ -58,6 +58,7 @@ export interface FlowNodeData {
 
   // Thuộc tính chuyên biệt cho từng loại Node:
   routeInfo?: {
+    aliases?: string[];
     routePath: string; // VD: "/login", "/home/product/:id"
     isInitialRoute: boolean;
     parameters: string[];

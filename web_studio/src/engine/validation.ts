@@ -71,7 +71,11 @@ export function validGraph(value: unknown): value is FlowGraphPayload {
             string(n.apiInfo.method) &&
             string(n.apiInfo.endpoint))) &&
         (!n.routeInfo ||
-          (object(n.routeInfo) && string(n.routeInfo.routePath))) &&
+          (object(n.routeInfo) &&
+            string(n.routeInfo.routePath) &&
+            (n.routeInfo.aliases == null ||
+              (Array.isArray(n.routeInfo.aliases) &&
+                n.routeInfo.aliases.every(string))))) &&
         (!n.dialogInfo ||
           (object(n.dialogInfo) && string(n.dialogInfo.widgetName))),
     ) &&

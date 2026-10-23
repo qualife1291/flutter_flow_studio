@@ -244,3 +244,63 @@ it("matches generic runtime state names to static emissions", () => {
     ),
   ).toBe("state");
 });
+
+it("maps configured route names and parameterized paths without guessing another screen", () => {
+  const g = {
+    ...graph,
+    nodes: [
+      {
+        ...nodes[0],
+        routeInfo: {
+          routePath: "/home/:id",
+          isInitialRoute: false,
+          parameters: ["id"],
+          aliases: ["home"],
+        },
+      },
+    ],
+  };
+  expect(matchEvent(g, event(1, { routeName: "/home/42" }))).toBe("start");
+  expect(matchEvent(g, event(1, { routeName: "home" }))).toBe("start");
+  expect(matchEvent(g, event(1, { routeName: "/home" }))).toBeUndefined();
+});
+
+it("session handshake does not report an unmapped runtime failure", () => {
+  const s = useFlowStore.getState();
+  s.reset();
+  s.setGraph(graph);
+  s.receive(event(1, { type: "SESSION_CONNECTED" }));
+  expect(useFlowStore.getState().error).toBe("");
+});
+
+it("low-code hides build and repository plumbing while preserving the business path", () => {
+  const g = {
+    ...graph,
+    nodes: [
+      nodes[0],
+      {
+        ...nodes[0],
+        id: "build",
+        kind: "ACTION" as const,
+        technicalTitle: "LoginScreen.build()",
+      },
+      {
+        ...nodes[0],
+        id: "repo",
+        kind: "ACTION" as const,
+        technicalTitle: "AuthRepository.login()",
+      },
+      nodes[2],
+    ],
+    edges: [
+      { id: "1", source: "start", target: "build" },
+      { id: "2", source: "build", target: "repo" },
+      { id: "3", source: "repo", target: "end" },
+    ],
+  };
+  const simple = simplify(g);
+  expect(simple.nodes.map((n) => n.id)).toEqual(["start", "end"]);
+  expect(
+    simple.edges.some((e) => e.source === "start" && e.target === "end"),
+  ).toBe(true);
+});

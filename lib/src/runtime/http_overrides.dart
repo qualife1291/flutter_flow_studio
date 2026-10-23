@@ -6,13 +6,16 @@ typedef EmitHttp = void Function(String, Map<String, dynamic>);
 FlowStudioHttpOverrides? _installed;
 void installHttpCapture(EmitHttp emit) {
   if (_installed != null) return;
-  _installed = FlowStudioHttpOverrides(HttpOverrides.current, emit);
+  _installed = FlowStudioHttpOverrides(
+    Zone.root.run(() => HttpOverrides.current),
+    emit,
+  );
   HttpOverrides.global = _installed;
 }
 
 void uninstallHttpCapture() {
   if (_installed == null) return;
-  if (identical(HttpOverrides.current, _installed))
+  if (identical(Zone.root.run(() => HttpOverrides.current), _installed))
     HttpOverrides.global = _installed!.previous;
   _installed = null;
 }

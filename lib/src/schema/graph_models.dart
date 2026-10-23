@@ -44,6 +44,7 @@ class FlowEdgeData extends WireModel {
     required String target,
     String? sourceHandle,
     String? label,
+    String? businessLabel,
     bool stateBridge = false,
   }) : super({
          'id': 'edge:$source:$sourceHandle->$target',
@@ -52,7 +53,7 @@ class FlowEdgeData extends WireModel {
          if (sourceHandle != null) 'sourceHandle': sourceHandle,
          if (label != null) ...{
            'technicalLabel': label,
-           'businessLabel': label,
+           'businessLabel': businessLabel ?? label,
          },
          if (stateBridge) 'isStateBridge': true,
        });

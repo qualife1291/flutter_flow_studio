@@ -1,3 +1,4 @@
+import 'ast_pipeline.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:analyzer/dart/ast/ast.dart';
@@ -11,7 +12,15 @@ class DeepTraceInstrumenter {
   final Map<String, String> _originals = {};
   final Map<String, String> _instrumented = {};
   final Map<String, String> _backups = {};
-  void instrument(String root) {
+  void instrument(String root, {Set<String>? decisionIds}) {
+    final allowedDecisions =
+        decisionIds ??
+        AstPipeline()
+            .scan(root)
+            .nodes
+            .where((n) => n.kind == 'DECISION')
+            .map((n) => n.id)
+            .toSet();
     final directory = Directory(p.join(root, 'lib'));
     final plans = <String, String>{};
     for (final file
@@ -31,6 +40,9 @@ class DeepTraceInstrumenter {
         )) {
           if (step.node is! IfStatement) continue;
           final node = step.node as IfStatement;
+          final id =
+              'decision:${p.relative(file.path, from: root).replaceAll('\\', '/')}:${unit.lineInfo.getLocation(node.offset).lineNumber}:${node.offset}';
+          if (!allowedDecisions.contains(id)) continue;
           final branch = step.branch == 'true_branch'
               ? node.thenStatement
               : node.elseStatement;
@@ -38,13 +50,13 @@ class DeepTraceInstrumenter {
             throw StateError(
               'Deep trace requires braced if/else branches: ${file.path}',
             );
-          final id =
-              'decision:${p.relative(file.path, from: root).replaceAll('\\', '/')}:${unit.lineInfo.getLocation(node.offset).lineNumber}:${node.offset}';
           final hit = "$id:${step.branch}";
           if (!seen.add(hit)) continue;
           inserts
               .putIfAbsent(branch.leftBracket.end, () => [])
-              .add('FlowProbe.hit(${jsonEncode(hit)});');
+              .add(
+                'FlowProbe.hit(${jsonEncode(hit).replaceAll(r"$", r"\$")});',
+              );
         }
       }
       if (inserts.isEmpty) continue;

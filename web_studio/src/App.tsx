@@ -16,6 +16,7 @@ import {
   RotateCcw,
   Upload,
   ArrowRight,
+  Focus,
 } from "lucide-react";
 import { ideLink } from "./engine/ideLink";
 import { imageData } from "./engine/exporters/image";
@@ -60,6 +61,8 @@ function App() {
     [scope, setScope] = useState("all"),
     [payload, setPayload] = useState(false),
     [light, setLight] = useState(false);
+  const [follow, setFollow] = useState(false),
+    [spotlight, setSpotlight] = useState(false);
   const [notice, setNotice] = useState(""),
     [replay, setReplay] = useState<number | null>(null);
   const modal = useRef<HTMLDialogElement>(null),
@@ -233,6 +236,27 @@ function App() {
     }
     return paths;
   }, [replay, s.graph, s.events, s.active]);
+  const currentEvent = s.events[replay ?? s.events.length - 1];
+  const followNode =
+    s.graph && currentEvent ? matchEvent(s.graph, currentEvent) : undefined;
+  const branchSteps = useMemo(
+    () =>
+      new Map(
+        s.events
+          .slice(0, replay === null ? undefined : replay + 1)
+          .filter(
+            (e) =>
+              e.eventKind === "BRANCH_HIT" &&
+              e.matchedNodeId &&
+              e.matchedBranchId,
+          )
+          .map((e) => [
+            branchKey(e.matchedNodeId!, e.matchedBranchId!),
+            e.sequenceOrder,
+          ]),
+      ),
+    [s.events, replay],
+  );
   const count = s.graph ? coverage(s.graph, confirmed) : null;
   const selected = s.graph?.nodes.find((n) => n.id === s.selected);
   async function exportNow() {
@@ -346,12 +370,12 @@ function App() {
           onChange={(e) => void importSnapshot(e.target.files?.[0])}
         />
       </header>
-      <div className="statusbar">
+      <section className="statusbar" aria-label="Trạng thái Studio">
         <span className="status-dot" />
         <span role="status">{s.status}</span>
         <span>{s.events.at(-1)?.deviceName ?? "Chưa có thiết bị"}</span>
         <span className="shortcut">Alt+1…4 đổi góc nhìn</span>
-      </div>
+      </section>
       <main className="workspace">
         <aside className="project-panel" aria-label="Dự án">
           <div className="project-identity">
@@ -469,6 +493,22 @@ function App() {
                 </button>
               )}
             </label>
+            <button
+              aria-pressed={follow}
+              onClick={() => setFollow((v) => !v)}
+              title="Theo node của bước runtime; tắt chuyển camera khi bật giảm chuyển động"
+            >
+              <Activity size={16} />
+              Theo bước
+            </button>
+            <button
+              aria-pressed={spotlight}
+              onClick={() => setSpotlight((v) => !v)}
+              title="Làm nổi bật luồng và node đang chọn"
+            >
+              <Focus size={16} />
+              Tiêu điểm
+            </button>
             <button onClick={() => setFitKey((k) => k + 1)}>
               <Maximize size={16} />
               Vừa khung
@@ -518,6 +558,11 @@ function App() {
                 selected={s.selected}
                 onSelect={s.select}
                 fitKey={fitKey}
+                follow={follow}
+                followNode={followNode}
+                spotlight={spotlight}
+                branchSteps={branchSteps}
+                onManualPan={() => setFollow(false)}
               />
             </ReactFlowProvider>
           ) : (
@@ -562,7 +607,7 @@ function App() {
                   onChange={(e) => setReplay(Number(e.target.value))}
                 />
                 <p>
-                  {s.events[replay ?? s.events.length - 1]?.eventKind} ·{" "}
+                  #{currentEvent?.sequenceOrder} · {currentEvent?.eventKind} ·{" "}
                   {s.events[replay ?? s.events.length - 1]?.routeName ??
                     s.events[replay ?? s.events.length - 1]?.apiDetails?.url ??
                     "Sự kiện runtime"}{" "}

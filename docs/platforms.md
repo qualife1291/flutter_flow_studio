@@ -13,7 +13,7 @@
 
 A `PopupRoute` is reported as a dialog; a `ModalBottomSheetRoute` is reported as a bottom sheet. Snackbars are not Navigator routes: send an explicit `SNACKBAR_SHOW` event if runtime snackbar tracking is required. Route names improve matching. Runtime does not serialize route arguments.
 
-Dart IO capture covers clients created after initialization through the isolate's active `HttpOverrides`. It does not instrument already-created clients, other isolates, native network stacks, Cronet, or `cupertino_http`. Existing overrides are chained. Dispose restores the previous override if Studio still owns the global override.
+Dart IO capture covers clients created after initialization through the isolate's active `HttpOverrides`. It does not instrument already-created clients, other isolates, native network stacks, Cronet, or `cupertino_http`. Existing global overrides are chained; zone-local overrides take precedence over global capture. Dispose restores the previous override if Studio still owns the global override.
 
 On Web, the native override module is replaced at compile time by a stub. Use Dio interception or explicit probes for networking. Browser same-origin and mixed-content policies still apply. WebSocket delivery is best effort and not an audit log.
 

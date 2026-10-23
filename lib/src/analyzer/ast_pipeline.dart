@@ -1,3 +1,6 @@
+import 'call_resolver.dart';
+import 'control_flow_linker.dart';
+import 'adapters/router_adapters.dart';
 import 'dart:io';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:path/path.dart' as p;
@@ -23,6 +26,11 @@ class AstPipeline {
     final emitted = <String, Set<String>>{};
     final listeners = <String, Set<String>>{};
     final translator = HumanReadableTranslator();
+    final apiOwners = <String, String>{};
+    final continuations =
+        <
+          ({String source, String? callee, String? Function(Set<String>) next})
+        >[];
     void edge(
       String source,
       String target, {
@@ -30,11 +38,19 @@ class AstPipeline {
       bool bridge = false,
     }) {
       if (source == target) return;
+      Json? branch;
+      for (final b
+          in nodes[source]?.decisionInfo?['branches'] as List? ?? const []) {
+        if (b['branchId'] == handle)
+          branch = Map<String, dynamic>.from(b as Map);
+      }
       final e = FlowEdgeData(
         source: source,
         target: target,
         sourceHandle: handle,
         stateBridge: bridge,
+        label: branch?['technicalLabel'] as String?,
+        businessLabel: branch?['businessLabel'] as String?,
       );
       edges[e.id] = e;
     }
@@ -51,12 +67,32 @@ class AstPipeline {
             )
             .toList()
           ..sort((a, b) => a.path.compareTo(b.path));
+    final units = {
+      for (final file in files)
+        file.path: AstFacade().parse(
+          file.readAsStringSync(),
+          p.relative(file.path, from: root),
+        ),
+    };
+    final widgetCollector = WidgetClassCollector();
+    for (final unit in units.values) {
+      unit.accept(widgetCollector);
+    }
+    final routes = RouteDiscovery(widgetCollector.names);
+    for (final unit in units.values) {
+      unit.accept(routes);
+    }
     for (final file in files) {
       final source = file.readAsStringSync();
       final relative = p.relative(file.path, from: root).replaceAll('\\', '/');
-      final unit = AstFacade().parse(source, relative);
-      final visitor = SinkDetectorVisitor();
+      final unit = units[file.path]!;
+      final visitor = SinkDetectorVisitor(
+        routedWidgets: routes.targets.values.toSet(),
+      );
       unit.accept(visitor);
+      final resolver = CallResolver();
+      unit.accept(resolver);
+      final stages = <AstNode, String>{};
       String id(AstNode n, String kind) =>
           '${kind.toLowerCase()}:$relative:${unit.lineInfo.getLocation(n.offset).lineNumber}:${n.offset}';
       Json location(AstNode n) {
@@ -90,11 +126,31 @@ class AstPipeline {
             .toList()
             .reversed
             .join('\n');
+        var business = translator.translate(title, comment: before);
+        if (!RegExp(r'@flow:|Flow:').hasMatch(before)) {
+          if (kind == 'API')
+            business =
+                'Gọi API ${api?['method'] ?? ''} ${api?['endpoint'] ?? ''}';
+          if (kind == 'DIALOG')
+            business = dialog?['overlayType'] == 'BOTTOM_SHEET'
+                ? 'Mở bảng tùy chọn'
+                : 'Hiển thị thông báo';
+          if (kind == 'LOGOUT') business = 'Đăng xuất';
+          if (kind == 'SCREEN')
+            business =
+                'Màn hình ${translator.translate(title.replaceFirst(RegExp(r'(Screen|Page|View)$'), ''))}';
+          if (kind == 'ACTION' && n is MethodDeclaration)
+            business = translator.translate(n.name.lexeme);
+          if (kind == 'ACTION' &&
+              n is MethodInvocation &&
+              navigationMethods.contains(n.methodName.name))
+            business = 'Chuyển màn hình';
+        }
         final node = FlowNodeData(
           id: id(n, kind),
           kind: kind,
           technicalTitle: title,
-          businessTitle: translator.translate(title, comment: before),
+          businessTitle: business,
           featureGroup: p.split(relative).length > 2
               ? p.split(relative)[1]
               : 'app',
@@ -105,6 +161,10 @@ class AstPipeline {
           routeInfo: route,
         );
         nodes[node.id] = node;
+        if (n is! MethodDeclaration &&
+            n is! FunctionDeclaration &&
+            n is! ClassDeclaration)
+          stages[n] = node.id;
         return node;
       }
 
@@ -140,18 +200,33 @@ class AstPipeline {
         );
         methodIds[method] = node.id;
         (definitions[name] ??= []).add(node.id);
+        if (classNode != null)
+          (definitions['${classNode.name.lexeme}.$name'] ??= []).add(node.id);
       }
       for (final screen in visitor.screens) {
+        final aliases = routes.targets.entries
+            .where((e) => e.value == screen.name.lexeme)
+            .map((e) => e.key)
+            .toList();
         final node = make(
           screen,
           'SCREEN',
           screen.name.lexeme,
           route: {
-            'routePath': screen.name.lexeme,
-            'isInitialRoute': RegExp(
-              'home:\\s*(?:const\\s+)?${screen.name.lexeme}\\s*\\(',
-            ).hasMatch(source),
-            'parameters': <String>[],
+            'routePath':
+                aliases.where((a) => a.startsWith('/')).firstOrNull ??
+                screen.name.lexeme,
+            'aliases': aliases,
+            'isInitialRoute':
+                aliases.any(routes.initialRoutes.contains) ||
+                RegExp(
+                  'home:\\s*(?:const\\s+)?${screen.name.lexeme}\\s*\\(',
+                ).hasMatch(source),
+            'parameters': [
+              for (final alias in aliases)
+                for (final match in RegExp(r':(\w+)').allMatches(alias))
+                  match[1]!,
+            ],
           },
         );
         (screens[screen.name.lexeme] ??= []).add(node.id);
@@ -197,13 +272,18 @@ class AstPipeline {
         final method = owner(call);
         final methodId = methodIds[method];
         if (methodId == null) continue;
-        (calls[methodId] ??= {}).add(call.methodName.name);
+        (calls[methodId] ??= {}).add(resolver.key(call));
         if (call.methodName.name == 'add' &&
             call.argumentList.arguments.isNotEmpty) {
           final event = RegExp(
             r'^(\w+)\(',
           ).firstMatch(call.argumentList.arguments.first.toSource())?.group(1);
-          if (event != null) (calls[methodId] ??= {}).add(event);
+          if (event != null)
+            (calls[methodId] ??= {}).add(
+              resolver.receiverClass(call) == null
+                  ? event
+                  : '${resolver.receiverClass(call)}.$event',
+            );
         }
         if (call.methodName.name == 'emit' &&
             call.argumentList.arguments.isNotEmpty) {
@@ -238,8 +318,15 @@ class AstPipeline {
             invocation?.argumentList.arguments ??
             annotation?.arguments?.arguments ??
             <Expression>[];
-        final literal =
-            args.whereType<SimpleStringLiteral>().firstOrNull?.value ?? '';
+        final literals = <SimpleStringLiteral>[
+          ...args.whereType<SimpleStringLiteral>(),
+          ...args
+              .whereType<NamedExpression>()
+              .where((a) => {'path', 'url'}.contains(a.name.label.name))
+              .map((a) => a.expression)
+              .whereType<SimpleStringLiteral>(),
+        ];
+        final literal = literals.firstOrNull?.value ?? '';
         final name =
             invocation?.methodName.name ??
             annotation?.name.name.toLowerCase() ??
@@ -293,12 +380,11 @@ class AstPipeline {
           api: api,
           dialog: dialog,
         );
+        if (sink.kind == 'API' && methodId != null)
+          apiOwners[node.id] = methodId;
         if (sink.kind == 'SCREEN') {
-          final destination = RegExp(
-            r'\b(\w+(?:Screen|Page|View))\s*\(',
-          ).firstMatch(call.toSource())?.group(1);
-          if (destination != null || literal.isNotEmpty)
-            pendingNav[node.id] = destination ?? literal;
+          final destination = referencedWidget(call, widgetCollector.names);
+          pendingNav[node.id] = destination ?? literal;
         }
         String? previous = methodId;
         String? handle;
@@ -316,12 +402,8 @@ class AstPipeline {
                 for (final b in step.branches)
                   {
                     'branchId': b,
-                    'technicalLabel': b,
-                    'businessLabel': b == 'true_branch'
-                        ? 'Hợp lệ'
-                        : b == 'false_branch'
-                        ? 'Không hợp lệ'
-                        : b,
+                    'technicalLabel': step.technicalLabel(b),
+                    'businessLabel': step.businessLabel(b),
                   },
               ],
             },
@@ -387,13 +469,22 @@ class AstPipeline {
           }
         }
       }
+      for (final call in visitor.calls) {
+        final apiId = id(call, 'API');
+        continuations.add((
+          source: apiId,
+          callee: nodes[apiId]?.kind == 'API' ? null : resolver.key(call),
+          next: (relevant) => nextFlowStage(call, stages, relevant),
+        ));
+      }
     }
     for (final e in CrossLayerLinker().link(definitions, calls)) {
       edges[e.id] = e;
     }
     for (final entry in pendingNav.entries) {
-      if (screens[entry.value]?.length == 1)
-        edge(entry.key, screens[entry.value]!.single);
+      final destination = routes.targets[entry.value] ?? entry.value;
+      if (screens[destination]?.length == 1)
+        edge(entry.key, screens[destination]!.single);
     }
     for (final entry in emitted.entries) {
       for (final emitter in entry.value) {
@@ -402,9 +493,54 @@ class AstPipeline {
         }
       }
     }
+    Set<String> relevantNodes() {
+      final result =
+          nodes.values
+              .where(
+                (n) => {'SCREEN', 'API', 'DIALOG', 'LOGOUT'}.contains(n.kind),
+              )
+              .map((n) => n.id)
+              .toSet()
+            ..addAll(pendingNav.keys);
+      bool added;
+      do {
+        added = false;
+        for (final e in edges.values) {
+          if (result.contains(e.target) && result.add(e.source)) added = true;
+        }
+      } while (added);
+      return result;
+    }
+
+    final baseline = relevantNodes();
+    for (final link in continuations.where((l) => l.callee == null)) {
+      final next = link.next(baseline);
+      if (next != null && nodes.containsKey(link.source))
+        edge(link.source, next);
+    }
+    final directSources = edges.values.map((e) => e.source).toSet();
+    for (final link in continuations.where((l) => l.callee != null)) {
+      final definitionsForCall = definitions[link.callee];
+      final next = link.next(baseline);
+      if (next == null || definitionsForCall?.length != 1) continue;
+      final exits = nodes.values
+          .where(
+            (n) =>
+                n.kind == 'API' &&
+                apiOwners[n.id] == definitionsForCall!.single &&
+                !directSources.contains(n.id),
+          )
+          .toList();
+      if (exits.length == 1) edge(exits.single.id, next);
+    }
     // Retain only actions participating in a sink path, removing unrelated UI methods.
     final relevant =
-        nodes.values.where((n) => n.kind != 'ACTION').map((n) => n.id).toSet()
+        nodes.values
+            .where(
+              (n) => {'SCREEN', 'API', 'DIALOG', 'LOGOUT'}.contains(n.kind),
+            )
+            .map((n) => n.id)
+            .toSet()
           ..addAll(pendingNav.keys);
     bool changed;
     do {
@@ -418,6 +554,9 @@ class AstPipeline {
     edges.removeWhere(
       (key, value) =>
           !nodes.containsKey(value.source) || !nodes.containsKey(value.target),
+    );
+    issues.removeWhere(
+      (key, value) => !nodes.containsKey(value.data['nodeId']),
     );
     for (final issue in FlowHealthAuditor().audit(
       nodes.values.toList(),

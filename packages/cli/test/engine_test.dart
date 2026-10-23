@@ -62,6 +62,11 @@ void main() {
     );
     expect(g.edges.any((e) => e.data['sourceHandle'] == 'catch_0'), isTrue);
     expect(g.edges.any((e) => e.data['sourceHandle'] == 'branch_1'), isTrue);
+    expect(
+      g.edges.map((e) => e.data['technicalLabel']),
+      contains('catch (Exception)'),
+    );
+    expect(g.edges.map((e) => e.data['businessLabel']), contains('Thành công'));
   });
   test('switch cases and default retain separate handles', () {
     final g = scan(
@@ -71,6 +76,10 @@ void main() {
     expect(
       g.edges.map((e) => e.data['sourceHandle']),
       containsAll(['case_0', 'case_1']),
+    );
+    expect(
+      g.edges.map((e) => e.data['technicalLabel']),
+      containsAll(['case 1', 'default']),
     );
   });
   test('does not classify collection get or push as API/navigation', () {
@@ -175,14 +184,14 @@ void main() {
 
   test('locally typed clients and annotated API declarations are detected', () {
     final g = scan(
-      "class Api { @POST('/login') Future<void> login(); } void load(){ final network = Dio(); network.get('/a'); }",
+      "class Api { @POST('/login') Future<void> login(); @Get(path:'/chopper') Future<void> fetch(); } void load(){ final network = Dio(); network.get('/a'); }",
     );
-    expect(g.nodes.where((n) => n.kind == 'API'), hasLength(2));
+    expect(g.nodes.where((n) => n.kind == 'API'), hasLength(3));
     expect(
       g.nodes
           .where((n) => n.kind == 'API')
           .map((n) => n.data['apiInfo']['endpoint']),
-      containsAll(['/login', '/a']),
+      containsAll(['/login', '/a', '/chopper']),
     );
   });
   test('BLoC event callbacks link dispatch to guarded state emissions', () {
@@ -258,6 +267,69 @@ void main() {
       );
       expect(g.nodes.any((n) => n.technicalTitle == 'AsyncData'), isTrue);
       expect(g.edges.any((e) => e.data['isStateBridge'] == true), isTrue);
+    },
+  );
+
+  test('GoRouter paths and names resolve across source files', () {
+    File('${root.path}/lib/screens.dart').writeAsStringSync(
+      'class Dashboard extends StatelessWidget { Widget build(context)=>Text("home"); }',
+    );
+    final g = scan(
+      "final routes=[GoRoute(path:'/home/:id',name:'home',builder:(context,state)=>Dashboard())]; void open(){context.goNamed('home');}",
+    );
+    final screen = g.nodes.singleWhere((n) => n.technicalTitle == 'Dashboard');
+    expect(screen.data['routeInfo']['routePath'], '/home/:id');
+    expect(g.edges.any((e) => e.target == screen.id), isTrue);
+  });
+  test('Material named routes and custom widget destinations are linked', () {
+    final g = scan(
+      "class Dashboard extends StatelessWidget { Widget build(context)=>Text('home'); } final app=MaterialApp(routes:{'/home':(_)=>Dashboard()}); void open(){Navigator.pushNamed(context,'/home');}",
+    );
+    final screen = g.nodes.singleWhere((n) => n.technicalTitle == 'Dashboard');
+    expect(g.edges.any((e) => e.target == screen.id), isTrue);
+  });
+
+  test('UI-only loading emissions do not retain branches or warnings', () {
+    final g = scan(
+      "void render(){if(loading){emit(Loading());} else {emit(Idle());}}",
+    );
+    expect(g.nodes, isEmpty);
+    expect(g.healthIssues, isEmpty);
+  });
+
+  test('an API response leads to the subsequent business decision', () {
+    final g = scan(
+      "void login()async{final result=await dio.post('/login');if(result.ok){showDialog();}}",
+    );
+    final api = g.nodes.singleWhere((n) => n.kind == 'API');
+    final decision = g.nodes.singleWhere((n) => n.kind == 'DECISION');
+    expect(
+      g.edges.any((e) => e.source == api.id && e.target == decision.id),
+      isTrue,
+    );
+  });
+  test(
+    'typed repository calls with colliding names return to caller decisions',
+    () {
+      final g = scan(
+        "class Api {Future load(){return dio.get('/a');}} class Controller {final Api api=Api();Future load()async{final result=await api.load();if(result.ok){showDialog();}}}",
+      );
+      final api = g.nodes.singleWhere((n) => n.kind == 'API');
+      final decision = g.nodes.singleWhere((n) => n.kind == 'DECISION');
+      expect(
+        g.edges.any((e) => e.source == api.id && e.target == decision.id),
+        isTrue,
+      );
+      final caller = g.nodes.singleWhere(
+        (n) => n.technicalTitle == 'Controller.load()',
+      );
+      final callee = g.nodes.singleWhere(
+        (n) => n.technicalTitle == 'Api.load()',
+      );
+      expect(
+        g.edges.any((e) => e.source == caller.id && e.target == callee.id),
+        isTrue,
+      );
     },
   );
 }

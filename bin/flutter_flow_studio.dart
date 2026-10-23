@@ -50,7 +50,14 @@ Future<void> main(List<String> arguments) async {
       assetsPath: uri == null ? null : p.dirname(uri.toFilePath()),
     );
     final trace = DeepTraceInstrumenter();
-    if (args['deep-trace'] as bool) trace.instrument(root);
+    if (args['deep-trace'] as bool)
+      trace.instrument(
+        root,
+        decisionIds: graph.nodes
+            .where((n) => n.kind == 'DECISION')
+            .map((n) => n.id)
+            .toSet(),
+      );
     try {
       await server.start(host: args['host'] as String, port: port);
     } catch (_) {

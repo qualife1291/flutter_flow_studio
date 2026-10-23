@@ -4,6 +4,15 @@ class HumanReadableTranslator {
         ? null
         : RegExp(r'(?:@flow:|Flow:)\s*([^\n]+)').firstMatch(comment)?.group(1);
     if (annotated != null) return annotated.trim();
+    if (source.trim() == 'try / catch')
+      return 'Thực hiện thao tác và xử lý lỗi';
+    final common = {
+      'login': 'Đăng nhập',
+      'logout': 'Đăng xuất',
+      'home': 'Trang chủ',
+    };
+    if (common.containsKey(source.toLowerCase()))
+      return common[source.toLowerCase()]!;
     var text = source.replaceAllMapped(
       RegExp(r'(?:\w+\.)?statusCode\s*==\s*(200|401|403)'),
       (m) => m[1] == '200'
