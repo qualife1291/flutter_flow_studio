@@ -10,18 +10,18 @@
 00:00 +8: test/engine_test.dart: warns missing else but respects a following fallback sink
 00:00 +9: test/engine_test.dart: unambiguous calls connect across methods; ambiguous calls do not
 00:00 +10: test/engine_test.dart: typed state emissions connect to matching listeners
-00:00 +11: test/engine_test.dart: dependency inspection categorizes direct dependencies
-00:00 +12: test/engine_test.dart: parser errors stop scan with an actionable error
-00:00 +13: test/engine_test.dart: translation honors annotation and HTTP expressions
-00:00 +14: test/engine_test.dart: exporters escape user labels and preserve graph structure
-00:00 +15: test/engine_test.dart: deep trace refuses an uncommitted source file
+00:00 +11: test/server_test.dart: graph needs authentication and health does not
+00:00 +12: test/server_test.dart: graph needs authentication and health does not
+00:00 +13: test/server_test.dart: graph needs authentication and health does not
+00:00 +14: test/server_test.dart: graph needs authentication and health does not
+00:00 +15: test/server_test.dart: graph needs authentication and health does not
 00:00 +16: test/server_test.dart: graph needs authentication and health does not
 00:00 +17: test/engine_test.dart: deep trace restores exact original bytes
-00:00 +18: test/engine_test.dart: deep trace restores exact original bytes
-00:00 +19: test/server_test.dart: broadcast strips payloads, URL credentials, and query secrets
+00:00 +18: test/server_test.dart: websocket rejects missing token
+00:00 +19: test/engine_test.dart: locally typed clients and annotated API declarations are detected
 00:00 +20: test/server_test.dart: broadcast strips payloads, URL credentials, and query secrets
-00:00 +21: test/engine_test.dart: BLoC event callbacks link dispatch to guarded state emissions
-00:00 +22: test/engine_test.dart: BLoC event callbacks link dispatch to guarded state emissions
+00:00 +21: test/server_test.dart: broadcast strips payloads, URL credentials, and query secrets
+00:00 +22: test/engine_test.dart: deep trace preserves library directives and refuses to overwrite user edits
 00:00 +23: test/engine_test.dart: deep trace preserves library directives and refuses to overwrite user edits
 00:00 +24: test/engine_test.dart: deep trace refuses part files without changing source
 00:00 +25: test/engine_test.dart: copyWith status predicates bridge to matching listeners
@@ -30,5 +30,8 @@
 00:00 +28: test/engine_test.dart: Material named routes and custom widget destinations are linked
 00:00 +29: test/engine_test.dart: UI-only loading emissions do not retain branches or warnings
 00:00 +30: test/engine_test.dart: an API response leads to the subsequent business decision
-00:00 +31: test/engine_test.dart: typed repository calls with colliding names return to caller decisions
-00:00 +32: All tests passed!
+00:00 +31: test/engine_test.dart: overlays have distinct kinds and preserve sequential links
+00:00 +32: test/engine_test.dart: source contexts contain the exact full function once for multiple nodes
+00:00 +33: test/engine_test.dart: nested GoRouter paths and named Material routes expose router metadata
+00:00 +34: test/engine_test.dart: typed repository calls with colliding names return to caller decisions
+00:00 +35: All tests passed!

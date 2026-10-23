@@ -90,7 +90,13 @@ void main() {
     final g = scan(
       "void load(){ try { dio.get('/a'); } catch(e) { signOut(); } }",
     );
-    expect(g.nodes.any((n) => n.kind == 'LOGOUT'), isTrue);
+    expect(g.nodes.any((n) => n.kind == 'LOGOUT'), isFalse);
+    expect(
+      g.nodes.any(
+        (n) => n.kind == 'ACTION' && n.technicalTitle.contains('signOut'),
+      ),
+      isTrue,
+    );
     expect(
       g.healthIssues.where((i) => i.data['category'] == 'UNHANDLED_API_ERROR'),
       isEmpty,
@@ -307,7 +313,81 @@ void main() {
       g.edges.any((e) => e.source == api.id && e.target == decision.id),
       isTrue,
     );
+    final method = g.nodes.singleWhere((n) => n.technicalTitle == 'login()');
+    expect(
+      g.edges.any((e) => e.source == method.id && e.target == decision.id),
+      isFalse,
+    );
   });
+  test('overlays have distinct kinds and preserve sequential links', () {
+    final g = scan(
+      "void run()async{await showDialog();showModalBottomSheet();showSnackBar();showToast();dio.get('/next');}",
+    );
+    expect(
+      g.nodes.map((n) => n.kind),
+      containsAll(['DIALOG', 'BOTTOMSHEET', 'SNACKBAR', 'TOAST', 'API']),
+    );
+    final dialog = g.nodes.singleWhere((n) => n.kind == 'DIALOG');
+    final sheet = g.nodes.singleWhere((n) => n.kind == 'BOTTOMSHEET');
+    expect(
+      g.edges.any(
+        (e) =>
+            e.source == dialog.id &&
+            e.target == sheet.id &&
+            e.data['kind'] == 'SEQUENCE',
+      ),
+      isTrue,
+    );
+    expect(g.project['stats'].containsKey('totalLogoutPoints'), isFalse);
+  });
+  test(
+    'source contexts contain the exact full function once for multiple nodes',
+    () {
+      const function =
+          "Future<void> run() async {\n  await dio.get('/a');\n  showDialog();\n}";
+      final g = scan(function);
+      expect(g.sourceContexts, hasLength(1));
+      expect(g.sourceContexts.values.single['code'], function);
+      expect(g.sourceContexts.values.single['endLine'], 4);
+      expect(
+        g.nodes.every(
+          (n) => g.sourceContexts.containsKey(
+            n.data['sourceLocation']['contextId'],
+          ),
+        ),
+        isTrue,
+      );
+      final restored = FlowGraphPayload.fromJson(
+        jsonDecode(jsonEncode(g.toJson())),
+      );
+      expect(restored.sourceContexts, g.sourceContexts);
+    },
+  );
+  test(
+    'nested GoRouter paths and named Material routes expose router metadata',
+    () {
+      final g = scan(
+        "class ProductScreen extends StatelessWidget {Widget build(c)=>Text('product');} final router=GoRouter(routes:[GoRoute(path:'/shop',builder:(c,s)=>ProductScreen(),routes:[GoRoute(path:'product/:id',name:'product',builder:(c,s)=>ProductScreen())])]); void open(){context.go('/shop/product/1');}",
+      );
+      final screen = g.nodes.singleWhere((n) => n.kind == 'SCREEN');
+      expect(
+        screen.data['routeInfo']['aliases'],
+        contains('/shop/product/:id'),
+      );
+      expect(screen.data['routeInfo']['router'], 'GoRouter');
+      final h = scan(
+        "class HomeScreen extends StatelessWidget {Widget build(c)=>Text('home');} void open(){Navigator.push(context,MaterialPageRoute(settings:RouteSettings(name:'/home'),builder:(c)=>HomeScreen()));}",
+      );
+      final home = h.nodes.singleWhere((n) => n.kind == 'SCREEN');
+      expect(home.data['routeInfo']['routePath'], '/home');
+      expect(
+        h.edges.any(
+          (e) => e.target == home.id && e.data['kind'] == 'NAVIGATION',
+        ),
+        isTrue,
+      );
+    },
+  );
   test(
     'typed repository calls with colliding names return to caller decisions',
     () {

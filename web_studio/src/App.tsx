@@ -18,7 +18,15 @@ import {
   ArrowRight,
   Focus,
 } from "lucide-react";
-import { ideLink } from "./engine/ideLink";
+import { NodeInspector } from "./components/NodeInspector";
+import {
+  screenGraph,
+  neighborhood,
+  withVisibleSources,
+  type DetailLevel,
+} from "./engine/graphView";
+import type { Direction } from "./engine/elkLayout";
+import type { ConnectorStyle } from "./components/FlowCanvas";
 import { imageData } from "./engine/exporters/image";
 import type {
   FlowGraphPayload,
@@ -41,7 +49,7 @@ import {
   type Format,
 } from "./engine/exporters";
 import { colors } from "./theme/tokens";
-import { validGraph, validEvent } from "./engine/validation";
+import { readGraph, validEvent } from "./engine/validation";
 const modes: RoleViewMode[] = ["DEV", "BA", "TESTER", "LOW_CODE"];
 const modeLabels = {
   DEV: "Lập trình",
@@ -56,6 +64,13 @@ function App() {
   const [search, setSearch] = useState(""),
     [feature, setFeature] = useState("all"),
     [fitKey, setFitKey] = useState(0);
+  const [detail, setDetail] = useState<DetailLevel>("overview"),
+    [nearby, setNearby] = useState(false),
+    [direction, setDirection] = useState<Direction>("DOWN"),
+    [connector, setConnector] = useState<ConnectorStyle>("auto");
+  const [focusKey, setFocusKey] = useState(0),
+    [layoutKey, setLayoutKey] = useState(0),
+    [expanded, setExpanded] = useState(false);
   const [exportOpen, setExportOpen] = useState(false),
     [format, setFormat] = useState<Format | "png" | "svg">("flow.json"),
     [scope, setScope] = useState("all"),
@@ -92,9 +107,8 @@ function App() {
               ? "Token không đúng. Sao chép token từ terminal CLI."
               : `Server trả lỗi ${response.status}. Kiểm tra CLI.`,
           );
-        const graph: unknown = await response.json();
-        if (!validGraph(graph))
-          throw Error("Graph không hợp lệ. Quét lại dự án từ CLI.");
+        const graph = readGraph(await response.json());
+        if (!graph) throw Error("Graph không hợp lệ. Quét lại dự án từ CLI.");
         if (disposed) return;
         s.setGraph(graph);
         socket = new WebSocket(
@@ -105,8 +119,8 @@ function App() {
         socket.onmessage = (e) => {
           try {
             const msg = JSON.parse(e.data);
-            if (msg.type === "INITIAL_GRAPH" && validGraph(msg.graph)) {
-              s.setGraph(msg.graph);
+            if (msg.type === "INITIAL_GRAPH" && readGraph(msg.graph)) {
+              s.setGraph(readGraph(msg.graph)!);
               for (const event of Array.isArray(msg.history)
                 ? msg.history.slice(-2000)
                 : [])
@@ -159,8 +173,9 @@ function App() {
       fetch("/demo.flow.json")
         .then((r) => r.json())
         .then((g) => {
-          if (validGraph(g.graph ?? g)) {
-            s.setGraph(g.graph ?? g);
+          const parsed = readGraph(g.graph ?? g);
+          if (parsed) {
+            s.setGraph(parsed);
             useFlowStore.setState({ status: "Đồ thị example · offline" });
           }
         })
@@ -170,7 +185,8 @@ function App() {
   }, []);
   useEffect(() => {
     const key = (e: KeyboardEvent) => {
-      if (e.key === "Escape") s.select(null);
+      if (e.key === "Escape" && !document.querySelector("dialog[open]"))
+        s.select(null);
       if (e.altKey && ["1", "2", "3", "4"].includes(e.key)) {
         e.preventDefault();
         s.setMode(modes[Number(e.key) - 1]);
@@ -188,7 +204,12 @@ function App() {
   }, [exportOpen]);
   const graph = useMemo(() => {
     if (!s.graph) return null;
-    let g = s.mode === "LOW_CODE" ? simplify(s.graph) : s.graph;
+    let g =
+      detail === "screens"
+        ? screenGraph(s.graph)
+        : detail === "overview"
+          ? simplify(s.graph)
+          : s.graph;
     if (feature !== "all") {
       const nodes = g.nodes.filter((n) => n.featureGroup === feature);
       const ids = new Set(nodes.map((n) => n.id));
@@ -199,7 +220,16 @@ function App() {
       };
     }
     return g;
-  }, [s.graph, s.mode, feature]);
+  }, [s.graph, detail, feature]);
+  const visibleGraph = useMemo(
+    () => (graph && nearby ? neighborhood(graph, s.selected, 2) : graph),
+    [graph, nearby, s.selected],
+  );
+  function selectLinked(id: string | null) {
+    if (id && !graph?.nodes.some((n) => n.id === id)) setDetail("all");
+    s.select(id);
+    setFocusKey((k) => k + 1);
+  }
   const confirmed = useMemo(
     () =>
       replay === null
@@ -268,7 +298,8 @@ function App() {
       )
     )
       return;
-    let exported = scope === "all" && s.graph ? s.graph : graph;
+    let exported =
+      scope === "all" && s.graph ? s.graph : (visibleGraph ?? graph);
     if (scope === "active") {
       const edges = exported.edges.filter((e) => replayActive.has(e.id));
       const ids = new Set(edges.flatMap((e) => [e.source, e.target]));
@@ -278,6 +309,7 @@ function App() {
         edges,
       };
     }
+    exported = withVisibleSources(exported);
     if (format === "png" || format === "svg") {
       try {
         const data = await imageData(exported, s.mode !== "DEV", light, format);
@@ -311,9 +343,10 @@ function App() {
     }
     try {
       const data = JSON.parse(await file.text());
-      if (!validGraph(data.graph)) throw Error();
+      const parsed = readGraph(data.graph);
+      if (!parsed) throw Error();
       s.reset();
-      s.setGraph(data.graph);
+      s.setGraph(parsed);
       for (const event of Array.isArray(data.events)
         ? data.events.slice(-2000)
         : [])
@@ -376,7 +409,7 @@ function App() {
         <span>{s.events.at(-1)?.deviceName ?? "Chưa có thiết bị"}</span>
         <span className="shortcut">Alt+1…4 đổi góc nhìn</span>
       </section>
-      <main className="workspace">
+      <main className={`workspace ${expanded ? "canvas-expanded" : ""}`}>
         <aside className="project-panel" aria-label="Dự án">
           <div className="project-identity">
             <p className="eyebrow">PROJECT OVERVIEW</p>
@@ -476,8 +509,81 @@ function App() {
               Untested: chưa có bằng chứng
             </p>
           </div>
+          <div className="legend">
+            <h2>Đường nối</h2>
+            <p>
+              → Điều hướng: xanh dương
+              <br />⇢ Gọi hàm / tuần tự: xám
+              <br />⇢ Nhánh: vàng · Trạng thái: tím
+              <br />↩ Trả kết quả: hồng
+              <br />
+              Luồng chính gộp bước kỹ thuật; chọn Tất cả node để xem chi tiết.
+            </p>
+          </div>
         </aside>
         <section className="graph-area" aria-label="Studio">
+          <div className="graph-options" aria-label="Tùy chọn đồ thị">
+            <label>
+              Chi tiết
+              <select
+                aria-label="Chi tiết đồ thị"
+                value={detail}
+                onChange={(e) => setDetail(e.target.value as DetailLevel)}
+              >
+                <option value="overview">Luồng chính</option>
+                <option value="screens">Chỉ màn hình</option>
+                <option value="all">Tất cả node</option>
+              </select>
+            </label>
+            <label>
+              Phạm vi
+              <select
+                aria-label="Phạm vi đồ thị"
+                value={nearby ? "nearby" : "all"}
+                onChange={(e) => setNearby(e.target.value === "nearby")}
+              >
+                <option value="all">Toàn bộ</option>
+                <option value="nearby" disabled={!s.selected}>
+                  Quanh node đang chọn
+                </option>
+              </select>
+            </label>
+            <label>
+              Bố cục
+              <select
+                aria-label="Hướng bố cục"
+                value={direction}
+                onChange={(e) => setDirection(e.target.value as Direction)}
+              >
+                <option value="DOWN">Dọc</option>
+                <option value="RIGHT">Ngang</option>
+              </select>
+            </label>
+            <label>
+              Đường nối
+              <select
+                aria-label="Kiểu đường nối"
+                value={connector}
+                onChange={(e) => setConnector(e.target.value as ConnectorStyle)}
+              >
+                <option value="auto">Theo liên kết</option>
+                <option value="curve">Cong</option>
+                <option value="step">Vuông góc</option>
+                <option value="straight">Thẳng</option>
+              </select>
+            </label>
+            <span className="node-count" role="status">
+              {visibleGraph?.nodes.length ?? 0} / {s.graph?.nodes.length ?? 0}{" "}
+              node
+            </span>
+            <button
+              aria-pressed={expanded}
+              onClick={() => setExpanded((v) => !v)}
+              aria-label="Mở rộng vùng đồ thị"
+            >
+              <Maximize size={16} />
+            </button>
+          </div>
           <div className="canvas-toolbar">
             <label className="search">
               <Search size={16} />
@@ -486,6 +592,18 @@ function App() {
                 placeholder="Tìm màn hình, hành động…"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const node = s.graph?.nodes.find((n) =>
+                      `${n.technicalTitle} ${n.businessTitle} ${n.routeInfo?.routePath ?? ""}`
+                        .toLowerCase()
+                        .includes(search.toLowerCase()),
+                    );
+                    if (node) selectLinked(node.id);
+                  }
+                }}
               />
               {search && (
                 <button aria-label="Xóa tìm kiếm" onClick={() => setSearch("")}>
@@ -509,6 +627,10 @@ function App() {
               <Focus size={16} />
               Tiêu điểm
             </button>
+            <button onClick={() => setLayoutKey((k) => k + 1)}>
+              Sắp xếp lại
+            </button>
+            <button onClick={() => setFocusKey((k) => k + 1)}>Đọc rõ</button>
             <button onClick={() => setFitKey((k) => k + 1)}>
               <Maximize size={16} />
               Vừa khung
@@ -546,18 +668,25 @@ function App() {
               />
             </section>
           )}
-          {graph && graph.nodes.length > 0 ? (
+          {visibleGraph && visibleGraph.nodes.length > 0 ? (
             <ReactFlowProvider>
               <FlowCanvas
-                graph={graph}
+                graph={visibleGraph}
                 mode={s.mode}
                 active={replayActive}
                 inferred={replay === null ? s.inferred : replayActive}
                 confirmed={confirmed}
                 search={search}
                 selected={s.selected}
-                onSelect={s.select}
+                onSelect={(id) => {
+                  s.select(id);
+                  if (id) setFocusKey((k) => k + 1);
+                }}
                 fitKey={fitKey}
+                focusKey={focusKey}
+                layoutKey={layoutKey}
+                direction={direction}
+                connector={connector}
                 follow={follow}
                 followNode={followNode}
                 spotlight={spotlight}
@@ -619,62 +748,21 @@ function App() {
             )}
           </section>
         </section>
-        {selected && (
-          <aside className="inspector" aria-label="Chi tiết node">
-            <button
-              ref={closeDrawer}
-              className="close"
-              aria-label="Đóng chi tiết"
-              onClick={() => s.select(null)}
-            >
-              <X />
-            </button>
-            <p className="eyebrow">NODE INSPECTOR</p>
-            <h2>
-              {s.mode === "DEV"
-                ? selected.technicalTitle
-                : selected.businessTitle}
-            </h2>
-            <p>
-              {selected.kind} · {selected.featureGroup}
-            </p>
-            {selected.sourceLocation && (
-              <>
-                <p>
-                  {selected.sourceLocation.filePath}:
-                  {selected.sourceLocation.line}
-                </p>
-                <pre tabIndex={0}>{selected.sourceLocation.codeSnippet}</pre>
-                <a
-                  className="button"
-                  href={ideLink(
-                    "vscode",
-                    selected.sourceLocation.filePath,
-                    selected.sourceLocation.line,
-                    s.graph?.project.projectRoot,
-                  )}
-                >
-                  Open in VS Code
-                </a>
-                <a
-                  className="button"
-                  href={ideLink(
-                    "cursor",
-                    selected.sourceLocation.filePath,
-                    selected.sourceLocation.line,
-                    s.graph?.project.projectRoot,
-                  )}
-                >
-                  Open in Cursor
-                </a>
-              </>
-            )}
-            {selected.apiInfo && (
-              <pre>{JSON.stringify(selected.apiInfo, null, 2)}</pre>
-            )}
-            <h3>ID dùng với FlowProbe</h3>
-            <code className="node-id">{selected.id}</code>
-          </aside>
+        {selected && s.graph && (
+          <NodeInspector
+            key={selected.id}
+            node={selected}
+            graph={s.graph}
+            mode={s.mode}
+            onSelect={selectLinked}
+            onFocus={() => setFocusKey((k) => k + 1)}
+            onNeighbors={() => {
+              setDetail("all");
+              setNearby(true);
+              setFocusKey((k) => k + 1);
+            }}
+            closeRef={closeDrawer}
+          />
         )}
       </main>
       <footer>
@@ -731,7 +819,7 @@ function App() {
           onChange={(e) => setScope(e.target.value)}
         >
           <option value="all">Toàn bộ dự án</option>
-          <option value="feature">Cụm tính năng đang chọn</option>
+          <option value="feature">Đồ thị đang xem</option>
           <option value="active">Đường chạy đang xem</option>
         </select>
         <p>Nhãn theo góc nhìn: {modeLabels[s.mode]}</p>

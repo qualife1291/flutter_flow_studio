@@ -16,6 +16,7 @@ class FlowNodeData extends WireModel {
     String featureGroup = 'app',
     Json? sourceLocation,
     Json? routeInfo,
+    bool isTechnical = false,
     Json? apiInfo,
     Json? decisionInfo,
     Json? dialogInfo,
@@ -25,6 +26,7 @@ class FlowNodeData extends WireModel {
          'featureGroup': featureGroup,
          'technicalTitle': technicalTitle,
          'businessTitle': businessTitle,
+         if (isTechnical) 'isTechnical': true,
          if (sourceLocation != null) 'sourceLocation': sourceLocation,
          if (routeInfo != null) 'routeInfo': routeInfo,
          if (apiInfo != null) 'apiInfo': apiInfo,
@@ -46,10 +48,18 @@ class FlowEdgeData extends WireModel {
     String? label,
     String? businessLabel,
     bool stateBridge = false,
+    String? kind,
   }) : super({
          'id': 'edge:$source:$sourceHandle->$target',
          'source': source,
          'target': target,
+         'kind':
+             kind ??
+             (stateBridge
+                 ? 'STATE'
+                 : sourceHandle != null
+                 ? 'BRANCH'
+                 : 'SEQUENCE'),
          if (sourceHandle != null) 'sourceHandle': sourceHandle,
          if (label != null) ...{
            'technicalLabel': label,
@@ -87,16 +97,22 @@ class FlowGraphPayload {
   final List<FlowNodeData> nodes;
   final List<FlowEdgeData> edges;
   final List<FlowHealthIssue> healthIssues;
+  final Map<String, Json> sourceContexts;
   FlowGraphPayload({
     required this.project,
     required this.nodes,
     required this.edges,
     required this.healthIssues,
     DateTime? generatedAt,
+    this.sourceContexts = const {},
   }) : generatedAt = generatedAt ?? DateTime.now().toUtc();
   factory FlowGraphPayload.fromJson(Json json) => FlowGraphPayload(
     generatedAt: DateTime.parse(json['generatedAt'] as String),
     project: Map<String, dynamic>.from(json['project'] as Map),
+    sourceContexts: {
+      for (final entry in (json['sourceContexts'] as Map? ?? {}).entries)
+        entry.key as String: Map<String, dynamic>.from(entry.value as Map),
+    },
     nodes: (json['nodes'] as List)
         .map((e) => FlowNodeData.fromJson(Map<String, dynamic>.from(e as Map)))
         .toList(),
@@ -112,6 +128,7 @@ class FlowGraphPayload {
   Json toJson() => {
     'generatedAt': generatedAt.toIso8601String(),
     'project': project,
+    if (sourceContexts.isNotEmpty) 'sourceContexts': sourceContexts,
     'nodes': nodes.map((e) => e.toJson()).toList(),
     'edges': edges.map((e) => e.toJson()).toList(),
     'healthIssues': healthIssues.map((e) => e.toJson()).toList(),

@@ -1,4 +1,11 @@
-import { validGraph, validEvent } from "./validation";
+import { validGraph, validEvent, readGraph } from "./validation";
+import {
+  contractNodes,
+  screenGraph,
+  neighborhood,
+  withVisibleSources,
+  edgeHasEvidence,
+} from "./graphView";
 import { describe, it, expect } from "vitest";
 import type {
   FlowGraphPayload,
@@ -62,7 +69,7 @@ const graph = {
       totalDecisions: 1,
       totalApis: 0,
       totalDialogs: 1,
-      totalLogoutPoints: 0,
+      totalBottomSheets: 0,
     },
   },
   nodes,
@@ -83,6 +90,191 @@ const event = (
   sequenceOrder,
   eventKind: "ROUTE_PUSH",
   ...extra,
+});
+describe("readable graph views", () => {
+  it("omits unrelated full-source contexts from a scoped snapshot", () => {
+    const context = {
+      filePath: "lib/main.dart",
+      name: "login",
+      startLine: 1,
+      endLine: 1,
+      code: "void login(){}",
+    };
+    const g = {
+      ...graph,
+      nodes: [
+        {
+          ...nodes[0],
+          sourceLocation: {
+            filePath: "lib/main.dart",
+            line: 1,
+            column: 1,
+            codeSnippet: "login",
+            contextId: "login",
+          },
+        },
+      ],
+      edges: [],
+      sourceContexts: {
+        login: context,
+        unrelated: { ...context, code: "private unrelated source" },
+      },
+    };
+    const exported = withVisibleSources(g);
+    expect(Object.keys(exported.sourceContexts!)).toEqual(["login"]);
+    expect(JSON.stringify(exported)).not.toContain("private unrelated source");
+    expect(validGraph(exported)).toBe(true);
+  });
+  it("never highlights a collapsed path from partial runtime evidence", () => {
+    const edge = {
+      id: "collapsed",
+      source: "start",
+      target: "end",
+      viaEdges: ["a", "b"],
+    };
+    expect(edgeHasEvidence(edge, new Set(["a"]))).toBe(false);
+    expect(edgeHasEvidence(edge, new Set(["a", "b"]))).toBe(true);
+  });
+  it("contracts a chain with a hidden cycle and preserves navigation between screens", () => {
+    const g = {
+      ...graph,
+      nodes: [
+        nodes[0],
+        { ...nodes[0], id: "home", technicalTitle: "HomeScreen" },
+        ...["a", "b"].map((id) => ({
+          ...nodes[1],
+          id,
+          kind: "ACTION" as const,
+          decisionInfo: undefined,
+        })),
+      ],
+      edges: [
+        { id: "1", source: "start", target: "a" },
+        { id: "2", source: "a", target: "b" },
+        { id: "3", source: "b", target: "a" },
+        { id: "4", source: "b", target: "home" },
+      ],
+    };
+    const result = screenGraph(g);
+    expect(result.nodes).toHaveLength(2);
+    expect(result.edges).toHaveLength(1);
+    expect(result.edges[0]).toMatchObject({ source: "start", target: "home" });
+    expect(result.edges[0].via).toEqual(["a", "b"]);
+  });
+  it("retains decision handles and labels across hidden plumbing", () => {
+    const middle = { ...nodes[0], id: "middle", kind: "ACTION" as const };
+    const result = contractNodes(
+      {
+        ...graph,
+        nodes: [...nodes, middle],
+        edges: [
+          {
+            id: "a",
+            source: "decision",
+            target: "middle",
+            sourceHandle: "false",
+            businessLabel: "Sai",
+          },
+          { id: "b", source: "middle", target: "end" },
+        ],
+      },
+      new Set(["middle"]),
+    );
+    expect(result.edges).toHaveLength(1);
+    expect(result.edges[0]).toMatchObject({
+      source: "decision",
+      target: "end",
+      sourceHandle: "false",
+      businessLabel: "Sai",
+      kind: "COLLAPSED",
+    });
+  });
+  it("limits the selected neighborhood without losing its incident links", () => {
+    const result = neighborhood(graph, "start", 1);
+    expect(result.nodes.map((n) => n.id)).toEqual(["start", "decision"]);
+    expect(result.edges.map((e) => e.id)).toEqual(["a"]);
+    expect(neighborhood(graph, null)).toBe(graph);
+  });
+  it("migrates old logout and grouped overlay snapshots without changing IDs", () => {
+    const parsed = readGraph({
+      ...graph,
+      nodes: [
+        { ...nodes[0], kind: "LOGOUT" },
+        {
+          ...nodes[2],
+          dialogInfo: {
+            overlayType: "BOTTOM_SHEET",
+            widgetName: "Options",
+            actions: [],
+          },
+        },
+      ],
+      edges: [],
+    });
+    expect(parsed?.nodes.map((n) => n.kind)).toEqual(["ACTION", "BOTTOMSHEET"]);
+    expect(parsed?.nodes.map((n) => n.id)).toEqual(["start", "end"]);
+    expect(parsed?.project.stats).not.toHaveProperty("totalLogoutPoints");
+  });
+  it("rejects invalid or missing full-source references", () => {
+    const sourceLocation = {
+      filePath: "lib/main.dart",
+      line: 1,
+      column: 1,
+      codeSnippet: "snippet",
+      contextId: "method",
+    };
+    const g = {
+      ...graph,
+      nodes: [{ ...nodes[0], sourceLocation }],
+      edges: [],
+      sourceContexts: {
+        method: {
+          name: "login",
+          code: "void login(){}",
+          filePath: "lib/main.dart",
+          startLine: 1,
+          endLine: 1,
+        },
+      },
+    };
+    expect(validGraph(g)).toBe(true);
+    expect(validGraph({ ...g, sourceContexts: {} })).toBe(false);
+    expect(validGraph({ ...g, sourceContexts: { method: { code: 99 } } })).toBe(
+      false,
+    );
+  });
+  it("matches bottom sheets independently of dialogs with the same name", () => {
+    const g = {
+      ...graph,
+      nodes: [
+        {
+          ...nodes[2],
+          kind: "DIALOG" as const,
+          dialogInfo: {
+            overlayType: "DIALOG" as const,
+            widgetName: "Options",
+            actions: [],
+          },
+        },
+        {
+          ...nodes[2],
+          id: "sheet",
+          kind: "BOTTOMSHEET" as const,
+          dialogInfo: {
+            overlayType: "BOTTOM_SHEET" as const,
+            widgetName: "Options",
+            actions: [],
+          },
+        },
+      ],
+    };
+    expect(
+      matchEvent(
+        g,
+        event(1, { eventKind: "BOTTOM_SHEET_OPEN", routeName: "Options" }),
+      ),
+    ).toBe("sheet");
+  });
 });
 describe("execution evidence", () => {
   it("infers a unique path only", () => {

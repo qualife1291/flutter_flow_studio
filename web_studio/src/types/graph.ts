@@ -5,8 +5,10 @@ export type NodeKind =
   | "ACTION" // Sự kiện bấm nút / Hàm khởi phát / BLoC Event
   | "DECISION" // Nhánh điều kiện if/else, switch/case, try/catch, Either.fold
   | "API" // Lời gọi mạng HTTP / Dio / Retrofit / GraphQL
-  | "DIALOG" // showDialog, showModalBottomSheet, SnackBar, Toast
-  | "LOGOUT"; // Đăng xuất, xóa token, reset phiên về màn Login
+  | "DIALOG"
+  | "BOTTOMSHEET"
+  | "SNACKBAR"
+  | "TOAST";
 
 export interface ProjectMetadata {
   projectRoot?: string;
@@ -34,7 +36,9 @@ export interface ProjectMetadata {
     totalDecisions: number;
     totalApis: number;
     totalDialogs: number;
-    totalLogoutPoints: number;
+    totalBottomSheets?: number;
+    totalSnackbars?: number;
+    totalToasts?: number;
   };
 }
 
@@ -47,6 +51,7 @@ export interface FlowNodeData {
   technicalTitle: string; // Cho Dev: "AuthCubit.submitLogin()" hoặc "if (res.statusCode == 200)"
   businessTitle: string; // Cho BA & Low-Code: "Xử lý Đăng nhập" hoặc "Kiểm tra: Đăng nhập thành công?"
   description?: string; // Mô tả chi tiết lấy từ comment /// hoặc tự sinh
+  isTechnical?: boolean;
 
   // Thông tin vị trí mã nguồn (Cho Dev & Nút Open in IDE):
   sourceLocation?: {
@@ -54,10 +59,12 @@ export interface FlowNodeData {
     line: number;
     column: number;
     codeSnippet: string; // 5-15 dòng code trích xuất quanh node
+    contextId?: string;
   };
 
   // Thuộc tính chuyên biệt cho từng loại Node:
   routeInfo?: {
+    router?: string;
     aliases?: string[];
     routePath: string; // VD: "/login", "/home/product/:id"
     isInitialRoute: boolean;
@@ -88,6 +95,17 @@ export interface FlowNodeData {
 }
 
 export interface FlowEdgeData {
+  kind?:
+    | "ENTRY"
+    | "CALL"
+    | "RETURN"
+    | "SEQUENCE"
+    | "NAVIGATION"
+    | "BRANCH"
+    | "STATE"
+    | "COLLAPSED";
+  via?: string[];
+  viaEdges?: string[];
   id: string; // VD: "edge:decision_54->dialog_OtpDialog"
   source: string; // ID của Node nguồn
   target: string; // ID của Node đích
@@ -112,6 +130,16 @@ export interface FlowHealthIssue {
 }
 
 export interface FlowGraphPayload {
+  sourceContexts?: Record<
+    string,
+    {
+      filePath: string;
+      startLine: number;
+      endLine: number;
+      name: string;
+      code: string;
+    }
+  >;
   generatedAt: string;
   project: ProjectMetadata;
   nodes: FlowNodeData[];

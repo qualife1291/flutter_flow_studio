@@ -45,7 +45,14 @@ export function matchEvent(
   )
     candidates = graph.nodes.filter(
       (n) =>
-        n.kind === "DIALOG" && n.dialogInfo?.widgetName === event.routeName,
+        n.kind ===
+          (
+            {
+              DIALOG_OPEN: "DIALOG",
+              BOTTOM_SHEET_OPEN: "BOTTOMSHEET",
+              SNACKBAR_SHOW: "SNACKBAR",
+            } as Record<string, string>
+          )[event.eventKind] && n.dialogInfo?.widgetName === event.routeName,
     );
   return candidates.length === 1 ? candidates[0].id : undefined;
 }

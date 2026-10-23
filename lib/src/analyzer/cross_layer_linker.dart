@@ -17,6 +17,8 @@ class CrossLayerLinker {
               source: entry.key,
               target: targets.single,
               label: 'calls $name',
+              businessLabel: 'Gọi xử lý $name',
+              kind: 'CALL',
             ),
           );
         }
