@@ -1,0 +1,228 @@
+Resolving dependencies...
+Downloading packages...
+  _fe_analyzer_shared 91.0.0 (110.0.0 available)
+  analyzer 8.4.1 (14.6.0 available)
+  async 2.13.0 (2.13.1 available)
+  clock 1.1.2 (1.1.3 available)
+  coverage 1.15.1 (1.16.0 available)
+  flutter_riverpod 2.6.1 (3.4.3 available)
+  frontend_server_client 4.0.0 (4.2.0 available)
+  matcher 0.12.19 (0.12.20 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.17.0 (1.19.0 available)
+  package_config 2.2.0 (3.0.0 available)
+  riverpod 2.6.1 (3.4.3 available)
+  shelf 1.4.2 (1.4.3 available)
+  shelf_static 1.1.3 (1.2.0 available)
+  shelf_web_socket 2.0.1 (3.0.0 available)
+  source_span 1.10.1 (1.10.2 available)
+  stack_trace 1.12.1 (1.12.2 available)
+  test 1.30.0 (1.33.0 available)
+  test_api 0.7.10 (0.7.15 available)
+  test_core 0.6.16 (0.6.21 available)
+  vector_math 2.2.0 (2.4.3 available)
+  vm_service 15.0.0 (15.4.0 available)
+Got dependencies!
+22 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Publishing flutter_flow_studio 0.1.0 to https://pub.dev:
+├── CHANGELOG.md (1 KB)
+├── LICENSE (1 KB)
+├── README.md (6 KB)
+├── SECURITY.md (1 KB)
+├── analysis_options.yaml (<1 KB)
+├── bin
+│   └── flutter_flow_studio.dart (3 KB)
+├── example
+│   ├── README.md (1 KB)
+│   ├── analysis_options.yaml (1 KB)
+│   ├── android
+│   │   ├── app
+│   │   │   ├── build.gradle.kts (1 KB)
+│   │   │   └── src
+│   │   │       ├── debug
+│   │   │       │   └── AndroidManifest.xml (<1 KB)
+│   │   │       ├── main
+│   │   │       │   ├── AndroidManifest.xml (2 KB)
+│   │   │       │   ├── kotlin
+│   │   │       │   │   └── dev
+│   │   │       │   │       └── flowstudio
+│   │   │       │   │           └── flow_studio_example
+│   │   │       │   │               └── MainActivity.kt (<1 KB)
+│   │   │       │   └── res
+│   │   │       │       ├── drawable
+│   │   │       │       │   └── launch_background.xml (<1 KB)
+│   │   │       │       ├── drawable-v21
+│   │   │       │       │   └── launch_background.xml (<1 KB)
+│   │   │       │       ├── mipmap-hdpi
+│   │   │       │       │   └── ic_launcher.png (<1 KB)
+│   │   │       │       ├── mipmap-mdpi
+│   │   │       │       │   └── ic_launcher.png (<1 KB)
+│   │   │       │       ├── mipmap-xhdpi
+│   │   │       │       │   └── ic_launcher.png (<1 KB)
+│   │   │       │       ├── mipmap-xxhdpi
+│   │   │       │       │   └── ic_launcher.png (1 KB)
+│   │   │       │       ├── mipmap-xxxhdpi
+│   │   │       │       │   └── ic_launcher.png (1 KB)
+│   │   │       │       ├── values
+│   │   │       │       │   └── styles.xml (<1 KB)
+│   │   │       │       └── values-night
+│   │   │       │           └── styles.xml (<1 KB)
+│   │   │       └── profile
+│   │   │           └── AndroidManifest.xml (<1 KB)
+│   │   ├── build.gradle.kts (<1 KB)
+│   │   ├── gradle
+│   │   │   └── wrapper
+│   │   │       └── gradle-wrapper.properties (<1 KB)
+│   │   ├── gradle.properties (<1 KB)
+│   │   └── settings.gradle.kts (<1 KB)
+│   ├── integration_test
+│   │   └── user_flow_test.dart (1 KB)
+│   ├── ios
+│   │   ├── Flutter
+│   │   │   ├── AppFrameworkInfo.plist (<1 KB)
+│   │   │   ├── Debug.xcconfig (<1 KB)
+│   │   │   └── Release.xcconfig (<1 KB)
+│   │   ├── Runner
+│   │   │   ├── AppDelegate.swift (<1 KB)
+│   │   │   ├── Assets.xcassets
+│   │   │   │   ├── AppIcon.appiconset
+│   │   │   │   │   ├── Contents.json (2 KB)
+│   │   │   │   │   ├── Icon-App-1024x1024@1x.png (10 KB)
+│   │   │   │   │   ├── Icon-App-20x20@1x.png (<1 KB)
+│   │   │   │   │   ├── Icon-App-20x20@2x.png (<1 KB)
+│   │   │   │   │   ├── Icon-App-20x20@3x.png (<1 KB)
+│   │   │   │   │   ├── Icon-App-29x29@1x.png (<1 KB)
+│   │   │   │   │   ├── Icon-App-29x29@2x.png (<1 KB)
+│   │   │   │   │   ├── Icon-App-29x29@3x.png (<1 KB)
+│   │   │   │   │   ├── Icon-App-40x40@1x.png (<1 KB)
+│   │   │   │   │   ├── Icon-App-40x40@2x.png (<1 KB)
+│   │   │   │   │   ├── Icon-App-40x40@3x.png (<1 KB)
+│   │   │   │   │   ├── Icon-App-60x60@2x.png (<1 KB)
+│   │   │   │   │   ├── Icon-App-60x60@3x.png (1 KB)
+│   │   │   │   │   ├── Icon-App-76x76@1x.png (<1 KB)
+│   │   │   │   │   ├── Icon-App-76x76@2x.png (1 KB)
+│   │   │   │   │   └── Icon-App-83.5x83.5@2x.png (1 KB)
+│   │   │   │   └── LaunchImage.imageset
+│   │   │   │       ├── Contents.json (<1 KB)
+│   │   │   │       ├── LaunchImage.png (<1 KB)
+│   │   │   │       ├── LaunchImage@2x.png (<1 KB)
+│   │   │   │       ├── LaunchImage@3x.png (<1 KB)
+│   │   │   │       └── README.md (<1 KB)
+│   │   │   ├── Base.lproj
+│   │   │   │   ├── LaunchScreen.storyboard (2 KB)
+│   │   │   │   └── Main.storyboard (1 KB)
+│   │   │   ├── Info.plist (1 KB)
+│   │   │   └── Runner-Bridging-Header.h (<1 KB)
+│   │   ├── Runner.xcodeproj
+│   │   │   ├── project.pbxproj (23 KB)
+│   │   │   ├── project.xcworkspace
+│   │   │   │   ├── contents.xcworkspacedata (<1 KB)
+│   │   │   │   └── xcshareddata
+│   │   │   │       ├── IDEWorkspaceChecks.plist (<1 KB)
+│   │   │   │       └── WorkspaceSettings.xcsettings (<1 KB)
+│   │   │   └── xcshareddata
+│   │   │       └── xcschemes
+│   │   │           └── Runner.xcscheme (3 KB)
+│   │   ├── Runner.xcworkspace
+│   │   │   ├── contents.xcworkspacedata (<1 KB)
+│   │   │   └── xcshareddata
+│   │   │       ├── IDEWorkspaceChecks.plist (<1 KB)
+│   │   │       └── WorkspaceSettings.xcsettings (<1 KB)
+│   │   └── RunnerTests
+│   │       └── RunnerTests.swift (<1 KB)
+│   ├── lib
+│   │   ├── main.dart (4 KB)
+│   │   └── release_check.dart (<1 KB)
+│   ├── pubspec.yaml (3 KB)
+│   ├── test
+│   │   └── widget_test.dart (1 KB)
+│   ├── web
+│   │   ├── favicon.png (<1 KB)
+│   │   ├── icons
+│   │   │   ├── Icon-192.png (5 KB)
+│   │   │   ├── Icon-512.png (8 KB)
+│   │   │   ├── Icon-maskable-192.png (5 KB)
+│   │   │   └── Icon-maskable-512.png (20 KB)
+│   │   ├── index.html (1 KB)
+│   │   └── manifest.json (<1 KB)
+│   └── windows
+│       ├── CMakeLists.txt (4 KB)
+│       ├── flutter
+│       │   ├── CMakeLists.txt (3 KB)
+│       │   ├── generated_plugin_registrant.cc (<1 KB)
+│       │   ├── generated_plugin_registrant.h (<1 KB)
+│       │   └── generated_plugins.cmake (<1 KB)
+│       └── runner
+│           ├── CMakeLists.txt (1 KB)
+│           ├── Runner.rc (3 KB)
+│           ├── flutter_window.cpp (2 KB)
+│           ├── flutter_window.h (<1 KB)
+│           ├── main.cpp (1 KB)
+│           ├── resource.h (<1 KB)
+│           ├── resources
+│           │   └── app_icon.ico (32 KB)
+│           ├── runner.exe.manifest (<1 KB)
+│           ├── utils.cpp (1 KB)
+│           ├── utils.h (<1 KB)
+│           ├── win32_window.cpp (8 KB)
+│           └── win32_window.h (3 KB)
+├── flutter_flow_studio_spec.md (51 KB)
+├── lib
+│   ├── flutter_flow_studio.dart (<1 KB)
+│   └── src
+│       ├── analyzer
+│       │   ├── adapters
+│       │   │   ├── network_adapters.dart (<1 KB)
+│       │   │   ├── router_adapters.dart (4 KB)
+│       │   │   └── state_adapters.dart (<1 KB)
+│       │   ├── ast_facade.dart (<1 KB)
+│       │   ├── ast_pipeline.dart (20 KB)
+│       │   ├── backward_slicer.dart (4 KB)
+│       │   ├── call_resolver.dart (2 KB)
+│       │   ├── control_flow_linker.dart (1 KB)
+│       │   ├── cross_layer_linker.dart (<1 KB)
+│       │   ├── deep_trace_instrumenter.dart (5 KB)
+│       │   ├── flow_health_auditor.dart (<1 KB)
+│       │   ├── human_readable_translator.dart (1 KB)
+│       │   ├── project_inspector.dart (3 KB)
+│       │   └── sink_detector_visitor.dart (3 KB)
+│       ├── runtime
+│       │   ├── bloc_observer.dart (1 KB)
+│       │   ├── dio_interceptor.dart (1 KB)
+│       │   ├── flow_probe.dart (<1 KB)
+│       │   ├── flow_studio_client.dart (4 KB)
+│       │   ├── http_overrides.dart (7 KB)
+│       │   ├── http_overrides_stub.dart (<1 KB)
+│       │   ├── navigator_observer.dart (1 KB)
+│       │   ├── platform_info.dart (<1 KB)
+│       │   ├── platform_io.dart (<1 KB)
+│       │   ├── platform_web.dart (<1 KB)
+│       │   └── riverpod_observer.dart (<1 KB)
+│       ├── schema
+│       │   ├── graph_models.dart (3 KB)
+│       │   ├── project_info.dart (<1 KB)
+│       │   └── ws_protocol.dart (1 KB)
+│       ├── server
+│       │   ├── cli_exporters.dart (1 KB)
+│       │   ├── network_utils.dart (<1 KB)
+│       │   └── studio_lan_server.dart (5 KB)
+│       └── web_assets
+│           ├── THIRD_PARTY_NOTICES.txt (46 KB)
+│           ├── assets
+│           │   ├── elk-api-HGEeuK2k.js (4 KB)
+│           │   ├── elk-worker.min-BqREE3LP.js (1 MB)
+│           │   ├── index-D24oAnru.css (28 KB)
+│           │   └── index-D2nlsjcU.js (440 KB)
+│           ├── demo.flow.json (24 KB)
+│           ├── favicon.svg (<1 KB)
+│           └── index.html (<1 KB)
+├── pubspec.yaml (<1 KB)
+└── test
+    └── runtime_test.dart (4 KB)
+
+Total compressed archive size: 758 KB.
+Validating package...
+The server may enforce additional checks.
+
+Package has 0 warnings.

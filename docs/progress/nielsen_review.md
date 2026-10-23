@@ -1,6 +1,8 @@
 # Nielsen review
 
-Date: 2026-10-23 (Asia/Ho_Chi_Minh). Final review pending; no handover claim.
+Date: 2026-10-23 (Asia/Ho_Chi_Minh). Final production build reviewed against the real example graph from source `300427c`.
+
+Reviewed views: [Developer](logs/review-dev.png), [BA](logs/review-ba.png), [Tester](logs/review-tester.png), [Low-Code](logs/review-lowcode.png). Keyboard, inspector, export, error recovery and accessibility checks: [browser results](logs/playwright.json). Connected runtime evidence: [live CLI smoke](logs/live-studio-smoke.txt).
 
 | # | Heuristic | Result | Evidence |
 | --- | --- | --- | --- |

@@ -1,1 +1,1 @@
-PASS: real CLI served bundled UI and 14 nodes; unauthorized graph returned 401; authenticated browser received a live BRANCH_HIT and confirmed one branch.
+PASS: final source CLI served bundled production UI and 14 nodes; unauthenticated graph returned 401; authenticated browser received live BRANCH_HIT and confirmed one branch.

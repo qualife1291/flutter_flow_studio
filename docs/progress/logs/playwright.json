@@ -1,12 +1,12 @@
 {
   "config": {
     "argv": [
-      "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
-      "/workspace/flutter_flow_studio/web_studio/node_modules/.bin/playwright",
+      "/opt/hostedtoolcache/node/24.21.0/x64/bin/node",
+      "/home/runner/work/flutter_flow_studio/flutter_flow_studio/web_studio/node_modules/.bin/playwright",
       "test"
     ],
-    "configFile": "/workspace/flutter_flow_studio/web_studio/playwright.config.ts",
-    "rootDir": "/workspace/flutter_flow_studio/web_studio/e2e",
+    "configFile": "/home/runner/work/flutter_flow_studio/flutter_flow_studio/web_studio/playwright.config.ts",
+    "rootDir": "/home/runner/work/flutter_flow_studio/flutter_flow_studio/web_studio/e2e",
     "failOnFlakyTests": false,
     "forbidOnly": false,
     "fullyParallel": false,
@@ -17,20 +17,64 @@
     "grepInvert": null,
     "maxFailures": 0,
     "metadata": {
+      "ci": {
+        "commitHref": "https://github.com/qualife1291/flutter_flow_studio/commit/300427c0c12a1d3f2858e4fa7966cafea093799b",
+        "commitHash": "300427c0c12a1d3f2858e4fa7966cafea093799b",
+        "buildHref": "https://github.com/qualife1291/flutter_flow_studio/actions/runs/39881044872"
+      },
+      "gitCommit": {
+        "shortHash": "300427c",
+        "hash": "300427c0c12a1d3f2858e4fa7966cafea093799b",
+        "subject": "Complete typed flow links, runtime capture and accessible Studio controls",
+        "body": "Complete typed flow links, runtime capture and accessible Studio controls\n",
+        "author": {
+          "name": "Hoang Long",
+          "email": "17520709@gm.uit.edu.vn",
+          "time": 1792716952000
+        },
+        "committer": {
+          "name": "Hoang Long",
+          "email": "17520709@gm.uit.edu.vn",
+          "time": 1792716952000
+        },
+        "branch": "codex/implement-flow-studio"
+      },
       "actualWorkers": 1
     },
     "preserveOutput": "always",
     "projects": [
       {
-        "outputDir": "/workspace/flutter_flow_studio/web_studio/test-results",
+        "outputDir": "/home/runner/work/flutter_flow_studio/flutter_flow_studio/web_studio/test-results",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/qualife1291/flutter_flow_studio/commit/300427c0c12a1d3f2858e4fa7966cafea093799b",
+            "commitHash": "300427c0c12a1d3f2858e4fa7966cafea093799b",
+            "buildHref": "https://github.com/qualife1291/flutter_flow_studio/actions/runs/39881044872"
+          },
+          "gitCommit": {
+            "shortHash": "300427c",
+            "hash": "300427c0c12a1d3f2858e4fa7966cafea093799b",
+            "subject": "Complete typed flow links, runtime capture and accessible Studio controls",
+            "body": "Complete typed flow links, runtime capture and accessible Studio controls\n",
+            "author": {
+              "name": "Hoang Long",
+              "email": "17520709@gm.uit.edu.vn",
+              "time": 1792716952000
+            },
+            "committer": {
+              "name": "Hoang Long",
+              "email": "17520709@gm.uit.edu.vn",
+              "time": 1792716952000
+            },
+            "branch": "codex/implement-flow-studio"
+          },
           "actualWorkers": 1
         },
         "id": "",
         "name": "",
-        "testDir": "/workspace/flutter_flow_studio/web_studio/e2e",
+        "testDir": "/home/runner/work/flutter_flow_studio/flutter_flow_studio/web_studio/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -42,22 +86,44 @@
       {
         "grep": {},
         "grepInvert": null,
-        "outputDir": "/workspace/flutter_flow_studio/web_studio/test-results",
+        "outputDir": "/home/runner/work/flutter_flow_studio/flutter_flow_studio/web_studio/test-results",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/qualife1291/flutter_flow_studio/commit/300427c0c12a1d3f2858e4fa7966cafea093799b",
+            "commitHash": "300427c0c12a1d3f2858e4fa7966cafea093799b",
+            "buildHref": "https://github.com/qualife1291/flutter_flow_studio/actions/runs/39881044872"
+          },
+          "gitCommit": {
+            "shortHash": "300427c",
+            "hash": "300427c0c12a1d3f2858e4fa7966cafea093799b",
+            "subject": "Complete typed flow links, runtime capture and accessible Studio controls",
+            "body": "Complete typed flow links, runtime capture and accessible Studio controls\n",
+            "author": {
+              "name": "Hoang Long",
+              "email": "17520709@gm.uit.edu.vn",
+              "time": 1792716952000
+            },
+            "committer": {
+              "name": "Hoang Long",
+              "email": "17520709@gm.uit.edu.vn",
+              "time": 1792716952000
+            },
+            "branch": "codex/implement-flow-studio"
+          },
           "actualWorkers": 1
         },
         "name": "",
-        "testDir": "/workspace/flutter_flow_studio/web_studio/e2e",
-        "snapshotDir": "/workspace/flutter_flow_studio/web_studio/e2e",
+        "testDir": "/home/runner/work/flutter_flow_studio/flutter_flow_studio/web_studio/e2e",
+        "snapshotDir": "/home/runner/work/flutter_flow_studio/flutter_flow_studio/web_studio/e2e",
         "testIgnore": [],
         "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
         "timeout": 30000,
         "use": {
           "baseURL": "http://127.0.0.1:4173",
           "launchOptions": {
-            "executablePath": "/usr/bin/chromium",
+            "executablePath": "/usr/bin/google-chrome",
             "args": [
               "--no-sandbox"
             ]
@@ -94,7 +160,7 @@
     "webServer": {
       "command": "npm run preview -- --port 4173",
       "url": "http://127.0.0.1:4173",
-      "reuseExistingServer": true
+      "reuseExistingServer": false
     }
   },
   "suites": [
@@ -120,12 +186,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 4497,
+                  "duration": 12637,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-23T00:55:29.275Z",
+                  "startTime": "2026-10-23T00:56:49.505Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -154,12 +220,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 451,
+                  "duration": 805,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-23T00:55:33.974Z",
+                  "startTime": "2026-10-23T00:57:15.872Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -188,12 +254,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 374,
+                  "duration": 489,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-23T00:55:34.436Z",
+                  "startTime": "2026-10-23T00:57:16.692Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -222,12 +288,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1350,
+                  "duration": 1831,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-23T00:55:34.819Z",
+                  "startTime": "2026-10-23T00:57:17.199Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -245,8 +311,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-10-23T00:55:28.820Z",
-    "duration": 7450.572,
+    "startTime": "2026-10-23T00:56:48.499Z",
+    "duration": 30786.651,
     "expected": 4,
     "skipped": 0,
     "unexpected": 0,

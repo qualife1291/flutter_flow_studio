@@ -1,0 +1,5 @@
+
+✅ login success -> home -> logout
+✅ failed login opens recoverable error dialog
+
+🎉 2 tests passed.
